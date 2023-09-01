@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,7 +14,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const HIDDEN_HEADER_FOOTER_SIDE: string[] = ["/", "/login"];
+  const HIDDEN_HEADER_FOOTER_SIDE: string[] = ["/login"];
   const isHiddenHeaderFooterSide: boolean = HIDDEN_HEADER_FOOTER_SIDE.includes(
     location.pathname
   );
