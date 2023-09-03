@@ -1,14 +1,19 @@
+"use client";
+
 import { useState } from "react";
-import { useRouter } from "next/router";
-import { Box, Menu, MenuItem, Typography } from "@mui/material";
+import { usePathname, useRouter } from "next/navigation";
+// import { Box, Menu, MenuItem, Typography } from "@mui/material";
 import styled from "@emotion/styled";
-// import Link from "next/link";
+import Link from "next/link";
 
 const Wrapper = styled.div`
-  width: 100vw;
+  padding: 30px 30px;
   display: flex;
   justify-content: space-between;
-  padding: 10px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: teal;
 `;
 
 const pages = [
@@ -36,6 +41,7 @@ const users = [
 export default function Header() {
   const [userRole, setUserRole] = useState("");
 
+  const pathname = usePathname();
   const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -50,7 +56,7 @@ export default function Header() {
         <Link href="/"></Link>
         <Link href="/"></Link>
       </div> */}
-      <Typography
+      {/* <Typography
         variant="h6"
         noWrap
         component="a"
@@ -69,9 +75,10 @@ export default function Header() {
       </Typography>
 
       <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-        {/*  */}
-      </Box>
 
+      </Box> */}
+      <Link href={"/factory/1"}>양주 1 공장</Link>
+      <Link href={"/factory/2"}>파주 2 공장</Link>
       {/* <MenuItem onClick={handleCloseMenu}>Menu Item 1</MenuItem>
         <MenuItem onClick={handleCloseMenu}>Menu Item 2</MenuItem>
         <MenuItem onClick={handleCloseMenu}>Menu Item 3</MenuItem> */}
