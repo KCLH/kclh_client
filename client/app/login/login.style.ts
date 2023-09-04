@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   height: 89vh;
   display: flex;
   justify-content: space-between;
-  background-color: blanchedalmond;
+  /* background-color: blanchedalmond; */
 `;
 
 export const LoginForm = styled.form`
@@ -15,13 +15,14 @@ export const LoginForm = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: aqua;
+  /* background-color: aqua; */
 `;
 
 export const LoginInput = styled.input`
   width: 300px;
   height: 50px;
   margin-bottom: 20px;
+  padding: 0 10px;
 
   /* &::placeholder {
     color: gray;

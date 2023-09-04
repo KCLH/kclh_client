@@ -1,200 +1,165 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Button,
+  Menu,
+  MenuItem,
+  Typography,
+  IconButton,
+  Avatar,
+} from "@mui/material";
 import styled from "@emotion/styled";
-import { useRouter } from "next/router";
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import Link from "next/link";
 
 const Wrapper = styled.div`
-  width: 100vw;
+  padding: 30px 30px;
   display: flex;
   justify-content: space-between;
-  padding: 10px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: teal;
 `;
 
-const factory = ["양주 1공장", "파주 2공장"];
-const boards = ["양주 1공장", "파주 2공장"];
-const user = ["Account", "Logout"];
-
 export default function Header() {
-  const [anchorElFac, setAnchorElFac] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElBoard, setAnchorElBoard] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [userRole, setUserRole] = useState("");
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [currentMenu, setCurrentMenu] = useState("");
 
-  const handleOpenFacMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElFac(event.currentTarget);
-  };
-  const handleOpenBoardMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElBoard(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
+  const router = useRouter();
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    // 현재 클릭된 메뉴의 이름을 저장합니다.
+    setCurrentMenu(event.currentTarget.id);
   };
 
-  const handleCloseFacMenu = () => {
-    setAnchorElFac(null);
+  const handleClose = () => {
+    setAnchorEl(null);
+    router.push("");
   };
 
-  const handleCloseBoardMenu = () => {
-    setAnchorElBoard(null);
-  };
+  const pages = [
+    {
+      name: "공장 현황",
+      children: [
+        // { name: "양주 1 공장", url: "/factory/1", roles: ["admin", "user"] },
+        // { name: "파주 2 공장", url: "/factory/2", roles: ["admin", "user"] },
+        { name: "양주 1 공장", url: "/factory/1" },
+        { name: "파주 2 공장", url: "/factory/2" },
+      ],
+    },
+    {
+      name: "대시보드",
+      children: [
+        // { name: "양주 1 공장", url: "/board/1", roles: ["admin", "user"] },
+        // { name: "파주 2 공장", url: "/board/2", roles: ["admin", "user"] },
+        { name: "양주 1 공장", url: "/board/1" },
+        { name: "파주 2 공장", url: "/board/2" },
+      ],
+    },
+  ];
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  const users = [
+    { name: "내 계정", url: "/user/info", roles: ["user"] },
+    { name: "사원 관리", url: "/admin/info", roles: ["admin"] },
+  ];
 
   return (
     <Wrapper>
-      <div>
-        <Link href="/"></Link>
-        <Link href="/"></Link>
-      </div>
-      <AppBar position="static">
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+      <Typography
+        variant="h6"
+        noWrap
+        component="a"
+        href="/"
+        sx={{
+          mr: 2,
+          display: { xs: "none", md: "flex" },
+          fontFamily: "monospace",
+          fontWeight: 700,
+          letterSpacing: ".3rem",
+          color: "inherit",
+          textDecoration: "none",
+        }}
+      >
+        RED DICE
+      </Typography>
 
-            {/* 웹 로고 */}
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
+      {pages.map((page, idx) => (
+        <>
+          <Button
+            id={page.name}
+            aria-controls={
+              open && currentMenu === page.name
+                ? `${page.name}-menu`
+                : undefined
+            }
+            aria-haspopup="true"
+            aria-expanded={
+              open && currentMenu === page.name ? "true" : undefined
+            }
+            onClick={handleClick}
+          >
+            {page.name}
+          </Button>
+          <div>
+            <Menu
+              id={`${page.name}-menu`}
+              anchorEl={anchorEl}
+              open={open && currentMenu === page.name}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": page.name,
               }}
             >
-              LOGO
-            </Typography>
-
-            {/* 모바일 메뉴 */}
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+              {page.children.map((cPage, cIdx) => (
+                <>
+                  {/* 각 MenuItem에 Link 컴포넌트를 추가하고 key prop을 부여 */}
+                  <MenuItem
+                    onClick={handleClose}
+                    key={`menu-item-${idx}-${cIdx}`}
+                  >
+                    <Link href={cPage.url}>{cPage.name}</Link>
                   </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-
-            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-
-            {/* 모바일 로고 */}
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              LOGO
-            </Typography>
-
-            {/* 웹 메뉴 */}
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page}
-                </Button>
+                </>
               ))}
-            </Box>
-
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
+            </Menu>
+          </div>
+        </>
+      ))}
+      <IconButton
+        onClick={(event) => {
+          setAnchorEl(event.currentTarget);
+          setCurrentMenu("account");
+        }}
+        size="small"
+        sx={{ ml: 2 }}
+        aria-controls={
+          open && currentMenu === "account" ? "account-menu" : undefined
+        }
+        aria-haspopup="true"
+        aria-expanded={open && currentMenu === "account" ? "true" : undefined}
+      >
+        <Avatar sx={{ width: 32, height: 32 }}>사람</Avatar>
+      </IconButton>
+      <Menu
+        id="account-menu"
+        anchorEl={anchorEl}
+        open={open && currentMenu === "account"}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        {users.map((user, idx) => (
+          <MenuItem onClick={handleClose} key={`user-menu-item-${idx}`}>
+            {user.name}
+          </MenuItem>
+        ))}
+      </Menu>
     </Wrapper>
   );
 }
