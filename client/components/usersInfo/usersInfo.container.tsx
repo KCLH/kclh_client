@@ -8,7 +8,7 @@ export default function UsersInfoContainer() {
 
   const onClickMoveJoin = async () => {
     try {
-      router.push("/admin/join");
+      router.push("/admin/signup");
     } catch (e) {
       console.error(e);
     }
