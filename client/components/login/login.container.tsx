@@ -20,7 +20,7 @@ export default function LoginContainer() {
 
   const onClickLogin = async () => {
     try {
-      router.push("/factory1");
+      router.push("/factory/1");
     } catch (e) {
       console.error(e);
     }

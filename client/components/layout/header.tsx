@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   position: sticky;
   top: 0;
   z-index: 999;
-  /* background-color: teal; */
+  background-color: #f2f2f2;
 `;
 
 const Logo = styled.div`
@@ -32,6 +32,14 @@ const Logo = styled.div`
   justify-content: center;
   align-items: center;
   /* background-color: aqua; */
+`;
+
+const Nav = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 40%;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export default function Header() {
@@ -79,80 +87,83 @@ export default function Header() {
 
   return (
     <Wrapper>
-      <Logo>
-        <Link href="/">
-          <Image
-            src="/redDice1Remove.png"
-            alt="레드 다이스"
-            width="40"
-            height="40"
-          />
-        </Link>
-        <Typography
-          variant="h6"
-          // noWrap
-          component="a"
-          href="/"
-          sx={{
-            // mr: 2,
-            display: { xs: "none", md: "flex" },
-            fontFamily: "monospace",
-            fontWeight: 700,
-            letterSpacing: ".3rem",
-            color: "inherit",
-            textDecoration: "none",
-          }}
-        >
-          RED DICE
-        </Typography>
-      </Logo>
-
-      {pages.map((page, idx) => (
-        <>
-          <Button
+      <Nav>
+        <Logo>
+          <Link href="/">
+            <Image
+              src="/redDice1Remove.png"
+              alt="레드 다이스"
+              width="40"
+              height="40"
+            />
+          </Link>
+          <Typography
+            variant="h6"
+            // noWrap
+            component="a"
+            href="/"
             sx={{
-              // backgroundColor: "#abcdef", // 배경색
-              color: "#123456", // 텍스트 색상
+              // mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
-            id={page.name}
-            aria-controls={
-              open && currentMenu === page.name
-                ? `${page.name}-menu`
-                : undefined
-            }
-            aria-haspopup="true"
-            aria-expanded={
-              open && currentMenu === page.name ? "true" : undefined
-            }
-            onClick={handleClick}
           >
-            {page.name}
-          </Button>
-          <div>
-            <Menu
-              id={`${page.name}-menu`}
-              anchorEl={anchorEl}
-              open={open && currentMenu === page.name}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": page.name,
+            RED DICE
+          </Typography>
+        </Logo>
+        {pages.map((page, idx) => (
+          <>
+            <Button
+              sx={{
+                color: "#262626",
+                fontSize: "20px",
+                fontWeight: 700,
               }}
+              id={page.name}
+              aria-controls={
+                open && currentMenu === page.name
+                  ? `${page.name}-menu`
+                  : undefined
+              }
+              aria-haspopup="true"
+              aria-expanded={
+                open && currentMenu === page.name ? "true" : undefined
+              }
+              onClick={handleClick}
             >
-              {page.children.map((cPage, cIdx) => (
-                <MenuItem
-                  onClick={() => {
-                    handleClose();
-                    router.push(cPage.url);
-                  }}
-                  key={`menu-item-${idx}-${cIdx}`}
-                >
-                  {cPage.name}
-                </MenuItem>
-              ))}
-            </Menu>
-          </div>
-        </>
-      ))}
+              {page.name}
+            </Button>
+            <div>
+              <Menu
+                id={`${page.name}-menu`}
+                anchorEl={anchorEl}
+                open={open && currentMenu === page.name}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": page.name,
+                }}
+              >
+                {page.children.map((cPage, cIdx) => (
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                      router.push(cPage.url);
+                    }}
+                    key={`menu-item-${idx}-${cIdx}`}
+                  >
+                    {cPage.name}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </div>
+          </>
+        ))}
+      </Nav>
+
       <IconButton
         onClick={(event) => {
           setAnchorEl(event.currentTarget);
