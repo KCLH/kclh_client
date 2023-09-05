@@ -4,14 +4,14 @@ import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as s from "./login.style";
+import LoginUI from "@/components/login/login.presenter";
 
 const schema = yup.object({
   userNum: yup.number().required("사원 번호를 입력해주세요"),
   password: yup.string().required("비밀번호를 입력해주세요"),
 });
 
-export default function Login() {
+export default function LoginContainer() {
   const router = useRouter();
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(schema),
@@ -27,18 +27,11 @@ export default function Login() {
   };
 
   return (
-    <s.LoginForm onSubmit={handleSubmit(onClickLogin)}>
-      <s.LoginInput
-        type="text"
-        placeholder="사원번호"
-        {...register("userNum")}
-      />
-      <s.LoginInput
-        type="text"
-        placeholder="비밀번호"
-        {...register("password")}
-      />
-      <s.LoginButton>로그인</s.LoginButton>
-    </s.LoginForm>
+    <LoginUI
+      register={register}
+      handleSubmit={handleSubmit}
+      formState={formState}
+      onClickLogin={onClickLogin}
+    />
   );
 }

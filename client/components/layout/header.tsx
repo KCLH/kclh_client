@@ -35,8 +35,8 @@ const Logo = styled.div`
 `;
 
 export default function Header() {
-  // const [userRole, setUserRole] = useState("admin");
-  const [userRole, setUserRole] = useState("user");
+  const [userRole, setUserRole] = useState("admin");
+  // const [userRole, setUserRole] = useState("user");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [currentMenu, setCurrentMenu] = useState("");
 

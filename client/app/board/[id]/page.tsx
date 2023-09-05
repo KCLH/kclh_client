@@ -1,4 +1,4 @@
-export default function Board(props: any) {
+export default function BoardPage(props: any) {
   return (
     <>
       <>{props.params.id === "1" ? "양주 1 공장" : "파주 2 공장"}</>
@@ -6,3 +6,13 @@ export default function Board(props: any) {
     </>
   );
 }
+
+// import BoardContainer from "@/components/board/board.container";
+// import { useRouter } from "next/router";
+
+// export default function BoardPage() {
+//   const router = useRouter();
+//   const { id } = router.query;
+
+//   return <BoardContainer id={id} />;
+// }
