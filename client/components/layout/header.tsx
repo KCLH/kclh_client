@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Button,
@@ -14,6 +14,7 @@ import { AccountCircleRounded } from "@mui/icons-material/";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
+import Cookies from "universal-cookie";
 
 const Wrapper = styled.div`
   padding: 30px 30px;
@@ -43,6 +44,8 @@ const Nav = styled.div`
 `;
 
 export default function Header() {
+  const [username, setUsername] = useState(""); // 사용자 이름을 저장할 상태 변수
+
   const [userRole, setUserRole] = useState("admin");
   // const [userRole, setUserRole] = useState("user");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -50,17 +53,18 @@ export default function Header() {
 
   const router = useRouter();
   const open = Boolean(anchorEl);
+  const cookies = new Cookies();
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-    // 현재 클릭된 메뉴의 이름을 저장.
-    setCurrentMenu(event.currentTarget.id);
-  };
+  useEffect(() => {
+    const jwtToken = cookies.get("jwt"); // 쿠키에서 JWT 토큰 가져오기
 
-  const handleClose = () => {
-    setAnchorEl(null);
-    router.push("");
-  };
+    if (jwtToken) {
+      // 실제 애플리케이션에서는 서버로 요청을 보내서 JWT 토큰을 해석하고
+      // 그 결과로 받은 사용자 정보(예: 이름)를 setUsername 함수로 설정
+
+      setUsername("사용자 이름");
+    }
+  }, []);
 
   const pages = [
     {
@@ -84,6 +88,17 @@ export default function Header() {
     { name: "사원 관리", url: "/admin/info", roles: ["admin"] },
     { name: "로그아웃", url: "/", roles: ["admin", "user"] },
   ];
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    // 현재 클릭된 메뉴의 이름을 저장.
+    setCurrentMenu(event.currentTarget.id);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    router.push("");
+  };
 
   return (
     <Wrapper>

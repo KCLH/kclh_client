@@ -1,64 +1,51 @@
 "use client";
 
-import * as yup from "yup";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import Cookies from "universal-cookie";
 import LoginUI from "@/components/login/login.presenter";
-
-const schema = yup.object({
-  userNum: yup.number().required("사원 번호를 입력해주세요"),
-  password: yup.string().required("비밀번호를 입력해주세요"),
-});
+import { yupResolver } from "@hookform/resolvers/yup";
+import { FormValue, schema } from "../hooks/Login";
 
 export default function LoginContainer() {
+  const cookies = new Cookies();
+  const loginEndpoint = `${process.env.NEXT_PUBLIC_SERVER}/employee/login`;
   const router = useRouter();
-  const { register, handleSubmit, formState } = useForm({
+
+  const { register, handleSubmit, formState } = useForm<FormValue>({
     resolver: yupResolver(schema),
     mode: "onChange",
   });
 
-  const onClickLogin = async (data: any) => {
+  const onClickLogin = async (data: FormValue) => {
     try {
+      // withCredentials 옵션을 true로 설정하여 요청 시 쿠키를 함께 보냄
+      const response = await axios.post(loginEndpoint, data, {
+        withCredentials: true,
+      });
+
+      // // 응답에서 토큰 추출 후 쿠키에 저장
+      // document.cookie = `jwt=${response.data.token}; path=/;`;
+
+      // universal-cookie의 set 함수를 사용하여 쿠키에 토큰 저장
+      cookies.set("jwt", response.data.token);
+
       router.push("/factory/1");
-      console.log("문제가 뭐야");
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error);
+        // or show error message to user
+      }
     }
   };
-
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-
-  //   const id = (event.target as any)['filled-required'].value;
-  //   const pw = (event.target as any)['filled-password-input'].value;
-
-  //   // TODO: 실제 서버와 통신하는 로직을 여기에 작성하세요.
-  //   // 아래는 예시 코드입니다.
-  //   try {
-  //     const response = await fetch('http://localhost:9999/login', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ id, pw }),
-  //     });
-
-  //     if (!response.ok) throw new Error('Login failed');
-
-  //     const result = await response.json();
-
-  //     // TODO: 서버에서 받은 응답에 따라 페이지 이동 로직을 수정하세요.
-  //     router.push(`/factory/${result.id}`);
-
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   return (
     <LoginUI
       register={register}
-      handleSubmit={handleSubmit(onClickLogin)}
+      handleSubmit={handleSubmit}
       formState={formState}
+      onClickLogin={onClickLogin}
     />
   );
 }
