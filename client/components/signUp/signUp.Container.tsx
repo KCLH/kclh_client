@@ -17,34 +17,6 @@ export default function SignUpContainer() {
     mode: "onChange",
   });
 
-  // const onClickSignUp = async (data: FormValue) => {
-  //   if (
-  //     !(
-  //       data.employee_name &&
-  //       data.phone &&
-  //       data.email &&
-  //       data.department &&
-  //       data.rank
-  //     )
-  //   ) {
-  //     return;
-  //   }
-  //   try {
-  //     const res = await axios.post(createUserEndpoint, {
-  //       employee_name: data.employee_name,
-  //       phone: data.phone,
-  //       email: data.email,
-  //       department: data.department,
-  //       rank: data.rank,
-  //     });
-  //     if (res.status === 200) {
-  //       router.push("/login");
-  //     }
-  //     router.push("/factory/1");
-  //   } catch (error) {
-  //     if (error instanceof Error) console.error(error);
-  //   }
-  // };
   const onClickSignUp = async (data: FormValue) => {
     try {
       await axios.post(createUserEndpoint, data);
@@ -57,6 +29,33 @@ export default function SignUpContainer() {
     }
   };
 
+  const departments = [
+    {
+      name: "부서",
+      children: [
+        { name: "구매" },
+        { name: "제조" },
+        { name: "생산기술" },
+        { name: "생산관리" },
+        { name: "품질관리" },
+      ],
+    },
+  ];
+
+  const ranks = [
+    {
+      name: "직급",
+      children: [
+        { name: "사원" },
+        { name: "주임" },
+        { name: "대리" },
+        { name: "과장" },
+        { name: "차장" },
+        { name: "부장" },
+      ],
+    },
+  ];
+
   return (
     <>
       <SignUpUI
@@ -64,6 +63,8 @@ export default function SignUpContainer() {
         handleSubmit={handleSubmit}
         formState={formState}
         onClickSignUp={onClickSignUp}
+        departments={departments}
+        ranks={ranks}
       />
     </>
   );
