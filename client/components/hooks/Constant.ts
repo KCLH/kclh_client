@@ -25,3 +25,19 @@ export const USERS = [
   { name: "사원 관리", url: "/admin/info", roles: ["admin"] },
   { name: "로그아웃", url: "/", roles: ["admin", "user"] },
 ];
+
+// // pages.js
+// export function getPages() {
+//   // Here you can replace the static data with a fetch request or other methods of retrieving data.
+//   return [
+//     // ... your page data ...
+//   ];
+// }
+
+// // users.js
+// export function getUsers() {
+//   // Here you can replace the static data with a fetch request or other methods of retrieving data.
+//   return [
+//     // ... your user data ...
+//   ];
+// }

@@ -22,32 +22,6 @@ export default function SignUpContainer() {
     mode: "onChange",
   });
 
-  // const onClickSignUp = async (data: FormValue) => {
-  //   try {
-  //     await axios.post(createUserEndpoint, data);
-  //     router.push("/factory/1");
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       console.error(error);
-  //       // or show error message to user
-  //     }
-  //   }
-  // }; // onClickSignUp 자체가 비동기 함수
-
-  // const onClickSignUp = (data: FormValue) => {
-  //   (async () => {
-  //     try {
-  //       await axios.post(createUserEndpoint, data);
-  //       router.push("/factory/1");
-  //     } catch (error) {
-  //       if (error instanceof Error) {
-  //         console.error(error);
-  //         // or show error message to user
-  //       }
-  //     }
-  //   })();
-  // }; // onClickSignUp 함수 내부에 비동기 함수를 따로 만들어서 바로 실행(즉시 실행 함수)
-
   const onClickSignUp = async (data: FormValue) => {
     try {
       await axios.post(createUserEndpoint, data);

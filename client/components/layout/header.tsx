@@ -1,48 +1,78 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Button,
+  // Button,
+  // MenuItem,
   Menu,
-  MenuItem,
   Typography,
   IconButton,
   Avatar,
+  Button,
+  MenuItem,
 } from "@mui/material";
 import { AccountCircleRounded } from "@mui/icons-material/";
-import styled from "@emotion/styled";
+// import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
+// import jwtDecode from "jsonwebtoken/decode";
 import Cookies from "universal-cookie";
 import { PAGES, USERS } from "@/components/hooks/Constant";
+// import DropdownMenuButton from "../hooks/DropdownMenuButton";
+import jwtDecode from "jsonwebtoken";
 
-const Wrapper = styled.div`
-  padding: 30px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  background-color: #f2f2f2;
-`;
+// const Wrapper = styled.div`
+//   padding: 30px 30px;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   position: sticky;
+//   top: 0;
+//   z-index: 999;
+//   background-color: #f2f2f2;
+// `;
+import { styled } from "@mui/system";
 
-const Logo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* background-color: aqua; */
-`;
+const Wrapper = styled("div")({
+  padding: "30px 30px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  position: "sticky",
+  top: 0,
+  zIndex: 999,
+  backgroundColor: "#f2f2f2",
+});
+const Logo = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+});
+const Nav = styled("div")({
+  display: "flex",
+  flexDirection: "row",
+  width: "40%",
+  justifyContent: "space-between",
+  alignItems: "center",
+});
 
-const Nav = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 40%;
-  justify-content: space-between;
-  align-items: center;
-`;
+// const Logo = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   /* background-color: aqua; */
+// `;
+
+// const Nav = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   width: 40%;
+//   justify-content: space-between;
+//   align-items: center;
+// `;
 
 export default function Header() {
   const [username, setUsername] = useState(""); // 사용자 이름을 저장할 상태 변수
@@ -56,18 +86,37 @@ export default function Header() {
   const open = Boolean(anchorEl);
   const cookies = new Cookies();
 
-  useEffect(() => {
-    const jwtToken = cookies.get("jwt"); // 쿠키에서 JWT 토큰 가져오기
+  // useEffect(() => {
+  //   const jwtToken = cookies.get("jwt"); // 쿠키에서 JWT 토큰 가져오기
 
-    if (jwtToken) {
-      // 실제 애플리케이션에서는 서버로 요청을 보내서 JWT 토큰을 해석하고
-      // 그 결과로 받은 사용자 정보(예: 이름)를 setUsername 함수로 설정
+  //   if (jwtToken) {
+  //     // 실제 애플리케이션에서는 서버로 요청을 보내서 JWT 토큰을 해석하고
+  //     // 그 결과로 받은 사용자 정보(예: 이름)를 setUsername 함수로 설정
 
-      setUsername("사용자 이름");
-    }
-  }, []);
+  //     setUsername("사용자 이름");
+  //   }
+  // }, []);
+  // useEffect(() => {
+  //   const jwtToken = cookies.get("jwt"); // 쿠키에서 JWT 토큰 가져오기
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   if (jwtToken) {
+  //     const decodedToken = jwtDecode(jwtToken);
+  //     setUsername(decodedToken.username);
+  //     setUserRole(decodedToken.role);
+  //   }
+  // }, []);
+  // useEffect(() => {
+  //   const jwtToken = cookies.get("jwt"); // 쿠키에서 JWT 토큰 가져오기
+
+  //   if (jwtToken) {
+  //     const decodedToken = jwtDecode.decode(jwtToken);
+  //     setUsername(decodedToken.username);
+  //     setUserRole(decodedToken.role);
+  //   }
+  // }, []);
+
+  // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     // 현재 클릭된 메뉴의 이름을 저장.
     setCurrentMenu(event.currentTarget.id);
@@ -75,7 +124,6 @@ export default function Header() {
 
   const handleClose = () => {
     setAnchorEl(null);
-    router.push("");
   };
 
   return (
@@ -92,7 +140,7 @@ export default function Header() {
           </Link>
           <Typography
             variant="h6"
-            component="a"
+            component={Link}
             href="/"
             sx={{
               display: { xs: "none", md: "flex" },
@@ -153,20 +201,43 @@ export default function Header() {
             </div>
           </>
         ))}
+        {/* {PAGES.map((page, idx) => (
+          <DropdownMenuButton
+            buttonContent={page.name}
+            menuItems={page.children}
+            currentMenu={currentMenu}
+            anchorEl={anchorEl}
+            handleClick={handleClick}
+            handleClose={handleClose}
+          />
+        ))} */}
+        {/* {PAGES.map((page, idx) => (
+          <DropdownMenuButton
+            buttonContent={page.name}
+            menuItems={page.children}
+            currentMenu={currentMenu}
+            anchorEl={anchorEl}
+            handleClick={handleClick}
+            handleClose={handleClose}
+          />
+        ))} */}
       </Nav>
 
       <IconButton
         onClick={(event) => {
           setAnchorEl(event.currentTarget);
           setCurrentMenu("account");
+          // setCurrentMenu("");
         }}
         size="small"
         sx={{ ml: 2 }}
         aria-controls={
           open && currentMenu === "account" ? "account-menu" : undefined
+          // open && currentMenu === "" ? "account-menu" : undefined
         }
         aria-haspopup="true"
         aria-expanded={open && currentMenu === "account" ? "true" : undefined}
+        // aria-expanded={open && currentMenu === "" ? "true" : undefined}
       >
         <Avatar sx={{ width: 32, height: 32 }}>
           <AccountCircleRounded />
@@ -176,6 +247,7 @@ export default function Header() {
         id="account-menu"
         anchorEl={anchorEl}
         open={open && currentMenu === "account"}
+        // open={open && currentMenu === ""}
         onClose={handleClose}
         MenuListProps={{
           "aria-labelledby": "basic-button",
@@ -193,6 +265,19 @@ export default function Header() {
               {user.name}
             </MenuItem>
           ))}
+        {/* {USERS.filter((user) => user.roles.includes(userRole)).map(
+          (user, idx) => (
+            <DropdownMenuButton
+              buttonContent={"account"}
+              // buttonContent={""}
+              menuItems={USERS.filter((user) => user.roles.includes(userRole))}
+              currentMenu={currentMenu}
+              anchorEl={anchorEl}
+              handleClick={handleClick}
+              handleClose={handleClose}
+            />
+          )
+        )} */}
       </Menu>
     </Wrapper>
   );
