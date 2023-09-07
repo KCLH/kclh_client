@@ -1,38 +1,41 @@
+"use client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import * as s from "@/components/myAccount/myAccount.styles";
 
 export default function userInfo() {
   const [modalContent, setModalContent] = useState(null); // 모달 내용
   const [touchPW, setTouchPW] = useState(false); // 모달 내용 결정 요소
   const [inputInfo, setInputInfo] = useState({
-    pw: "",
-    celN: "",
+    user_pwd: "",
+    phone: "",
     email: "",
   });
   const [userInfo, setUserInfo] = useState({
-    userName: "이름",
-    EINumber: 0,
+    employee_name: "이름",
+    employee_num: 0,
     department: "부서명",
-    position: "직급명",
-    celN: "연락처",
+    rank: "직급명",
+    phone: "연락처",
     email: "이메일",
   });
 
   // 백에서 userInfo 가져오기
   const getData = async () => {
     try {
-      const response = await axios.get("라우터");
+      const response = await axios.get("/employee/myData?:id");
       const { userInfo } = response.data;
       setUserInfo({
-        userName,
-        EINumber,
+        employee_name,
+        employee_num,
         department,
-        position,
-        celN,
+        rank,
+        phone,
         email,
+        factory,
       });
     } catch (error) {
       alert(error);
@@ -43,30 +46,11 @@ export default function userInfo() {
   };
 
   // 연락처 중복체크
-  const checkCelN = async () => {
+  const checkPhone = async () => {
     try {
       const response = await axios.get("라우터", {
         params: {
-          celN,
-        },
-      });
-      if (response.data === true) {
-      }
-    } catch (error) {
-      if (error.code !== 200) {
-        alert(`${error.response.data.message}`);
-      } else {
-        alert(error);
-      }
-    }
-  };
-
-  // 이메일 중복체크
-  const checkEmail = async () => {
-    try {
-      const response = await axios.get("라우터", {
-        params: {
-          email,
+          phone,
         },
       });
       if (response.data === true) {
@@ -91,23 +75,21 @@ export default function userInfo() {
   const putData = async (e) => {
     try {
       const pw = inputInfo.pw;
-      const celN = inputInfo.celN;
-      const email = inputInfo.email;
+      const phone = inputInfo.phone;
       const response = await axios.put("라우터", {
-        email,
-        celN,
+        phone,
         pw,
       });
       if (touchPW === true) {
-        setModalContent({});
+        setModalContent(null);
       } else {
-        setModalContent({});
+        setModalContent(null);
       }
     } catch (error) {
       if (touchPW === true) {
-        setModalContent({});
+        setModalContent(null);
       } else {
-        setModalContent({});
+        setModalContent(null);
       }
     }
   };
@@ -118,52 +100,42 @@ export default function userInfo() {
   };
 
   // 렌더링 될 때 마다 실행
-  useEffect(() => {
-    getData();
-  }, [modalContent]);
+  // useEffect(() => {
+  //   getData();
+  // }, [modalContent]);
 
   return (
-    <div>
-      <Headers />
-      <div className="사원증">
-        <p className="이름">{userInfo.userName}</p>
-        <img src="" />
-        <p className="인적사항">{userInfo.EINumber}</p>
-        <div className="소속">
-          <p className="인적사항">{userInfo.department}</p>
-          <p className="인적사항">{userInfo.position}</p>
-        </div>
-        <input
-          className="PW"
+    <>
+      <s.사원증>
+        <s.이름>{userInfo.employee_name}</s.이름>
+        <s.사원사진 />
+        <s.인적사항>{userInfo.employee_num}</s.인적사항>
+        <s.인적사항>{userInfo.email}</s.인적사항>
+        <s.인적사항>{userInfo.factory}</s.인적사항>
+        <s.소속>
+          <s.인적사항>{userInfo.department}</s.인적사항>
+          <s.인적사항>{userInfo.rank}</s.인적사항>
+        </s.소속>
+        <s.PW
           id="pw"
           type="text"
           placeholder="비밀번호를 입력하세요"
-          onChange={[handleChange, setTouchPW(true)]}
+          onChange={(e) => {
+            handleChange(e);
+            setTouchPW(true);
+          }}
         />
-        <form className="변경사항" onSubmit={checkCelN}>
-          <input
-            className="인적사항"
-            id="celN"
+        <s.변경사항 onSubmit={checkPhone}>
+          <s.변경인적사항
+            id="phone"
             type="text"
-            value={userInfo.celN}
+            value={userInfo.phone}
             onChange={handleChange}
           />
-          <button className="변경버튼" type="submit">
-            중복
-          </button>
-        </form>
-        <form className="변경사항" onSubmit={checkEmail}>
-          <input
-            className="인적사항"
-            id="email"
-            type="text"
-            value={userInfo.email}
-            onChange={handleChange}
-          />
-          <button className="변경버튼">중복</button>
-        </form>
-        <button onClick={putData}>저장</button>
-      </div>
+          <s.변경버튼 type="submit">중복</s.변경버튼>
+        </s.변경사항>
+        <s.저장버튼 onClick={putData}>저장</s.저장버튼>
+      </s.사원증>
       {modalContent && (
         <Modal
           onClose={onClose}
@@ -197,6 +169,6 @@ export default function userInfo() {
           </Box>
         </Modal>
       )}
-    </div>
+    </>
   );
 }
