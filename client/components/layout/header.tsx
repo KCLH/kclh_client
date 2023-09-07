@@ -15,6 +15,7 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 import Cookies from "universal-cookie";
+import { PAGES, USERS } from "@/components/hooks/Constant";
 
 const Wrapper = styled.div`
   padding: 30px 30px;
@@ -66,29 +67,6 @@ export default function Header() {
     }
   }, []);
 
-  const pages = [
-    {
-      name: "공장 현황",
-      children: [
-        { name: "양주 1 공장", url: "/factory/1" },
-        { name: "파주 2 공장", url: "/factory/2" },
-      ],
-    },
-    {
-      name: "대시보드",
-      children: [
-        { name: "양주 1 공장", url: "/board/1" },
-        { name: "파주 2 공장", url: "/board/2" },
-      ],
-    },
-  ];
-
-  const users = [
-    { name: "내 계정", url: "/user/info", roles: ["user"] },
-    { name: "사원 관리", url: "/admin/info", roles: ["admin"] },
-    { name: "로그아웃", url: "/", roles: ["admin", "user"] },
-  ];
-
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     // 현재 클릭된 메뉴의 이름을 저장.
@@ -114,11 +92,9 @@ export default function Header() {
           </Link>
           <Typography
             variant="h6"
-            // noWrap
             component="a"
             href="/"
             sx={{
-              // mr: 2,
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
@@ -130,7 +106,7 @@ export default function Header() {
             RED DICE
           </Typography>
         </Logo>
-        {pages.map((page, idx) => (
+        {PAGES.map((page, idx) => (
           <>
             <Button
               sx={{
@@ -205,8 +181,7 @@ export default function Header() {
           "aria-labelledby": "basic-button",
         }}
       >
-        {users
-          .filter((user) => user.roles.includes(userRole)) // 현재 로그인한 사용자의 역할과 일치하는 메뉴 항목만 필터링
+        {USERS.filter((user) => user.roles.includes(userRole)) // 현재 로그인한 사용자의 역할과 일치하는 메뉴 항목만 필터링
           .map((user, idx) => (
             <MenuItem
               onClick={() => {
