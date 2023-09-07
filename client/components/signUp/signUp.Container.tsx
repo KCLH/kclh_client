@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import SignUpUI from "@/components/signUp/signUp.presenter";
-import { schema, FormValue } from "@/components/hooks/SignUp";
+import { schema, FormValue } from "@/components/utils/SignUp";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

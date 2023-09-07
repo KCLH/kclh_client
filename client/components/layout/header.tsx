@@ -18,7 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 // import jwtDecode from "jsonwebtoken/decode";
 import Cookies from "universal-cookie";
-import { PAGES, USERS } from "@/components/hooks/Constant";
+import { PAGES, USERS } from "@/components/utils/Constant";
 // import DropdownMenuButton from "../hooks/DropdownMenuButton";
 import jwtDecode from "jsonwebtoken";
 
