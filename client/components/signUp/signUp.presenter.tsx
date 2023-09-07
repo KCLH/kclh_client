@@ -7,9 +7,9 @@ import {
   RANKS,
   FACTORY,
   ROLES,
-} from "@/components/hooks/Constant";
-import { SignUpUIProps } from "../hooks/SignUp";
-import CustomSelect from "@/components/hooks/CustomSelect";
+} from "@/components/utils/Constant";
+import { SignUpUIProps } from "@/components/utils/SignUp";
+import CustomSelect from "@/components/utils/CustomSelect";
 
 const Wrapper = styled.div`
   width: 100%;

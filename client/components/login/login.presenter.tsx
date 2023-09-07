@@ -2,7 +2,7 @@
 import { Box, Button, TextField } from "@mui/material";
 import MyCarousel from "@/components/layout/carousel";
 import * as s from "@/components/login/login.styles";
-import { CAROUSEL_IMG } from "@/components/hooks/Constant";
+import { CAROUSEL_IMG } from "@/components/utils/Constant";
 
 export default function LoginUI(props: any) {
   return (
@@ -26,7 +26,7 @@ export default function LoginUI(props: any) {
         autoComplete="off"
       >
         <TextField
-          {...props.register("userid")}
+          {...props.register("employee_num")}
           sx={{ m: 1.5, minWidth: 120 }}
           required
           id="filled-required"
@@ -34,7 +34,7 @@ export default function LoginUI(props: any) {
           variant="filled"
         />
         <TextField
-          {...props.register("password")}
+          {...props.register("user_pwd")}
           sx={{ m: 1.5, minWidth: 120 }}
           id="filled-password-input"
           label="비밀번호"
