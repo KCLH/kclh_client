@@ -20,7 +20,7 @@ import Link from "next/link";
 import Cookies from "universal-cookie";
 import { PAGES, USERS } from "@/components/utils/Constant";
 // import DropdownMenuButton from "../hooks/DropdownMenuButton";
-import jwtDecode from "jsonwebtoken";
+// import jwtDecode from "jsonwebtoken";
 
 // const Wrapper = styled.div`
 //   padding: 30px 30px;
@@ -32,7 +32,9 @@ import jwtDecode from "jsonwebtoken";
 //   z-index: 999;
 //   background-color: #f2f2f2;
 // `;
+import axios from "axios";
 import { styled } from "@mui/system";
+import useCurrentUser from "@/components/utils/useCurrentUser";
 
 const Wrapper = styled("div")({
   padding: "30px 30px",
@@ -75,16 +77,36 @@ const Nav = styled("div")({
 // `;
 
 export default function Header() {
-  const [username, setUsername] = useState(""); // 사용자 이름을 저장할 상태 변수
+  const { userData, mutate } = useCurrentUser();
 
-  const [userRole, setUserRole] = useState("admin");
-  // const [userRole, setUserRole] = useState("user");
+  // const [userRole, setUserRole] = useState("admin");
+  const [userRole, setUserRole] = useState("user");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [currentMenu, setCurrentMenu] = useState("");
 
   const router = useRouter();
   const open = Boolean(anchorEl);
   const cookies = new Cookies();
+
+  const onClickLogout = () => {
+    cookies.remove("name");
+    cookies.remove("token");
+    // cookies.remove('userid');
+    cookies.remove("employee_num");
+    mutate();
+    router.push("/login");
+  };
+
+  useEffect(() => {
+    if (userData) {
+      console.log("Current user data:", userData);
+      axios.defaults.withCredentials = true; // credential:true 추가
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"; // access-control-allow-origin 추가
+      axios.defaults.headers.common["SameSite"] = "none"; // samesite=none 추가
+      axios.defaults.headers.common["secure"] = true; // secure=true 추가
+      return;
+    }
+  }, [userData]);
 
   // useEffect(() => {
   //   const jwtToken = cookies.get("jwt"); // 쿠키에서 JWT 토큰 가져오기
@@ -258,7 +280,13 @@ export default function Header() {
             <MenuItem
               onClick={() => {
                 handleClose();
-                router.push(user.url);
+                {
+                  user.name !== "로그아웃"
+                    ? user.name === "내 계정"
+                      ? handleClickMyData()
+                      : router.push(user.url)
+                    : onClickLogout();
+                }
               }}
               key={`user-menu-item-${idx}`}
             >

@@ -1,15 +1,16 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
-import Cookies from "js-cookie";
+import { useEffect } from "react";
+import Cookies from "universal-cookie";
 
 export function withAuth(WrappedComponent: any) {
   return (props: any) => {
+    const cookies = new Cookies();
     const Router = useRouter();
-    const token = Cookies.get("token");
+    const Token = cookies.get("token");
 
     useEffect(() => {
-      if (!token) {
+      if (!Token) {
         Router.replace("/login");
       }
     }, []);

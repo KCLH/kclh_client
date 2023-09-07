@@ -1,4 +1,4 @@
-import { withAuth } from "@/components/withAuth";
+import { withAuth } from "@/components/utils/withAuth";
 
 import MyAccountUI from "@/components/myAccount/myAccount.presenter";
 
