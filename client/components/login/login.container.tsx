@@ -6,11 +6,11 @@ import { useForm } from "react-hook-form";
 import Cookies from "universal-cookie";
 import LoginUI from "@/components/login/login.presenter";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FormValue, schema } from "../hooks/Login";
+import { FormValue, schema } from "@/components/hooks/Login";
 
 export default function LoginContainer() {
   const cookies = new Cookies();
-  const loginEndpoint = `${process.env.NEXT_PUBLIC_SERVER}/employee/login`;
+  const loginEndpoint = `http://${process.env.NEXT_PUBLIC_SERVER}/employee/login`;
   const router = useRouter();
 
   const { register, handleSubmit, formState } = useForm<FormValue>({
@@ -22,14 +22,19 @@ export default function LoginContainer() {
     try {
       // withCredentials 옵션을 true로 설정하여 요청 시 쿠키를 함께 보냄
       const response = await axios.post(loginEndpoint, data, {
-        withCredentials: true,
+        // withCredentials: true,
       });
 
       // // 응답에서 토큰 추출 후 쿠키에 저장
       // document.cookie = `jwt=${response.data.token}; path=/;`;
 
       // universal-cookie의 set 함수를 사용하여 쿠키에 토큰 저장
-      cookies.set("jwt", response.data.token);
+      // cookies.set("jwt", response.data.token);
+
+      console.log(
+        "🚀 ~ file: login.container.tsx:27 ~ onClickLogin ~ response:",
+        response.data
+      );
 
       router.push("/factory/1");
     } catch (error) {

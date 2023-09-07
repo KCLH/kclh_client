@@ -2,26 +2,12 @@
 import { Box, Button, TextField } from "@mui/material";
 import MyCarousel from "@/components/layout/carousel";
 import * as s from "@/components/login/login.styles";
+import { CAROUSEL_IMG } from "@/components/hooks/Constant";
 
 export default function LoginUI(props: any) {
-  const images = [
-    {
-      src: "/boardGame.jpg",
-      alt: "보드게임 제품 이미지",
-    },
-    {
-      src: "/factory_in.jpg",
-      alt: "공장 내부 이미지",
-    },
-    {
-      src: "/factory_out.jpg",
-      alt: "공장 외부 이미지",
-    },
-  ];
-
   return (
     <s.Wrapper>
-      <MyCarousel images={images} />
+      <MyCarousel images={CAROUSEL_IMG} />
 
       <Box
         component="form"
