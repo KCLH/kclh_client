@@ -26,6 +26,21 @@ export const USERS = [
   { name: "로그아웃", url: "/", roles: ["admin", "user"] },
 ];
 
+export const CAROUSEL_IMG = [
+  {
+    src: "/boardGame.jpg",
+    alt: "보드게임 제품 이미지",
+  },
+  {
+    src: "/factory_in.jpg",
+    alt: "공장 내부 이미지",
+  },
+  {
+    src: "/factory_out.jpg",
+    alt: "공장 외부 이미지",
+  },
+];
+
 // // pages.js
 // export function getPages() {
 //   // Here you can replace the static data with a fetch request or other methods of retrieving data.
