@@ -12,7 +12,6 @@ export default function userInfo() {
   const [inputInfo, setInputInfo] = useState({
     user_pwd: "",
     phone: "",
-    email: "",
   });
   const [userInfo, setUserInfo] = useState({
     employee_name: "이름",
@@ -21,12 +20,13 @@ export default function userInfo() {
     rank: "직급명",
     phone: "연락처",
     email: "이메일",
+    factory: "담당지",
   });
 
   // 백에서 userInfo 가져오기
   const getData = async () => {
     try {
-      const response = await axios.get("/employee/myData?:id");
+      const response = await axios.get("/employee/myData/1");
       const { userInfo } = response.data;
       setUserInfo({
         employee_name,
@@ -45,10 +45,18 @@ export default function userInfo() {
     }
   };
 
+  // input값 가져오기
+  const handleChange = (e) => {
+    setInputInfo({
+      [e.target.id]: e.target.value,
+    });
+  };
+
   // 연락처 중복체크
   const checkPhone = async () => {
     try {
-      const response = await axios.get("라우터", {
+      const phone = inputInfo.phone;
+      const response = await axios.get("/employee/phoneCheck", {
         params: {
           phone,
         },
@@ -64,21 +72,14 @@ export default function userInfo() {
     }
   };
 
-  // input값 가져오기
-  const handleChange = (e) => {
-    setInputInfo({
-      [e.target.id]: e.target.value,
-    });
-  };
-
   // 백에 수정사항 보내기
-  const putData = async (e) => {
+  const putData = async () => {
     try {
-      const pw = inputInfo.pw;
+      const user_pwd = inputInfo.user_pwd;
       const phone = inputInfo.phone;
-      const response = await axios.put("라우터", {
+      const response = await axios.put("/employee/update?:id", {
         phone,
-        pw,
+        user_pwd,
       });
       if (touchPW === true) {
         setModalContent(null);
@@ -110,21 +111,23 @@ export default function userInfo() {
         <s.이름>{userInfo.employee_name}</s.이름>
         <s.사원사진 />
         <s.인적사항>{userInfo.employee_num}</s.인적사항>
-        <s.인적사항>{userInfo.email}</s.인적사항>
-        <s.인적사항>{userInfo.factory}</s.인적사항>
         <s.소속>
           <s.인적사항>{userInfo.department}</s.인적사항>
           <s.인적사항>{userInfo.rank}</s.인적사항>
         </s.소속>
-        <s.PW
-          id="pw"
-          type="text"
-          placeholder="비밀번호를 입력하세요"
-          onChange={(e) => {
-            handleChange(e);
-            setTouchPW(true);
-          }}
-        />
+        <s.인적사항>{userInfo.factory}</s.인적사항>
+        <s.인적사항>{userInfo.email}</s.인적사항>
+        <s.변경사항>
+          <s.PW
+            id="pw"
+            type="text"
+            placeholder="비밀번호를 입력하세요"
+            onChange={(e) => {
+              handleChange(e);
+              setTouchPW(true);
+            }}
+          />
+        </s.변경사항>
         <s.변경사항 onSubmit={checkPhone}>
           <s.변경인적사항
             id="phone"
