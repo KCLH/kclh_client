@@ -22,19 +22,27 @@ const Wrapper = styled("div")({
 });
 
 export default function UsersInfoUI(props: any) {
-  const [editing, setEditing] = useState(null);
-  const [tempData, setTempData] = useState({});
+  // const [editing, setEditing] = useState(null);
+  // const [tempData, setTempData] = useState({
+  //   employee_num: "",
+  //   employee_name: "",
+  //   department: "",
+  //   rank: "",
+  //   phone: "",
+  //   email: "",
+  //   admin_ok: "",
+  // });
 
-  const handleEdit = (user: any) => {
-    setEditing(user.employee_num);
-    setTempData(user);
-  };
+  // const handleEdit = (user: any) => {
+  //   setEditing(user.employee_num);
+  //   setTempData(user);
+  // };
 
-  const handleSave = () => {
-    // tempData를 서버로 보내거나 Redux store에 저장
-    // ...
-    setEditing(null);
-  };
+  // const handleSave = () => {
+  //   // tempData를 서버로 보내거나 Redux store에 저장
+  //   // ...
+  //   setEditing(null);
+  // };
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -55,7 +63,9 @@ export default function UsersInfoUI(props: any) {
       border: 0,
     },
   }));
+
   console.log(props.usersData);
+
   return (
     <Wrapper>
       <div
@@ -72,30 +82,10 @@ export default function UsersInfoUI(props: any) {
           사원 등록
         </Button>
       </div>
-      {/* <div>사원 전체 정보 관리 페이지</div>
-      {props.usersData &&
-        props.usersData.map((users: any) => (
-          <>
-            <>{users.employee_num}</>
-            <>{users.employee_name}</>
-            <>{users.department}</>
-            <>{users.rank}</>
-            <>{users.phone}</>
-            <>{users.email}</>
-            <>{users.admin_ok}</>
-          </>
-        ))} */}
       <TableContainer component={Paper}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {/* <StyledTableCell align="center">사원 번호</StyledTableCell>
-              <StyledTableCell align="center">이름</StyledTableCell>
-              <StyledTableCell align="center">부서</StyledTableCell>
-              <StyledTableCell align="center">직급</StyledTableCell>
-              <StyledTableCell align="center">전화번호</StyledTableCell>
-              <StyledTableCell align="center">이메일</StyledTableCell>
-              <StyledTableCell align="center">권한</StyledTableCell> */}
               {USERS_TABLE.map((table) => (
                 <StyledTableCell align="center">{table}</StyledTableCell>
               ))}
@@ -107,30 +97,14 @@ export default function UsersInfoUI(props: any) {
             <TableBody>
               {props.usersData.map((user: any) => (
                 <StyledTableRow key={user.employee_num}>
-                  {/* <StyledTableCell component="th" scope="row" align="center">
-                    {user.employee_num}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {user.employee_name}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {user.department}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{user.rank}</StyledTableCell>
-                  <StyledTableCell align="center">{user.phone}</StyledTableCell>
-                  <StyledTableCell align="center">{user.email}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {user.admin_ok}
-                  </StyledTableCell> */}
-
-                  {editing === user.employee_num ? (
+                  {props.editing === user.employee_num ? (
                     <>
                       <StyledTableCell align="center">
                         <input
-                          value={tempData.employee_num}
+                          value={props.tempData?.employee_num}
                           onChange={(e) =>
-                            setTempData({
-                              ...tempData,
+                            props.setTempData({
+                              ...props.tempData,
                               employee_num: e.target.value,
                             })
                           }
@@ -141,10 +115,10 @@ export default function UsersInfoUI(props: any) {
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
-                          value={tempData.department}
+                          value={props.tempData?.department}
                           onChange={(e) =>
-                            setTempData({
-                              ...tempData,
+                            props.setTempData({
+                              ...props.tempData,
                               employee_name: e.target.value,
                             })
                           }
@@ -152,10 +126,10 @@ export default function UsersInfoUI(props: any) {
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
-                          value={tempData.rank}
+                          value={props.tempData?.rank}
                           onChange={(e) =>
-                            setTempData({
-                              ...tempData,
+                            props.setTempData({
+                              ...props.tempData,
                               employee_name: e.target.value,
                             })
                           }
@@ -163,10 +137,10 @@ export default function UsersInfoUI(props: any) {
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
-                          value={tempData.phone}
+                          value={props.tempData?.phone}
                           onChange={(e) =>
-                            setTempData({
-                              ...tempData,
+                            props.setTempData({
+                              ...props.tempData,
                               employee_name: e.target.value,
                             })
                           }
@@ -177,17 +151,19 @@ export default function UsersInfoUI(props: any) {
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
-                          value={tempData.admin_ok}
+                          value={props.tempData?.admin_ok}
                           onChange={(e) =>
-                            setTempData({
-                              ...tempData,
+                            props.setTempData({
+                              ...props.tempData,
                               employee_name: e.target.value,
                             })
                           }
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        <button onClick={() => handleEdit(user)}>수정</button>
+                        <button onClick={() => props.handleEdit(user)}>
+                          수정
+                        </button>
                       </StyledTableCell>
                     </>
                   ) : (
@@ -218,7 +194,9 @@ export default function UsersInfoUI(props: any) {
                         {user.admin_ok}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        <button onClick={() => handleEdit(user)}>수정</button>
+                        <button onClick={() => props.handleEdit(user)}>
+                          수정
+                        </button>
                       </StyledTableCell>
                     </>
                   )}
