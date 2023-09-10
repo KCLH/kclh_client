@@ -9,6 +9,17 @@ export default function UsersInfoContainer() {
   const [usersData, setUsersData] = useState(null);
   const router = useRouter();
 
+  const [editing, setEditing] = useState(null);
+  const [tempData, setTempData] = useState({
+    employee_num: "",
+    employee_name: "",
+    department: "",
+    rank: "",
+    phone: "",
+    email: "",
+    admin_ok: "",
+  });
+
   useEffect(() => {
     async function fetchUsersData() {
       const data = await getUsers();
@@ -16,6 +27,17 @@ export default function UsersInfoContainer() {
     }
     fetchUsersData();
   }, []);
+
+  const handleEdit = (user: any) => {
+    setEditing(user.employee_num);
+    setTempData(user);
+  };
+
+  const handleSave = () => {
+    // tempData를 서버로 보내거나 Redux store에 저장
+    // ...
+    setEditing(null);
+  };
 
   const onClickMoveJoin = async () => {
     try {
@@ -27,7 +49,14 @@ export default function UsersInfoContainer() {
 
   return (
     <>
-      <UsersInfoUI onClickMoveJoin={onClickMoveJoin} usersData={usersData} />
+      <UsersInfoUI
+        onClickMoveJoin={onClickMoveJoin}
+        usersData={usersData}
+        editing={editing}
+        tempData={tempData}
+        handleEdit={handleEdit}
+        handleSave={handleSave}
+      />
     </>
   );
 }
