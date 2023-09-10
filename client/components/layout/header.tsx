@@ -3,8 +3,6 @@
 import { useState, useEffect, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
-  // Button,
-  // MenuItem,
   Menu,
   Typography,
   IconButton,
@@ -12,25 +10,13 @@ import {
   Button,
   MenuItem,
 } from "@mui/material";
-import { AccountCircleRounded } from "@mui/icons-material/";
+// import { AccountCircleRounded } from "@mui/icons-material/";
 // import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 // import jwtDecode from "jsonwebtoken/decode";
 import Cookies from "universal-cookie";
 import { PAGES, USERS } from "@/components/utils/Constant";
-// import DropdownMenuButton from "../hooks/DropdownMenuButton";
-// import jwtDecode from "jsonwebtoken";
-
-// const Wrapper = styled.div`
-//   padding: 30px 30px;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   position: sticky;
-//   top: 0;
-//   z-index: 999;
-//   background-color: #f2f2f2;
 // `;
 import axios from "axios";
 import { styled } from "@mui/system";
@@ -60,22 +46,6 @@ const Nav = styled("div")({
   alignItems: "center",
 });
 
-// const Logo = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-//   /* background-color: aqua; */
-// `;
-
-// const Nav = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   width: 40%;
-//   justify-content: space-between;
-//   align-items: center;
-// `;
-
 export default function Header() {
   const { userData, mutate } = useCurrentUser();
 
@@ -88,18 +58,20 @@ export default function Header() {
   const open = Boolean(anchorEl);
   const cookies = new Cookies();
 
-  const onClickLogout = () => {
+  const onClickLogout = async () => {
     cookies.remove("name");
     cookies.remove("token");
     // cookies.remove('userid');
     cookies.remove("employee_num");
-    mutate();
-    router.push("/login");
+    setAnchorEl(null);
+    mutate(null, false); // 다음 서버 요청 발생 전까지 기존 값 유지 되기 때문에 null로 처리
+    // await router.push("/login");
+    window.location.href = "/login";
   };
 
   useEffect(() => {
     if (userData) {
-      console.log("Current user data:", userData);
+      // console.log("Current user data:", userData);
       axios.defaults.withCredentials = true; // credential:true 추가
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"; // access-control-allow-origin 추가
       axios.defaults.headers.common["SameSite"] = "none"; // samesite=none 추가
@@ -245,55 +217,57 @@ export default function Header() {
         ))} */}
       </Nav>
 
-      <IconButton
-        onClick={(event) => {
-          setAnchorEl(event.currentTarget);
-          setCurrentMenu("account");
-          // setCurrentMenu("");
-        }}
-        size="small"
-        sx={{ ml: 2 }}
-        aria-controls={
-          open && currentMenu === "account" ? "account-menu" : undefined
-          // open && currentMenu === "" ? "account-menu" : undefined
-        }
-        aria-haspopup="true"
-        aria-expanded={open && currentMenu === "account" ? "true" : undefined}
-        // aria-expanded={open && currentMenu === "" ? "true" : undefined}
-      >
-        <Avatar sx={{ width: 32, height: 32 }}>
-          <AccountCircleRounded />
-        </Avatar>
-      </IconButton>
-      <Menu
-        id="account-menu"
-        anchorEl={anchorEl}
-        open={open && currentMenu === "account"}
-        // open={open && currentMenu === ""}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        {USERS.filter((user) => user.roles.includes(userRole)) // 현재 로그인한 사용자의 역할과 일치하는 메뉴 항목만 필터링
-          .map((user, idx) => (
-            <MenuItem
-              onClick={() => {
-                handleClose();
-                {
-                  user.name !== "로그아웃"
-                    ? user.name === "내 계정"
-                      ? handleClickMyData()
-                      : router.push(user.url)
-                    : onClickLogout();
-                }
-              }}
-              key={`user-menu-item-${idx}`}
-            >
-              {user.name}
-            </MenuItem>
-          ))}
-        {/* {USERS.filter((user) => user.roles.includes(userRole)).map(
+      {/* {userData && userData.name ? ( */}
+      {userData ? (
+        <>
+          {/* <div>{userData.name}님</div> */}
+          <IconButton
+            onClick={(event) => {
+              setAnchorEl(event.currentTarget);
+              setCurrentMenu("account");
+              // setCurrentMenu("");
+            }}
+            size="small"
+            sx={{ ml: 2 }}
+            aria-controls={
+              open && currentMenu === "account" ? "account-menu" : undefined
+              // open && currentMenu === "" ? "account-menu" : undefined
+            }
+            aria-haspopup="true"
+            aria-expanded={
+              open && currentMenu === "account" ? "true" : undefined
+            }
+            // aria-expanded={open && currentMenu === "" ? "true" : undefined}
+          >
+            <div>{userData}님</div>
+            <Avatar sx={{ m: 2, width: 32, height: 32 }}>
+              {/* <AccountCircleRounded /> */}
+            </Avatar>
+          </IconButton>
+          <Menu
+            id="account-menu"
+            anchorEl={anchorEl}
+            open={open && currentMenu === "account"}
+            // open={open && currentMenu === ""}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            {USERS.filter((user) => user.roles.includes(userRole)) // 현재 로그인한 사용자의 역할과 일치하는 메뉴 항목만 필터링
+              .map((user, idx) => (
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                    router.push(user.url);
+                  }}
+                  key={`user-menu-item-${idx}`}
+                >
+                  {user.name}
+                </MenuItem>
+              ))}
+            <MenuItem onClick={onClickLogout}>로그아웃</MenuItem>
+            {/* {USERS.filter((user) => user.roles.includes(userRole)).map(
           (user, idx) => (
             <DropdownMenuButton
               buttonContent={"account"}
@@ -306,7 +280,13 @@ export default function Header() {
             />
           )
         )} */}
-      </Menu>
+          </Menu>
+        </>
+      ) : (
+        <Link href="/login" style={{ textDecoration: "none" }}>
+          로그인
+        </Link>
+      )}
     </Wrapper>
   );
 }

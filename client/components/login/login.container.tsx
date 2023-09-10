@@ -50,7 +50,7 @@ export default function LoginContainer() {
           // axios.defaults.headers.common["secure"] = true;
           console.log("response: ", response);
           console.log(
-            "🚀 ~ file: login.container.tsx:24 ~ LoginContainer ~ userData:",
+            "🚀 ~ file: login.container.tsx:24 ~ LoginContainer ~ user",
             userData
           );
           mutate();
