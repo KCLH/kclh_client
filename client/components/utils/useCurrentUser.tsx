@@ -1,22 +1,10 @@
 import fetcher from "@/components/utils/fetcher";
 import useSWR from "swr";
 
-const useCurrentUser = () => {
-  const {
-    data: userData,
-    isLoading,
-    error,
-    isValidating,
-    mutate,
-  } = useSWR("currentUser", fetcher);
+export default function useCurrentUser() {
+  const { data: userData, error, mutate } = useSWR("currentUser", fetcher);
 
-  return {
-    userData,
-    error,
-    isLoading,
-    isValidating,
-    mutate,
-  };
-};
+  const loading = !userData && !error;
 
-export default useCurrentUser;
+  return { userData, error, loading, mutate };
+}
