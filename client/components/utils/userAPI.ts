@@ -1,8 +1,23 @@
+"use client";
+
 import axios from "axios";
+import Cookies from "universal-cookie";
 import {
   API_URL,
   // headers
 } from "@/components/utils/Token";
+
+const getAuthToken = () => {
+  const cookies = new Cookies();
+  return cookies.get("token");
+};
+
+const getHeaders = () => {
+  const Token = getAuthToken();
+  return {
+    Authorization: `Bearer ${Token}`,
+  };
+};
 
 // export const signUpUser = async (email, password, nick) => {
 //   try {
@@ -96,3 +111,24 @@ import {
 //     throw new Error(error.response.data.error);
 //   }
 // };
+
+//전체 유저
+export const getUsers = async () => {
+  // const Token = getAuthToken();
+
+  // const headers = {
+  //   Authorization: `Bearer ${Token}`,
+  // };
+
+  try {
+    const response = await axios.get(`${API_URL}/employee/employeeAll`, {
+      // headers,
+      // withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    // throw new Error("포켓몬 데이터를 가져오는데 실패했습니다.");
+    // throw new Error(error.response.data.error);
+    console.error(error);
+  }
+};

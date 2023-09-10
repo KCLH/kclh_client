@@ -2,9 +2,20 @@
 
 import UsersInfoUI from "@/components/usersInfo/usersInfo.presenter";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getUsers } from "@/components/utils/userAPI";
 
 export default function UsersInfoContainer() {
+  const [usersData, setUsersData] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    async function fetchUsersData() {
+      const data = await getUsers();
+      setUsersData(data);
+    }
+    fetchUsersData();
+  }, []);
 
   const onClickMoveJoin = async () => {
     try {
@@ -16,7 +27,7 @@ export default function UsersInfoContainer() {
 
   return (
     <>
-      <UsersInfoUI onClickMoveJoin={onClickMoveJoin} />
+      <UsersInfoUI onClickMoveJoin={onClickMoveJoin} usersData={usersData} />
     </>
   );
 }
