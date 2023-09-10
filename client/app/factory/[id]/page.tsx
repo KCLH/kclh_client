@@ -1,20 +1,20 @@
-export default function FactoryPage(props: any) {
+"use client";
+
+import { useAuth } from "@/components/utils/useAuth";
+import FactoryContainer from "@/components/factory/factory.container";
+import { usePathname, useSearchParams } from "next/navigation";
+
+function FactoryPage() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const idFromPath = pathname.split("/factory/")[1];
+  console.log(idFromPath); // '/board/' 이후의 숫자 출력
+
+  const id = searchParams.get("id");
+
   return (
-    <>
-      <>{props.params.id === "1" ? "양주 1 공장" : "파주 2 공장"}</>
-      입니다.
-    </>
+    <FactoryContainer pathname={pathname} id={id} idFromPath={idFromPath} />
   );
 }
-
-// // import { useRouter } from "next/router";
-// import { useRouter } from "next/navigation";
-// import FactoryContainer from "@/components/factory/factory.container";
-
-// export default function FactoryPage() {
-//   const router = useRouter();
-//   // return <FactoryContainer query={router.query} />;
-//   return <FactoryContainer props={router.} />;
-//   // const { id, name, num } = router.query;
-//   // return <FactoryContainer id={id} name={name} num={num} />;
-// }
+export default useAuth(FactoryPage);

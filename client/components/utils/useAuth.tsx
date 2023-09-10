@@ -1,9 +1,10 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Cookies from "universal-cookie";
 
-export function withAuth(WrappedComponent: any) {
+export function useAuth(WrappedComponent: any) {
   return (props: any) => {
     const cookies = new Cookies();
     const Router = useRouter();

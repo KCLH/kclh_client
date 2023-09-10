@@ -49,8 +49,8 @@ const Nav = styled("div")({
 export default function Header() {
   const { userData, mutate } = useCurrentUser();
 
-  // const [userRole, setUserRole] = useState("admin");
-  const [userRole, setUserRole] = useState("user");
+  const [userRole, setUserRole] = useState("admin");
+  // const [userRole, setUserRole] = useState("user");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [currentMenu, setCurrentMenu] = useState("");
 
@@ -195,26 +195,6 @@ export default function Header() {
             </div>
           </>
         ))}
-        {/* {PAGES.map((page, idx) => (
-          <DropdownMenuButton
-            buttonContent={page.name}
-            menuItems={page.children}
-            currentMenu={currentMenu}
-            anchorEl={anchorEl}
-            handleClick={handleClick}
-            handleClose={handleClose}
-          />
-        ))} */}
-        {/* {PAGES.map((page, idx) => (
-          <DropdownMenuButton
-            buttonContent={page.name}
-            menuItems={page.children}
-            currentMenu={currentMenu}
-            anchorEl={anchorEl}
-            handleClick={handleClick}
-            handleClose={handleClose}
-          />
-        ))} */}
       </Nav>
 
       {/* {userData && userData.name ? ( */}
@@ -225,19 +205,16 @@ export default function Header() {
             onClick={(event) => {
               setAnchorEl(event.currentTarget);
               setCurrentMenu("account");
-              // setCurrentMenu("");
             }}
             size="small"
             sx={{ ml: 2 }}
             aria-controls={
               open && currentMenu === "account" ? "account-menu" : undefined
-              // open && currentMenu === "" ? "account-menu" : undefined
             }
             aria-haspopup="true"
             aria-expanded={
               open && currentMenu === "account" ? "true" : undefined
             }
-            // aria-expanded={open && currentMenu === "" ? "true" : undefined}
           >
             <div>{userData}님</div>
             <Avatar sx={{ m: 2, width: 32, height: 32 }}>
@@ -248,7 +225,6 @@ export default function Header() {
             id="account-menu"
             anchorEl={anchorEl}
             open={open && currentMenu === "account"}
-            // open={open && currentMenu === ""}
             onClose={handleClose}
             MenuListProps={{
               "aria-labelledby": "basic-button",
@@ -259,7 +235,8 @@ export default function Header() {
                 <MenuItem
                   onClick={() => {
                     handleClose();
-                    router.push(user.url);
+                    // router.push(user.url);
+                    window.location.href = user.url;
                   }}
                   key={`user-menu-item-${idx}`}
                 >
@@ -267,19 +244,6 @@ export default function Header() {
                 </MenuItem>
               ))}
             <MenuItem onClick={onClickLogout}>로그아웃</MenuItem>
-            {/* {USERS.filter((user) => user.roles.includes(userRole)).map(
-          (user, idx) => (
-            <DropdownMenuButton
-              buttonContent={"account"}
-              // buttonContent={""}
-              menuItems={USERS.filter((user) => user.roles.includes(userRole))}
-              currentMenu={currentMenu}
-              anchorEl={anchorEl}
-              handleClick={handleClick}
-              handleClose={handleClose}
-            />
-          )
-        )} */}
           </Menu>
         </>
       ) : (

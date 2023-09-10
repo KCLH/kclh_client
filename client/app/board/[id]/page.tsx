@@ -1,18 +1,19 @@
-export default function BoardPage(props: any) {
-  return (
-    <>
-      <>{props.params.id === "1" ? "양주 1 공장" : "파주 2 공장"}</>
-      입니다.
-    </>
-  );
+"use client";
+
+import { useAuth } from "@/components/utils/useAuth";
+import BoardContainer from "@/components/board/board.container";
+import { usePathname, useSearchParams } from "next/navigation";
+
+function BoardPage() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const idFromPath = pathname.split("/board/")[1];
+  console.log(idFromPath); // '/board/' 이후의 숫자 출력
+
+  const id = searchParams.get("id");
+
+  return <BoardContainer pathname={pathname} id={id} idFromPath={idFromPath} />;
 }
 
-// import BoardContainer from "@/components/board/board.container";
-// import { useRouter } from "next/router";
-
-// export default function BoardPage() {
-//   const router = useRouter();
-//   const { id } = router.query;
-
-//   return <BoardContainer id={id} />;
-// }
+export default useAuth(BoardPage);
