@@ -12,7 +12,7 @@ import useCurrentUser from "@/components/utils/useCurrentUser";
 
 export default function LoginContainer() {
   const cookies = new Cookies();
-  const loginEndpoint = `http://${process.env.NEXT_PUBLIC_SERVER}/employee/login`;
+  const loginEndpoint = `${process.env.NEXT_PUBLIC_SERVER}/employee/login`;
   const router = useRouter();
 
   const { register, handleSubmit, formState } = useForm<FormValue>({
@@ -49,6 +49,7 @@ export default function LoginContainer() {
           // axios.defaults.headers.common["SameSite"] = "none";
           // axios.defaults.headers.common["secure"] = true;
           console.log("response: ", response);
+          console.log("🚀 ~ file: login.container.tsx:40 ~ data:", data);
           console.log(
             "🚀 ~ file: login.container.tsx:24 ~ LoginContainer ~ user",
             userData

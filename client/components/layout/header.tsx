@@ -149,7 +149,7 @@ export default function Header() {
           </Typography>
         </Logo>
         {PAGES.map((page, idx) => (
-          <>
+          <div key={idx}>
             <Button
               sx={{
                 color: "#262626",
@@ -193,7 +193,7 @@ export default function Header() {
                 ))}
               </Menu>
             </div>
-          </>
+          </div>
         ))}
       </Nav>
 

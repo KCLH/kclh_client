@@ -17,12 +17,13 @@ export default function SignUpContainer() {
 
   const createUserEndpoint = `${process.env.NEXT_PUBLIC_SERVER}/employee/join`;
 
-  const { register, handleSubmit, formState } = useForm<FormValue>({
+  const { register, handleSubmit, formState, control } = useForm<FormValue>({
     resolver: yupResolver(schema),
     mode: "onChange",
   });
 
   const onClickSignUp = async (data: FormValue) => {
+    console.log("data:", data);
     try {
       await axios.post(createUserEndpoint, data);
       router.push("/factory/1");
@@ -38,6 +39,14 @@ export default function SignUpContainer() {
 
   return (
     <>
+      <SignUpUI
+        register={register}
+        handleSubmit={handleSubmit}
+        formState={formState}
+        control={control}
+        onClickSignUp={onClickSignUp}
+      />
+
       <Snackbar
         open={openErrorSnackbar}
         autoHideDuration={6000}
@@ -47,13 +56,6 @@ export default function SignUpContainer() {
           {errorMessage}
         </Alert>
       </Snackbar>
-
-      <SignUpUI
-        register={register}
-        handleSubmit={handleSubmit}
-        formState={formState}
-        onClickSignUp={onClickSignUp}
-      />
     </>
   );
 }

@@ -1,6 +1,14 @@
 "use client";
 
-import { TextField, Button, Box } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import styled from "@emotion/styled";
 import {
   DEPARTMENTS,
@@ -9,7 +17,8 @@ import {
   ROLES,
 } from "@/components/utils/Constant";
 import { SignUpUIProps } from "@/components/utils/SignUp";
-import CustomSelect from "@/components/utils/CustomSelect";
+import { Controller } from "react-hook-form";
+// import CustomSelect from "@/components/utils/CustomSelect";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -54,39 +63,180 @@ export default function SignUpUI(props: SignUpUIProps) {
         <TextField
           {...props.register("employee_name")}
           sx={{ m: 1.5, minWidth: 120 }}
-          id="filled-basic"
+          required
+          fullWidth
+          id="filled-required"
           label="이름"
-          variant="filled"
+          name="employee_name"
+          autoComplete="employee_name"
+          autoFocus
         />
 
         <TextField
           {...props.register("phone")}
           sx={{ m: 1.5, minWidth: 120 }}
-          id="filled-basic"
+          required
+          fullWidth
+          id="filled-required"
           label="연락처"
-          variant="filled"
+          name="phone"
+          autoComplete="phone"
+          autoFocus
         />
+        {/* 부서 */}
+        <FormControl sx={{ m: 1.5, minWidth: 120 }} fullWidth variant="filled">
+          <InputLabel id="departments-select-label">부서 *</InputLabel>
 
-        <CustomSelect
-          label="부서"
-          options={DEPARTMENTS}
-          register={props.register}
-        />
-
-        <CustomSelect label="직급" options={RANKS} register={props.register} />
-
-        <CustomSelect
-          label="공장"
-          options={FACTORY}
-          register={props.register}
-        />
-
-        <CustomSelect label="권한" options={ROLES} register={props.register} />
+          {/* <Select
+            {...props.register("department")}
+            labelId="departments-select-label"
+            id="departments-select"
+          >
+            <MenuItem value="">
+              <em>선택</em>
+            </MenuItem>
+            {DEPARTMENTS.map((department, idx) => (
+              <div key={idx}>
+                <MenuItem key={idx} value={department}>{department}</MenuItem>
+              </div>
+            ))}
+          </Select> */}
+          <Controller
+            name="department"
+            control={props.control}
+            defaultValue=""
+            render={({ field }) => (
+              <Select {...field}>
+                <MenuItem value="">
+                  <em>선택</em>
+                </MenuItem>
+                {DEPARTMENTS.map((department, idx) => (
+                  // <div key={idx}>
+                  <MenuItem key={idx} value={department}>
+                    {department}
+                  </MenuItem>
+                  // </div>
+                ))}
+              </Select>
+            )}
+          />
+        </FormControl>
+        {/* 직급 */}
+        <FormControl sx={{ m: 1.5, minWidth: 120 }} fullWidth variant="filled">
+          <InputLabel id="departments-select-label">직급 *</InputLabel>
+          {/* <Select
+            {...props.register("rank")}
+            labelId="ranks-select-label"
+            id="ranks-select"
+          >
+            <MenuItem value="">
+              <em>선택</em>
+            </MenuItem>
+            {RANKS.map((rank, idx) => (
+              <div key={idx}>
+                <MenuItem key={idx} value={rank}>{rank}</MenuItem>
+              </div>
+            ))}
+          </Select> */}
+          <Controller
+            name="rank"
+            control={props.control}
+            defaultValue=""
+            render={({ field }) => (
+              <Select {...field}>
+                <MenuItem value="">
+                  <em>선택</em>
+                </MenuItem>
+                {RANKS.map((rank, idx) => (
+                  // <div key={idx}>
+                  <MenuItem key={idx} value={rank}>
+                    {rank}
+                  </MenuItem>
+                  // </div>
+                ))}
+              </Select>
+            )}
+          />
+        </FormControl>
+        {/* 공장 */}
+        <FormControl sx={{ m: 1.5, minWidth: 120 }} fullWidth variant="filled">
+          <InputLabel id="departments-select-label">공장 *</InputLabel>
+          {/* <Select
+            {...props.register("factory")}
+            labelId="factory-select-label"
+            id="factory-select"
+          >
+            <MenuItem value="">
+              <em>선택</em>
+            </MenuItem>
+            {FACTORY.map((fac, idx) => (
+              <div key={idx}>
+                <MenuItem key={idx} value={fac}>{fac}</MenuItem>
+              </div>
+            ))}
+          </Select> */}
+          <Controller
+            name="factory"
+            control={props.control}
+            defaultValue=""
+            render={({ field }) => (
+              <Select {...field}>
+                <MenuItem value="">
+                  <em>선택</em>
+                </MenuItem>
+                {FACTORY.map((fac, idx) => (
+                  // <div key={idx}>
+                  <MenuItem key={idx} value={fac}>
+                    {fac}
+                  </MenuItem>
+                  // </div>
+                ))}
+              </Select>
+            )}
+          />
+        </FormControl>
+        {/* 권한 */}
+        <FormControl sx={{ m: 1.5, minWidth: 120 }} fullWidth variant="filled">
+          <InputLabel id="departments-select-label">권한 *</InputLabel>
+          {/* <Select
+            {...props.register("admin_ok")}
+            labelId="roles-select-label"
+            id="roles-select"
+          >
+            <MenuItem value="">
+              <em>선택</em>
+            </MenuItem>
+            {ROLES.map((role, idx) => (
+              <div key={idx}>
+                <MenuItem key={idx} value={role}>{role}</MenuItem>
+              </div>
+            ))}
+          </Select> */}
+          <Controller
+            name="admin_ok"
+            control={props.control}
+            defaultValue=""
+            render={({ field }) => (
+              <Select {...field}>
+                <MenuItem value="">
+                  <em>선택</em>
+                </MenuItem>
+                {ROLES.map((role, idx) => (
+                  // <div key={idx}>
+                  <MenuItem key={idx} value={role}>
+                    {role}
+                  </MenuItem>
+                  // </div>
+                ))}
+              </Select>
+            )}
+          />
+        </FormControl>
 
         <BtnWrapper>
           <Button
-            type="submit"
             sx={{ minWidth: 100, minHeight: 40 }}
+            type="submit"
             variant="contained"
           >
             등록

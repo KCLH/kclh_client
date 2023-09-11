@@ -58,10 +58,12 @@ export default function DropdownMenuButton({
           open={open && currentMenu === id}
           onClose={() => handleClose()}
         >
-          {menuItems.map((item) => (
-            <MenuItem key={item.name} onClick={() => handleClose(item.url)}>
-              {item.name}
-            </MenuItem>
+          {menuItems.map((item, idx) => (
+            <div key={idx}>
+              <MenuItem key={item.name} onClick={() => handleClose(item.url)}>
+                {item.name}
+              </MenuItem>
+            </div>
           ))}
         </Menu>
       </div>
