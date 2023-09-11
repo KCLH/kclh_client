@@ -7,6 +7,13 @@ export default function CustomSelect({ label, options, register }: any) {
   const handleChange = (event: any) => {
     setValue(event.target.value);
   };
+  <Select
+    labelId="demo-simple-select-required-label"
+    id="demo-simple-select-required"
+    value={age}
+    label="Age *"
+    onChange={handleChange}
+  ></Select>;
 
   return (
     <FormControl fullWidth variant="filled" sx={{ m: 1.5, minWidth: 120 }}>

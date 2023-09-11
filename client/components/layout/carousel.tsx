@@ -20,6 +20,13 @@ const CarouselWrapper = styled(Carousel)`
   object-fit: cover;
 `;
 
+const CarouselPaper = styled(Paper)`
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; // for an aspect ratio of 16:9
+`;
+
 const MyCarousel: React.FC<CarouselProps> = ({ images }) => {
   const [activeStep, setActiveStep] = useState(0);
 
@@ -51,9 +58,14 @@ const MyCarousel: React.FC<CarouselProps> = ({ images }) => {
       animation="fade" // 애니메이션 유형 설정 (slide, fade 등)
     >
       {images.map((image, index) => (
-        <Paper key={index}>
-          <Image src={image.src} alt={image.alt} fill />
-        </Paper>
+        <CarouselPaper key={index}>
+          <Image
+            src={image.src}
+            alt={image.alt}
+            layout="fill"
+            objectFit="cover"
+          />
+        </CarouselPaper>
       ))}
     </CarouselWrapper>
   );

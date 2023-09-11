@@ -15,6 +15,7 @@ export default function UsersInfoContainer() {
     employee_name: "",
     department: "",
     rank: "",
+    factory: "",
     phone: "",
     email: "",
     admin_ok: "",
@@ -33,9 +34,17 @@ export default function UsersInfoContainer() {
     setTempData(user);
   };
 
+  const handleCancel = () => {
+    setEditing(null);
+  };
+
   const handleSave = () => {
     // tempData를 서버로 보내거나 Redux store에 저장
     // ...
+    setEditing(null);
+  };
+
+  const handleDelete = () => {
     setEditing(null);
   };
 
@@ -53,9 +62,12 @@ export default function UsersInfoContainer() {
         onClickMoveJoin={onClickMoveJoin}
         usersData={usersData}
         editing={editing}
+        isEditing={editing !== null} // 'isEditing' prop은 'editing'이 null이 아니라면 true, null이라면 false.
         tempData={tempData}
         handleEdit={handleEdit}
+        handleCancel={handleCancel}
         handleSave={handleSave}
+        handleDelete={handleDelete}
       />
     </>
   );

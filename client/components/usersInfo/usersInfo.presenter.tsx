@@ -9,8 +9,10 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Stack,
+  IconButton,
 } from "@mui/material";
-import { useState } from "react";
+import { Delete } from "@mui/icons-material";
 import { USERS_TABLE } from "@/components/utils/Constant";
 
 const Wrapper = styled("div")({
@@ -78,7 +80,11 @@ export default function UsersInfoUI(props: any) {
         }}
       >
         <h1>사원 전체 정보 관리 페이지</h1>
-        <Button variant="contained" onClick={props.onClickMoveJoin}>
+        <Button
+          variant="contained"
+          // color="secondary"
+          onClick={props.onClickMoveJoin}
+        >
           사원 등록
         </Button>
       </div>
@@ -86,8 +92,10 @@ export default function UsersInfoUI(props: any) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {USERS_TABLE.map((table) => (
-                <StyledTableCell align="center">{table}</StyledTableCell>
+              {USERS_TABLE.map((table, idx) => (
+                <StyledTableCell key={idx} align="center">
+                  {table}
+                </StyledTableCell>
               ))}
               <StyledTableCell align="center">수정</StyledTableCell>
             </TableRow>
@@ -95,22 +103,24 @@ export default function UsersInfoUI(props: any) {
 
           {props.usersData && (
             <TableBody>
-              {props.usersData.map((user: any) => (
-                <StyledTableRow key={user.employee_num}>
-                  {props.editing === user.employee_num ? (
+              {props.usersData.map((user: any, idx: any) => (
+                // <StyledTableRow key={user.employee_num}>
+                <StyledTableRow key={idx}>
+                  {props.isEditing && props.editing === user.employee_num ? (
                     <>
                       <StyledTableCell align="center">
-                        <input
-                          value={props.tempData?.employee_num}
+                        {user.employee_num}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {/* <input
+                          value={props.tempData?.employee_name}
                           onChange={(e) =>
                             props.setTempData({
                               ...props.tempData,
-                              employee_num: e.target.value,
+                              employee_name: e.target.value,
                             })
                           }
-                        />
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
+                        /> */}
                         {user.employee_name}
                       </StyledTableCell>
                       <StyledTableCell align="center">
@@ -119,7 +129,7 @@ export default function UsersInfoUI(props: any) {
                           onChange={(e) =>
                             props.setTempData({
                               ...props.tempData,
-                              employee_name: e.target.value,
+                              department: e.target.value,
                             })
                           }
                         />
@@ -130,21 +140,33 @@ export default function UsersInfoUI(props: any) {
                           onChange={(e) =>
                             props.setTempData({
                               ...props.tempData,
-                              employee_name: e.target.value,
+                              rank: e.target.value,
                             })
                           }
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
+                          value={props.tempData?.factory}
+                          onChange={(e) =>
+                            props.setTempData({
+                              ...props.tempData,
+                              factory: e.target.value,
+                            })
+                          }
+                        />
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {/* <input
                           value={props.tempData?.phone}
                           onChange={(e) =>
                             props.setTempData({
                               ...props.tempData,
-                              employee_name: e.target.value,
+                              phone: e.target.value,
                             })
                           }
-                        />
+                        /> */}
+                        {user.phone}
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         {user.email}
@@ -155,15 +177,32 @@ export default function UsersInfoUI(props: any) {
                           onChange={(e) =>
                             props.setTempData({
                               ...props.tempData,
-                              employee_name: e.target.value,
+                              admin_ok: e.target.value,
                             })
                           }
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        <button onClick={() => props.handleEdit(user)}>
-                          수정
-                        </button>
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            onClick={props.handleCancel}
+                          >
+                            취소
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="success"
+                            onClick={() => props.handleEdit(user)}
+                          >
+                            저장
+                          </Button>
+                          {/* <button onClick={props.handleDelete}>삭제</button> */}
+                          <IconButton aria-label="delete" size="large">
+                            <Delete fontSize="inherit" />
+                          </IconButton>
+                        </Stack>
                       </StyledTableCell>
                     </>
                   ) : (
@@ -185,6 +224,9 @@ export default function UsersInfoUI(props: any) {
                         {user.rank}
                       </StyledTableCell>
                       <StyledTableCell align="center">
+                        {user.factory}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
                         {user.phone}
                       </StyledTableCell>
                       <StyledTableCell align="center">
@@ -194,9 +236,13 @@ export default function UsersInfoUI(props: any) {
                         {user.admin_ok}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        <button onClick={() => props.handleEdit(user)}>
+                        <Button
+                          variant="outlined"
+                          // color="secondary"
+                          onClick={() => props.handleEdit(user)}
+                        >
                           수정
-                        </button>
+                        </Button>
                       </StyledTableCell>
                     </>
                   )}
