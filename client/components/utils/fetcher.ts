@@ -8,11 +8,17 @@ export default function fetcher() {
   // console.log("Current employee number:", cookies.get("employee_num"));
 
   if (
+    cookies.get("name") &&
+    cookies.get("role") &&
     cookies.get("token") &&
-    // cookies.get("name") &&
     cookies.get("employee_num")
   ) {
-    return cookies.get("employee_num");
+    return {
+      name: cookies.get("name"),
+      role: cookies.get("role"),
+      token: cookies.get("token"),
+      employeeNum: cookies.get("employee_num"),
+    };
   }
   // } catch (error) {
   //   console.error("Error reading cookie:", error);

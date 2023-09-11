@@ -17,7 +17,12 @@ export default function SignUpContainer() {
 
   const createUserEndpoint = `${process.env.NEXT_PUBLIC_SERVER}/employee/join`;
 
-  const { register, handleSubmit, formState, control } = useForm<FormValue>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<FormValue>({
     resolver: yupResolver(schema),
     mode: "onChange",
   });
@@ -42,7 +47,7 @@ export default function SignUpContainer() {
       <SignUpUI
         register={register}
         handleSubmit={handleSubmit}
-        formState={formState}
+        errors={errors}
         control={control}
         onClickSignUp={onClickSignUp}
       />

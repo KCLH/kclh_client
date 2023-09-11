@@ -15,7 +15,11 @@ export default function LoginContainer() {
   const loginEndpoint = `${process.env.NEXT_PUBLIC_SERVER}/employee/login`;
   const router = useRouter();
 
-  const { register, handleSubmit, formState } = useForm<FormValue>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValue>({
     resolver: yupResolver(schema),
     mode: "onChange",
   });
@@ -31,16 +35,19 @@ export default function LoginContainer() {
         if (response.status === 200) {
           // cookies.set('token', response.data.token, { expires: 1 });
           const Token = response.data.token;
+
           // cookies.set('token', Token, { expires: 1 });
           const expires = new Date();
           expires.setDate(expires.getDate() + 1);
           cookies.set("token", Token, { expires });
-          // cookies.set("name", response.data.name, { expires });
-          cookies.set("name", response.data.employee_name, { expires });
-          // cookies.set("userid", data.userid.toString(), { expires });
+
           cookies.set("employee_num", data.employee_num.toString(), {
             expires,
           });
+          cookies.set("name", response.data.name?.employee_name, { expires });
+          cookies.set("role", response.data.name?.admin_ok, { expires });
+          // cookies.set("name", response.data.employee_name, { expires });
+          // cookies.set("role", response.data.admin_ok, { expires });
 
           // axios.defaults.headers.common["token"] = response.data.token;
           axios.defaults.headers.common["token"] = Token;
@@ -48,12 +55,7 @@ export default function LoginContainer() {
           // axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
           // axios.defaults.headers.common["SameSite"] = "none";
           // axios.defaults.headers.common["secure"] = true;
-          console.log("response: ", response);
-          console.log("🚀 ~ file: login.container.tsx:40 ~ data:", data);
-          console.log(
-            "🚀 ~ file: login.container.tsx:24 ~ LoginContainer ~ user",
-            userData
-          );
+          console.log("response.data.name: ", response.data.name);
           mutate();
           router.push("/factory/1");
         } else {
@@ -79,7 +81,7 @@ export default function LoginContainer() {
     <LoginUI
       register={register}
       handleSubmit={handleSubmit}
-      formState={formState}
+      errors={errors}
       onClickLogin={onClickLogin}
     />
   );

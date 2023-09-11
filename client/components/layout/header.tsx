@@ -51,6 +51,9 @@ export default function Header() {
 
   const [userRole, setUserRole] = useState("admin");
   // const [userRole, setUserRole] = useState("user");
+
+  // userRole 상태 초기값 설정
+  // const [userRole, setUserRole] = useState(cookies.get("role"));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [currentMenu, setCurrentMenu] = useState("");
 
@@ -61,7 +64,7 @@ export default function Header() {
   const onClickLogout = async () => {
     cookies.remove("name");
     cookies.remove("token");
-    // cookies.remove('userid');
+    cookies.remove("role");
     cookies.remove("employee_num");
     setAnchorEl(null);
     mutate(null, false); // 다음 서버 요청 발생 전까지 기존 값 유지 되기 때문에 null로 처리
@@ -71,11 +74,13 @@ export default function Header() {
 
   useEffect(() => {
     if (userData) {
-      // console.log("Current user data:", userData);
+      console.log("Current user data:", userData);
       axios.defaults.withCredentials = true; // credential:true 추가
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"; // access-control-allow-origin 추가
       axios.defaults.headers.common["SameSite"] = "none"; // samesite=none 추가
       axios.defaults.headers.common["secure"] = true; // secure=true 추가
+
+      setUserRole(cookies.get("role")); // 쿠키에서 role 값 가져와서 userRole 상태 업데이트
       return;
     }
   }, [userData]);
@@ -216,7 +221,7 @@ export default function Header() {
               open && currentMenu === "account" ? "true" : undefined
             }
           >
-            <div>{userData}님</div>
+            <div>{userData.name}님</div>
             <Avatar sx={{ m: 2, width: 32, height: 32 }}>
               {/* <AccountCircleRounded /> */}
             </Avatar>

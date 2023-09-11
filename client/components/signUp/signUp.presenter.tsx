@@ -8,6 +8,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormHelperText,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import {
@@ -46,7 +47,8 @@ export default function SignUpUI(props: SignUpUIProps) {
         onSubmit={props.handleSubmit(props.onClickSignUp)}
         sx={{
           "& > :not(style)": { width: "25ch" },
-          p: 3,
+          pt: 5,
+          pb: 5,
           display: "flex",
           flexDirection: "column",
           border: "2px solid gray",
@@ -62,7 +64,11 @@ export default function SignUpUI(props: SignUpUIProps) {
       >
         <TextField
           {...props.register("employee_name")}
-          sx={{ m: 1.5, minWidth: 120 }}
+          sx={
+            !!props.errors.employee_name
+              ? { minWidth: 120 }
+              : { mb: 2.5, minWidth: 120 }
+          }
           required
           fullWidth
           id="filled-required"
@@ -70,11 +76,16 @@ export default function SignUpUI(props: SignUpUIProps) {
           name="employee_name"
           autoComplete="employee_name"
           autoFocus
+          helperText={props.errors.employee_name?.message}
+          error={!!props.errors.employee_name}
         />
-
         <TextField
           {...props.register("phone")}
-          sx={{ m: 1.5, minWidth: 120 }}
+          sx={
+            !!props.errors.phone
+              ? { minWidth: 120 }
+              : { mb: 2.5, minWidth: 120 }
+          }
           required
           fullWidth
           id="filled-required"
@@ -82,9 +93,12 @@ export default function SignUpUI(props: SignUpUIProps) {
           name="phone"
           autoComplete="phone"
           autoFocus
+          helperText={props.errors.phone?.message}
+          error={!!props.errors.phone}
         />
+
         {/* 부서 */}
-        <FormControl sx={{ m: 1.5, minWidth: 120 }} fullWidth variant="filled">
+        <FormControl sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">부서 *</InputLabel>
 
           {/* <Select
@@ -106,7 +120,7 @@ export default function SignUpUI(props: SignUpUIProps) {
             control={props.control}
             defaultValue=""
             render={({ field }) => (
-              <Select {...field}>
+              <Select {...field} error={!!props.errors.department}>
                 <MenuItem value="">
                   <em>선택</em>
                 </MenuItem>
@@ -120,9 +134,16 @@ export default function SignUpUI(props: SignUpUIProps) {
               </Select>
             )}
           />
+          {props.errors.department ? (
+            <FormHelperText error>
+              {props.errors.department.message}
+            </FormHelperText>
+          ) : (
+            <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
+          )}
         </FormControl>
         {/* 직급 */}
-        <FormControl sx={{ m: 1.5, minWidth: 120 }} fullWidth variant="filled">
+        <FormControl sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">직급 *</InputLabel>
           {/* <Select
             {...props.register("rank")}
@@ -143,7 +164,7 @@ export default function SignUpUI(props: SignUpUIProps) {
             control={props.control}
             defaultValue=""
             render={({ field }) => (
-              <Select {...field}>
+              <Select {...field} error={!!props.errors.rank}>
                 <MenuItem value="">
                   <em>선택</em>
                 </MenuItem>
@@ -157,9 +178,14 @@ export default function SignUpUI(props: SignUpUIProps) {
               </Select>
             )}
           />
+          {props.errors.rank ? (
+            <FormHelperText error>{props.errors.rank.message}</FormHelperText>
+          ) : (
+            <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
+          )}
         </FormControl>
         {/* 공장 */}
-        <FormControl sx={{ m: 1.5, minWidth: 120 }} fullWidth variant="filled">
+        <FormControl sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">공장 *</InputLabel>
           {/* <Select
             {...props.register("factory")}
@@ -180,7 +206,7 @@ export default function SignUpUI(props: SignUpUIProps) {
             control={props.control}
             defaultValue=""
             render={({ field }) => (
-              <Select {...field}>
+              <Select {...field} error={!!props.errors.factory}>
                 <MenuItem value="">
                   <em>선택</em>
                 </MenuItem>
@@ -194,9 +220,16 @@ export default function SignUpUI(props: SignUpUIProps) {
               </Select>
             )}
           />
+          {props.errors.factory ? (
+            <FormHelperText error>
+              {props.errors.factory.message}
+            </FormHelperText>
+          ) : (
+            <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
+          )}
         </FormControl>
         {/* 권한 */}
-        <FormControl sx={{ m: 1.5, minWidth: 120 }} fullWidth variant="filled">
+        <FormControl sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">권한 *</InputLabel>
           {/* <Select
             {...props.register("admin_ok")}
@@ -217,7 +250,7 @@ export default function SignUpUI(props: SignUpUIProps) {
             control={props.control}
             defaultValue=""
             render={({ field }) => (
-              <Select {...field}>
+              <Select {...field} error={!!props.errors.admin_ok}>
                 <MenuItem value="">
                   <em>선택</em>
                 </MenuItem>
@@ -231,6 +264,13 @@ export default function SignUpUI(props: SignUpUIProps) {
               </Select>
             )}
           />
+          {props.errors.admin_ok ? (
+            <FormHelperText error>
+              {props.errors.admin_ok.message}
+            </FormHelperText>
+          ) : (
+            <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
+          )}
         </FormControl>
 
         <BtnWrapper>

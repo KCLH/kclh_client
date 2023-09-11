@@ -1,6 +1,6 @@
 import {
   Control,
-  FormState,
+  FieldErrors,
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
@@ -27,7 +27,7 @@ export const schema = yup.object({
 export interface SignUpUIProps {
   register: UseFormRegister<FormValue>;
   handleSubmit: UseFormHandleSubmit<FormValue>;
-  formState: FormState<FormValue>;
-  control: Control<FormValue>; // 추가된 부분
+  errors: FieldErrors<FormValue>;
+  control: Control<FormValue>;
   onClickSignUp: (data: FormValue) => Promise<void>; // onClickSignUp의 타입은 실제 함수에 따라서 변경.
 }
