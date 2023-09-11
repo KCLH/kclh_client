@@ -36,6 +36,8 @@ export default function LoginUI(props: any) {
           autoComplete="employee_num"
           autoFocus
           // variant="filled"
+          helperText={props.errors.employee_num?.message}
+          error={!!props.errors.employee_num}
         />
         <TextField
           {...props.register("user_pwd")}
@@ -48,6 +50,8 @@ export default function LoginUI(props: any) {
           id="filled-password-input"
           autoComplete="current-password"
           // variant="filled"
+          helperText={props.errors.user_pwd?.message}
+          error={!!props.errors.user_pwd}
         />
 
         <Button

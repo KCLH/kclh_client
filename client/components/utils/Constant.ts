@@ -31,8 +31,8 @@ export const PAGES = [
 ];
 
 export const USERS = [
-  { name: "내 계정", url: "/user/myaccount", roles: ["user"] },
-  { name: "사원 관리", url: "/admin/accounts", roles: ["admin"] },
+  { name: "내 계정", url: "/user/myaccount", roles: ["사원"] },
+  { name: "사원 관리", url: "/admin/accounts", roles: ["관리자"] },
 ];
 
 export const CAROUSEL_IMG = [
