@@ -14,11 +14,11 @@ import Image from "next/image";
 import Link from "next/link";
 // import jwtDecode from "jsonwebtoken/decode";
 import Cookies from "universal-cookie";
-import { PAGES, USERS } from "@/components/utils/Constant";
+import { PAGES, USERS } from "@/components/utils/constants";
 // `;
 import axios from "axios";
 import { styled } from "@mui/system";
-import useCurrentUser from "@/components/utils/useCurrentUser";
+import useCurrentUser from "@/components/hooks/useCurrentUser";
 
 const Wrapper = styled("div")({
   padding: "30px 30px",

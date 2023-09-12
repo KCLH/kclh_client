@@ -8,7 +8,7 @@ import LoginUI from "@/components/login/login.presenter";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormValue, schema } from "@/components/utils/Login";
 import { useCallback, useEffect } from "react";
-import useCurrentUser from "@/components/utils/useCurrentUser";
+import useCurrentUser from "@/components/hooks/useCurrentUser";
 
 export default function LoginContainer() {
   const cookies = new Cookies();
@@ -37,22 +37,25 @@ export default function LoginContainer() {
           const expires = new Date();
           expires.setDate(expires.getDate() + 1);
           cookies.set("token", Token, { expires });
-
           cookies.set("employee_num", data.employee_num.toString(), {
             expires,
           });
           cookies.set("name", response.data.name?.employee_name, { expires });
+          cookies.set("factory", response.data.name?.factory, { expires });
           cookies.set("role", response.data.name?.admin_ok, { expires });
+          // cookies.set("name", response.data.employee_name, { expires });
+          // cookies.set("factory", response.data.factory, { expires });
+          // cookies.set("role", response.data.admin_ok, { expires });
 
           axios.defaults.headers.common["token"] = Token;
           axios.defaults.withCredentials = true;
 
-          console.log("response.data.name: ", response.data.name);
+          console.log("response: ", response);
           mutate();
           router.push("/factory/1");
         } else {
           // 에러 메시지 출력
-          console.error("ID와 비밀번호를 확인해주세요.");
+          console.error(error);
         }
       } catch (error) {
         if (error instanceof Error) {

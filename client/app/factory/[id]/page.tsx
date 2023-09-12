@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/components/utils/useAuth";
+import { useAuth } from "@/components/hooks/useAuth";
 import FactoryContainer from "@/components/factory/factory.container";
 import { usePathname, useSearchParams } from "next/navigation";
 

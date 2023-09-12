@@ -16,7 +16,7 @@ import {
   RANKS,
   FACTORY,
   ROLES,
-} from "@/components/utils/Constant";
+} from "@/components/utils/constants";
 import { SignUpUIProps } from "@/components/utils/SignUp";
 import { Controller } from "react-hook-form";
 
@@ -66,10 +66,11 @@ export default function SignUpUI(props: SignUpUIProps) {
           sx={
             !!props.errors.employee_name
               ? { minWidth: 120 }
-              : { mb: 2.5, minWidth: 120 }
+              : { pb: 2, minWidth: 120 }
           }
           required
           fullWidth
+          variant="standard"
           id="filled-required"
           label="이름"
           name="employee_name"
@@ -81,12 +82,11 @@ export default function SignUpUI(props: SignUpUIProps) {
         <TextField
           {...props.register("phone")}
           sx={
-            !!props.errors.phone
-              ? { minWidth: 120 }
-              : { mb: 2.5, minWidth: 120 }
+            !!props.errors.phone ? { minWidth: 120 } : { pb: 2, minWidth: 120 }
           }
           required
           fullWidth
+          variant="standard"
           id="filled-required"
           label="연락처"
           name="phone"
@@ -97,7 +97,12 @@ export default function SignUpUI(props: SignUpUIProps) {
         />
 
         {/* 부서 */}
-        <FormControl sx={{ minWidth: 120 }} fullWidth>
+        <FormControl
+          variant="standard"
+          // variant="outlined"
+          sx={{ minWidth: 120 }}
+          fullWidth
+        >
           <InputLabel id="departments-select-label">부서 *</InputLabel>
           <Controller
             name="department"
@@ -121,12 +126,12 @@ export default function SignUpUI(props: SignUpUIProps) {
               {props.errors.department.message}
             </FormHelperText>
           ) : (
-            <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
+            <FormHelperText sx={{ mb: 2 }}></FormHelperText>
           )}
         </FormControl>
 
         {/* 직급 */}
-        <FormControl sx={{ minWidth: 120 }} fullWidth>
+        <FormControl variant="standard" sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">직급 *</InputLabel>
           <Controller
             name="rank"
@@ -148,12 +153,12 @@ export default function SignUpUI(props: SignUpUIProps) {
           {props.errors.rank ? (
             <FormHelperText error>{props.errors.rank.message}</FormHelperText>
           ) : (
-            <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
+            <FormHelperText sx={{ mb: 2 }}></FormHelperText>
           )}
         </FormControl>
 
         {/* 공장 */}
-        <FormControl sx={{ minWidth: 120 }} fullWidth>
+        <FormControl variant="standard" sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">공장 *</InputLabel>
           <Controller
             name="factory"
@@ -177,12 +182,12 @@ export default function SignUpUI(props: SignUpUIProps) {
               {props.errors.factory.message}
             </FormHelperText>
           ) : (
-            <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
+            <FormHelperText sx={{ mb: 2 }}></FormHelperText>
           )}
         </FormControl>
 
         {/* 권한 */}
-        <FormControl sx={{ minWidth: 120 }} fullWidth>
+        <FormControl variant="standard" sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">권한 *</InputLabel>
           <Controller
             name="admin_ok"
@@ -206,7 +211,7 @@ export default function SignUpUI(props: SignUpUIProps) {
               {props.errors.admin_ok.message}
             </FormHelperText>
           ) : (
-            <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
+            <FormHelperText sx={{ mb: 2 }}></FormHelperText>
           )}
         </FormControl>
 
