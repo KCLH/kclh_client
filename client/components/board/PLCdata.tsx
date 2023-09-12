@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import * as mqtt from "mqtt";
 
-function App() {
-  const [tableData, setTableData] = useState([]);
+interface TableDataItem {
+  tagId: string;
+  name: string;
+  value: number;
+}
+
+export default function PLCdata() {
+  const [tableData, setTableData] = useState<TableDataItem[]>([]);
 
   useEffect(() => {
     const brokerUrl = "mqtt://192.168.0.106:8884"; // MQTT 브로커 주소
@@ -21,7 +26,9 @@ function App() {
     client.on("message", (topic, message) => {
       // 메시지 수신 시 실행되는 콜백 함수
       try {
-        const parsedData = JSON.parse(message.toString());
+        const parsedData: { Wrapper: TableDataItem[] } = JSON.parse(
+          message.toString()
+        );
         console.log(parsedData);
         setTableData(parsedData.Wrapper);
       } catch (error) {
@@ -64,5 +71,3 @@ function App() {
     </>
   );
 }
-
-export default App;

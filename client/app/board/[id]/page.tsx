@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/components/utils/useAuth";
+import { useAuth } from "@/components/hooks/useAuth";
 import BoardContainer from "@/components/board/board.container";
 import { usePathname, useSearchParams } from "next/navigation";
 
@@ -13,7 +13,12 @@ function BoardPage() {
 
   const id = searchParams.get("id");
 
-  return <BoardContainer pathname={pathname} id={id} idFromPath={idFromPath} />;
+  return (
+    <>
+      <BoardContainer pathname={pathname} id={id} idFromPath={idFromPath} />
+    </>
+  );
 }
 
-export default useAuth(BoardPage);
+// export default useAuth(BoardPage);
+export default BoardPage;

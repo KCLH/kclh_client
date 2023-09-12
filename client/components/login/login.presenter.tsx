@@ -2,7 +2,7 @@
 import { Box, Button, TextField } from "@mui/material";
 import MyCarousel from "@/components/layout/carousel";
 import * as s from "@/components/login/login.styles";
-import { CAROUSEL_IMG } from "@/components/utils/Constant";
+import { CAROUSEL_IMG } from "@/components/utils/constants";
 
 export default function LoginUI(props: any) {
   return (

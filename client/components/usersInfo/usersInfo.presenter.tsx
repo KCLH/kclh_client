@@ -13,7 +13,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { USERS_TABLE } from "@/components/utils/Constant";
+import { USERS_TABLE } from "@/components/utils/constants";
 
 const Wrapper = styled("div")({
   display: "flex",
