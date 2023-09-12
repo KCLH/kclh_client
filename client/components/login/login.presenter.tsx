@@ -35,7 +35,6 @@ export default function LoginUI(props: any) {
           name="employee_num"
           autoComplete="employee_num"
           autoFocus
-          // variant="filled"
           helperText={props.errors.employee_num?.message}
           error={!!props.errors.employee_num}
         />
@@ -49,7 +48,6 @@ export default function LoginUI(props: any) {
           type="password"
           id="filled-password-input"
           autoComplete="current-password"
-          // variant="filled"
           helperText={props.errors.user_pwd?.message}
           error={!!props.errors.user_pwd}
         />

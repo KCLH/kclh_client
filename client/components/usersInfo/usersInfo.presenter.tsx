@@ -24,28 +24,6 @@ const Wrapper = styled("div")({
 });
 
 export default function UsersInfoUI(props: any) {
-  // const [editing, setEditing] = useState(null);
-  // const [tempData, setTempData] = useState({
-  //   employee_num: "",
-  //   employee_name: "",
-  //   department: "",
-  //   rank: "",
-  //   phone: "",
-  //   email: "",
-  //   admin_ok: "",
-  // });
-
-  // const handleEdit = (user: any) => {
-  //   setEditing(user.employee_num);
-  //   setTempData(user);
-  // };
-
-  // const handleSave = () => {
-  //   // tempData를 서버로 보내거나 Redux store에 저장
-  //   // ...
-  //   setEditing(null);
-  // };
-
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -60,7 +38,6 @@ export default function UsersInfoUI(props: any) {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
-    // hide last border
     "&:last-child td, &:last-child th": {
       border: 0,
     },
@@ -80,11 +57,7 @@ export default function UsersInfoUI(props: any) {
         }}
       >
         <h1>사원 전체 정보 관리 페이지</h1>
-        <Button
-          variant="contained"
-          // color="secondary"
-          onClick={props.onClickMoveJoin}
-        >
+        <Button variant="contained" onClick={props.onClickMoveJoin}>
           사원 등록
         </Button>
       </div>
@@ -104,7 +77,6 @@ export default function UsersInfoUI(props: any) {
           {props.usersData && (
             <TableBody>
               {props.usersData.map((user: any, idx: any) => (
-                // <StyledTableRow key={user.employee_num}>
                 <StyledTableRow key={idx}>
                   {props.isEditing && props.editing === user.employee_num ? (
                     <>
@@ -112,15 +84,6 @@ export default function UsersInfoUI(props: any) {
                         {user.employee_num}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {/* <input
-                          value={props.tempData?.employee_name}
-                          onChange={(e) =>
-                            props.setTempData({
-                              ...props.tempData,
-                              employee_name: e.target.value,
-                            })
-                          }
-                        /> */}
                         {user.employee_name}
                       </StyledTableCell>
                       <StyledTableCell align="center">
@@ -157,15 +120,6 @@ export default function UsersInfoUI(props: any) {
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {/* <input
-                          value={props.tempData?.phone}
-                          onChange={(e) =>
-                            props.setTempData({
-                              ...props.tempData,
-                              phone: e.target.value,
-                            })
-                          }
-                        /> */}
                         {user.phone}
                       </StyledTableCell>
                       <StyledTableCell align="center">
@@ -198,7 +152,6 @@ export default function UsersInfoUI(props: any) {
                           >
                             저장
                           </Button>
-                          {/* <button onClick={props.handleDelete}>삭제</button> */}
                           <IconButton aria-label="delete" size="large">
                             <Delete fontSize="inherit" />
                           </IconButton>
@@ -238,7 +191,6 @@ export default function UsersInfoUI(props: any) {
                       <StyledTableCell align="center">
                         <Button
                           variant="outlined"
-                          // color="secondary"
                           onClick={() => props.handleEdit(user)}
                         >
                           수정
