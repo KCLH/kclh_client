@@ -10,8 +10,6 @@ import {
   Button,
   MenuItem,
 } from "@mui/material";
-// import { AccountCircleRounded } from "@mui/icons-material/";
-// import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 // import jwtDecode from "jsonwebtoken/decode";
@@ -84,35 +82,6 @@ export default function Header() {
       return;
     }
   }, [userData]);
-
-  // useEffect(() => {
-  //   const jwtToken = cookies.get("jwt"); // 쿠키에서 JWT 토큰 가져오기
-
-  //   if (jwtToken) {
-  //     // 실제 애플리케이션에서는 서버로 요청을 보내서 JWT 토큰을 해석하고
-  //     // 그 결과로 받은 사용자 정보(예: 이름)를 setUsername 함수로 설정
-
-  //     setUsername("사용자 이름");
-  //   }
-  // }, []);
-  // useEffect(() => {
-  //   const jwtToken = cookies.get("jwt"); // 쿠키에서 JWT 토큰 가져오기
-
-  //   if (jwtToken) {
-  //     const decodedToken = jwtDecode(jwtToken);
-  //     setUsername(decodedToken.username);
-  //     setUserRole(decodedToken.role);
-  //   }
-  // }, []);
-  // useEffect(() => {
-  //   const jwtToken = cookies.get("jwt"); // 쿠키에서 JWT 토큰 가져오기
-
-  //   if (jwtToken) {
-  //     const decodedToken = jwtDecode.decode(jwtToken);
-  //     setUsername(decodedToken.username);
-  //     setUserRole(decodedToken.role);
-  //   }
-  // }, []);
 
   // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -202,10 +171,8 @@ export default function Header() {
         ))}
       </Nav>
 
-      {/* {userData && userData.name ? ( */}
       {userData ? (
         <>
-          {/* <div>{userData.name}님</div> */}
           <IconButton
             onClick={(event) => {
               setAnchorEl(event.currentTarget);

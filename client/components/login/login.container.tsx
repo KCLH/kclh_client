@@ -25,7 +25,6 @@ export default function LoginContainer() {
   });
 
   const { userData, error, mutate } = useCurrentUser();
-  // const { mutate } = useCurrentUser();
 
   const onClickLogin = useCallback(
     async (data: FormValue) => {
@@ -33,10 +32,8 @@ export default function LoginContainer() {
         const response = await axios.post(loginEndpoint, data);
 
         if (response.status === 200) {
-          // cookies.set('token', response.data.token, { expires: 1 });
           const Token = response.data.token;
 
-          // cookies.set('token', Token, { expires: 1 });
           const expires = new Date();
           expires.setDate(expires.getDate() + 1);
           cookies.set("token", Token, { expires });
@@ -46,15 +43,10 @@ export default function LoginContainer() {
           });
           cookies.set("name", response.data.name?.employee_name, { expires });
           cookies.set("role", response.data.name?.admin_ok, { expires });
-          // cookies.set("name", response.data.employee_name, { expires });
-          // cookies.set("role", response.data.admin_ok, { expires });
 
-          // axios.defaults.headers.common["token"] = response.data.token;
           axios.defaults.headers.common["token"] = Token;
           axios.defaults.withCredentials = true;
-          // axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-          // axios.defaults.headers.common["SameSite"] = "none";
-          // axios.defaults.headers.common["secure"] = true;
+
           console.log("response.data.name: ", response.data.name);
           mutate();
           router.push("/factory/1");

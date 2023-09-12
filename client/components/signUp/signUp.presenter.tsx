@@ -19,7 +19,6 @@ import {
 } from "@/components/utils/Constant";
 import { SignUpUIProps } from "@/components/utils/SignUp";
 import { Controller } from "react-hook-form";
-// import CustomSelect from "@/components/utils/CustomSelect";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -100,21 +99,6 @@ export default function SignUpUI(props: SignUpUIProps) {
         {/* 부서 */}
         <FormControl sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">부서 *</InputLabel>
-
-          {/* <Select
-            {...props.register("department")}
-            labelId="departments-select-label"
-            id="departments-select"
-          >
-            <MenuItem value="">
-              <em>선택</em>
-            </MenuItem>
-            {DEPARTMENTS.map((department, idx) => (
-              <div key={idx}>
-                <MenuItem key={idx} value={department}>{department}</MenuItem>
-              </div>
-            ))}
-          </Select> */}
           <Controller
             name="department"
             control={props.control}
@@ -125,11 +109,9 @@ export default function SignUpUI(props: SignUpUIProps) {
                   <em>선택</em>
                 </MenuItem>
                 {DEPARTMENTS.map((department, idx) => (
-                  // <div key={idx}>
                   <MenuItem key={idx} value={department}>
                     {department}
                   </MenuItem>
-                  // </div>
                 ))}
               </Select>
             )}
@@ -142,23 +124,10 @@ export default function SignUpUI(props: SignUpUIProps) {
             <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
           )}
         </FormControl>
+
         {/* 직급 */}
         <FormControl sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">직급 *</InputLabel>
-          {/* <Select
-            {...props.register("rank")}
-            labelId="ranks-select-label"
-            id="ranks-select"
-          >
-            <MenuItem value="">
-              <em>선택</em>
-            </MenuItem>
-            {RANKS.map((rank, idx) => (
-              <div key={idx}>
-                <MenuItem key={idx} value={rank}>{rank}</MenuItem>
-              </div>
-            ))}
-          </Select> */}
           <Controller
             name="rank"
             control={props.control}
@@ -169,11 +138,9 @@ export default function SignUpUI(props: SignUpUIProps) {
                   <em>선택</em>
                 </MenuItem>
                 {RANKS.map((rank, idx) => (
-                  // <div key={idx}>
                   <MenuItem key={idx} value={rank}>
                     {rank}
                   </MenuItem>
-                  // </div>
                 ))}
               </Select>
             )}
@@ -184,23 +151,10 @@ export default function SignUpUI(props: SignUpUIProps) {
             <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
           )}
         </FormControl>
+
         {/* 공장 */}
         <FormControl sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">공장 *</InputLabel>
-          {/* <Select
-            {...props.register("factory")}
-            labelId="factory-select-label"
-            id="factory-select"
-          >
-            <MenuItem value="">
-              <em>선택</em>
-            </MenuItem>
-            {FACTORY.map((fac, idx) => (
-              <div key={idx}>
-                <MenuItem key={idx} value={fac}>{fac}</MenuItem>
-              </div>
-            ))}
-          </Select> */}
           <Controller
             name="factory"
             control={props.control}
@@ -211,11 +165,9 @@ export default function SignUpUI(props: SignUpUIProps) {
                   <em>선택</em>
                 </MenuItem>
                 {FACTORY.map((fac, idx) => (
-                  // <div key={idx}>
                   <MenuItem key={idx} value={fac}>
                     {fac}
                   </MenuItem>
-                  // </div>
                 ))}
               </Select>
             )}
@@ -228,23 +180,10 @@ export default function SignUpUI(props: SignUpUIProps) {
             <FormHelperText sx={{ mb: 2.7 }}></FormHelperText>
           )}
         </FormControl>
+
         {/* 권한 */}
         <FormControl sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">권한 *</InputLabel>
-          {/* <Select
-            {...props.register("admin_ok")}
-            labelId="roles-select-label"
-            id="roles-select"
-          >
-            <MenuItem value="">
-              <em>선택</em>
-            </MenuItem>
-            {ROLES.map((role, idx) => (
-              <div key={idx}>
-                <MenuItem key={idx} value={role}>{role}</MenuItem>
-              </div>
-            ))}
-          </Select> */}
           <Controller
             name="admin_ok"
             control={props.control}
@@ -255,11 +194,9 @@ export default function SignUpUI(props: SignUpUIProps) {
                   <em>선택</em>
                 </MenuItem>
                 {ROLES.map((role, idx) => (
-                  // <div key={idx}>
                   <MenuItem key={idx} value={role}>
                     {role}
                   </MenuItem>
-                  // </div>
                 ))}
               </Select>
             )}
