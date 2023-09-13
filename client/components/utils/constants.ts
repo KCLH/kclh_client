@@ -8,9 +8,13 @@ export const USERS_TABLE = [
   "이메일",
   "권한",
 ];
+
 export const DEPARTMENTS = ["구매", "제조", "생산기술", "생산관리", "품질관리"];
+
 export const RANKS = ["사원", "주임", "대리", "과장", "차장", "부장"];
+
 export const FACTORY = ["전체", "양주 1공장", "파주 2공장"];
+
 export const ROLES = ["사원", "관리자"];
 
 export const PAGES = [

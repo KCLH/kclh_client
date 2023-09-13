@@ -1,9 +1,7 @@
 "use client";
 
-import LineChart from "@/components/chart/LineChart";
-import BarChart from "@/components/chart/BarChart";
-import PieChart from "@/components/chart/PieChart";
-import DoughnutChart from "@/components/chart/DoughnutChart";
+import LineChart from "@/components/chartSample/LineChart";
+import PieChart from "@/components/chartSample/PieChart2";
 
 export default function Dashboard() {
   return (
@@ -14,26 +12,19 @@ export default function Dashboard() {
         alignItems: "center",
       }}
     >
-      <h1>대시보드</h1>
-      <div style={{ width: "10%", marginBottom: "50px" }}>
-        <LineChart />
-      </div>
+      <div style={{ width: "100%" }}></div>
       <div
         style={{
           display: "flex",
           width: "80%",
           justifyContent: "space-between",
+          backgroundColor: "azure",
         }}
       >
-        <div style={{ width: "10%" }}>
-          <BarChart />
+        <div style={{ backgroundColor: "beige" }}>
+          <LineChart />
         </div>
-        <div style={{ width: "10%" }}>
-          <PieChart />
-        </div>
-      </div>
-      <div style={{ width: "10%", marginTop: "50px" }}>
-        <DoughnutChart />
+        <div style={{ backgroundColor: "coral" }}>{/* <PieChart /> */}</div>
       </div>
     </div>
   );

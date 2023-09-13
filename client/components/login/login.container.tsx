@@ -40,9 +40,12 @@ export default function LoginContainer() {
           cookies.set("employee_num", data.employee_num.toString(), {
             expires,
           });
-          cookies.set("name", response.data.name?.employee_name, { expires });
-          cookies.set("factory", response.data.name?.factory, { expires });
-          cookies.set("role", response.data.name?.admin_ok, { expires });
+          cookies.set("name", response.data.name, { expires });
+          cookies.set("factory", response.data.factory, { expires });
+          cookies.set("role", response.data.admin_ok, { expires });
+          // cookies.set("name", response.data.name?.employee_name, { expires });
+          // cookies.set("factory", response.data.name?.factory, { expires });
+          // cookies.set("role", response.data.name?.admin_ok, { expires });
           // cookies.set("name", response.data.employee_name, { expires });
           // cookies.set("factory", response.data.factory, { expires });
           // cookies.set("role", response.data.admin_ok, { expires });
@@ -52,7 +55,8 @@ export default function LoginContainer() {
 
           console.log("response: ", response);
           mutate();
-          router.push("/factory/1");
+          // router.push("/factory/1");
+          router.push("/board/1");
         } else {
           // 에러 메시지 출력
           console.error(error);
