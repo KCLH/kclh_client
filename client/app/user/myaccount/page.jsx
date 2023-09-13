@@ -117,6 +117,33 @@ export default function userInfo() {
         </s.소속>
         <s.인적사항>{userInfo.factory}</s.인적사항>
         <s.인적사항>{userInfo.email}</s.인적사항>
+        <FormControl variant="standard" sx={{ minWidth: 120 }} fullWidth>
+          <InputLabel id="departments-select-label">부서 *</InputLabel>
+          <Controller
+            name="department"
+            control={props.control}
+            defaultValue=""
+            render={({ field }) => (
+              <Select {...field} error={!!props.errors.department}>
+                <MenuItem value="">
+                  <em>선택</em>
+                </MenuItem>
+                {DEPARTMENTS.map((department, idx) => (
+                  <MenuItem key={idx} value={department}>
+                    {department}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+          {props.errors.department ? (
+            <FormHelperText error>
+              {props.errors.department.message}
+            </FormHelperText>
+          ) : (
+            <FormHelperText sx={{ mb: 2 }}></FormHelperText>
+          )}
+        </FormControl>
         <s.변경사항>
           <s.PW
             id="pw"
