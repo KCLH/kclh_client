@@ -11,12 +11,14 @@ export default function fetcher() {
     cookies.get("name") &&
     cookies.get("role") &&
     cookies.get("token") &&
+    cookies.get("factory") &&
     cookies.get("employee_num")
   ) {
     return {
       name: cookies.get("name"),
       role: cookies.get("role"),
       token: cookies.get("token"),
+      factory: cookies.get("factory"),
       employeeNum: cookies.get("employee_num"),
     };
   }

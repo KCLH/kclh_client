@@ -18,13 +18,9 @@ function LineChart({ inputData }: any) {
 
   const options = {
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
+      y: {
+        beginAtZero: true,
+      },
     },
   };
 

@@ -47,7 +47,8 @@ const Nav = styled("div")({
 export default function Header() {
   const { userData, mutate } = useCurrentUser();
 
-  const [userRole, setUserRole] = useState("admin");
+  const [userRole, setUserRole] = useState("");
+  // const [userRole, setUserRole] = useState("admin");
   // const [userRole, setUserRole] = useState("user");
 
   // userRole 상태 초기값 설정
@@ -63,6 +64,7 @@ export default function Header() {
     cookies.remove("name");
     cookies.remove("token");
     cookies.remove("role");
+    cookies.remove("factory");
     cookies.remove("employee_num");
     setAnchorEl(null);
     mutate(null, false); // 다음 서버 요청 발생 전까지 기존 값 유지 되기 때문에 null로 처리
@@ -79,6 +81,7 @@ export default function Header() {
       axios.defaults.headers.common["secure"] = true; // secure=true 추가
 
       setUserRole(cookies.get("role")); // 쿠키에서 role 값 가져와서 userRole 상태 업데이트
+      console.log(userRole);
       return;
     }
   }, [userData]);
