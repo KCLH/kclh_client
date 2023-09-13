@@ -17,4 +17,5 @@ function FactoryPage() {
     <FactoryContainer pathname={pathname} id={id} idFromPath={idFromPath} />
   );
 }
-export default useAuth(FactoryPage);
+// export default useAuth(FactoryPage);
+export default FactoryPage;
