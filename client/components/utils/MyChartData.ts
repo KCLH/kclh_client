@@ -13,7 +13,7 @@
 //   };
 //   return data;
 // }
-import { TableDataItem } from "@/components/chart/Chart.type";
+import { TableDataItem } from "@/components/chart/MqttChart.type";
 
 // 테이블 데이터를 필터링하여 차트 데이터로 변환하는 함수.
 export function MyChartData(

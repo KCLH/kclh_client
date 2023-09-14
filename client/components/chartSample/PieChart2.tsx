@@ -12,7 +12,7 @@ function PieChart() {
   const tableData = useMqttClient(brokerUrl, topic);
 
   const data = MyChartData(tableData, (item) =>
-    [15, 16, 17].includes(item.tagId)
+    ["15", "16", "17"].includes(item.tagId)
   );
 
   return <Pie data={data} />;

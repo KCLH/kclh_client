@@ -1,7 +1,7 @@
 import { ChartType } from "chart.js";
 
 export interface TableDataItem {
-  tagId: number;
+  tagId: string;
   name: string;
   value: number;
 }

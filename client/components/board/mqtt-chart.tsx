@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 import * as mqtt from "mqtt";
 import { Line } from "react-chartjs-2";
-
-interface TableDataItem {
-  tagId: string;
-  name: string;
-  value: number;
-}
+import { TableDataItem } from "@/components/chart/MqttChart.type";
 
 function LineChart() {
   const [tableData, setTableData] = useState<TableDataItem[]>([]);
@@ -29,7 +24,7 @@ function LineChart() {
         const parsedData: { Wrapper: TableDataItem[] } = JSON.parse(
           message.toString()
         );
-        console.log(parsedData);
+        console.log("mqtt-chart.tsx:", parsedData);
         setTableData(parsedData.Wrapper);
       } catch (error) {
         console.error("Error parsing data:", error);

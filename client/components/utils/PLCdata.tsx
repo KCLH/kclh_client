@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import * as mqtt from "mqtt";
-
-interface TableDataItem {
-  tagId: string;
-  name: string;
-  value: number;
-}
+import { TableDataItem } from "@/components/chart/MqttChart.type";
 
 export default function PLCdata() {
   const [tableData, setTableData] = useState<TableDataItem[]>([]);
@@ -29,7 +24,7 @@ export default function PLCdata() {
         const parsedData: { Wrapper: TableDataItem[] } = JSON.parse(
           message.toString()
         );
-        console.log(parsedData);
+        console.log("PLCdata.tsx:", parsedData);
         setTableData(parsedData.Wrapper);
       } catch (error) {
         console.error("Error parsing data:", error);
