@@ -117,7 +117,7 @@ export default function userInfo() {
         </s.소속>
         <s.인적사항>{userInfo.factory}</s.인적사항>
         <s.인적사항>{userInfo.email}</s.인적사항>
-        <FormControl variant="standard" sx={{ minWidth: 120 }} fullWidth>
+        {/* <FormControl variant="standard" sx={{ minWidth: 120 }} fullWidth>
           <InputLabel id="departments-select-label">부서 *</InputLabel>
           <Controller
             name="department"
@@ -143,7 +143,7 @@ export default function userInfo() {
           ) : (
             <FormHelperText sx={{ mb: 2 }}></FormHelperText>
           )}
-        </FormControl>
+        </FormControl> */}
         <s.변경사항>
           <s.PW
             id="pw"
