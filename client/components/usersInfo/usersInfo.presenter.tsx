@@ -127,7 +127,9 @@ export default function UsersInfoUI(props: any) {
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
-                          value={props.tempData?.admin_ok}
+                          value={
+                            props.tempData?.admin_ok === "Y" ? "관리자" : "사원"
+                          }
                           onChange={(e) =>
                             props.setTempData({
                               ...props.tempData,
@@ -186,7 +188,7 @@ export default function UsersInfoUI(props: any) {
                         {user.email}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {user.admin_ok}
+                        {user.admin_ok === "Y" ? "관리자" : "사원"}
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <Button

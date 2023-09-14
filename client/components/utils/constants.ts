@@ -15,8 +15,7 @@ export const RANKS = ["사원", "주임", "대리", "과장", "차장", "부장"
 
 export const FACTORY = ["전체", "양주 1공장", "파주 2공장"];
 
-// export const ROLES = ["사원", "관리자"];
-export const ROLES = ["Y", "N"];
+export const ROLES = ["사원", "관리자"];
 
 export const PAGES = [
   {

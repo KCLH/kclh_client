@@ -31,15 +31,13 @@ export default function SignUpContainer() {
     console.log("data:", data);
     try {
       await axios.post(createUserEndpoint, data);
-      // router.push("/factory/1");
-      // router.push("board/1"); // "" 안 맨 앞에 / 안붙이면 현재 위치("admin/signup")와 동등한 위치에서 이동("admin/board/1").
-      router.push("/board/1");
+      router.push("accounts"); // "" 안 맨 앞에 / 안붙이면 현재 위치("admin/signup")와 동등한 위치에서 이동("admin/accounts").
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
 
-        setErrorMessage(error.message); // Set error message to state.
-        setOpenErrorSnackbar(true); // Open the snackbar.
+        setErrorMessage(error.message);
+        setOpenErrorSnackbar(true);
       }
     }
   };
