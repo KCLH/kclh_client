@@ -58,9 +58,24 @@ export default function LoginContainer() {
           axios.defaults.headers.common["token"] = Token;
           axios.defaults.withCredentials = true;
 
-          console.log("response: ", response);
+          console.log("response.data: ", response.data);
+
+          const factoryVal = response.data.factory;
+
+          // let routeToPush;
+          // if (factoryVal === "전체" || factoryVal === "양주 1공장") {
+          //   routeToPush = "/factory/1";
+          // } else if (factoryVal === "파주 2공장") {
+          //   routeToPush = "/factory/2";
+          // }
+          let routeToPush = "/factory/1";
+          if (factoryVal === "파주 2공장") {
+            routeToPush = "/factory/2";
+          }
+
           mutate();
-          router.push("/factory/1");
+          // router.push("/factory/1");
+          router.push(routeToPush);
         } else {
           // 에러 메시지 출력
           console.error(error);

@@ -5,7 +5,8 @@ import { TableDataItem } from "@/components/chart/MqttChart.type";
 // MQTT 서버로부터 데이터를 받아와서 상태로 저장하는 함수.
 export function useMqttClient(brokerUrl: string, topic: string) {
   // 데이터를 저장할 상태를 생성.
-  const [mqttData, setMqttData] = useState<TableDataItem[]>([]);
+  const [plcData, setPlcData] = useState<TableDataItem[]>([]);
+  const [iotData, setIotData] = useState<TableDataItem[]>([]);
 
   useEffect(() => {
     // MQTT 클라이언트를 생성하고 서버에 연결.
@@ -23,11 +24,18 @@ export function useMqttClient(brokerUrl: string, topic: string) {
       try {
         // 메시지는 문자열 형태이므로 JSON 형태로 변환.
 
-        const parsedData: { data: TableDataItem[] } = JSON.parse(
+        const PLCData: { plcdata: TableDataItem[] } = JSON.parse(
           message.toString()
         );
+
+        const IoTData: { iotdata: TableDataItem[] } = JSON.parse(
+          message.toString()
+        );
+        // console.log("parsedData: ", parsedData);
         // 변환된 데이터를 상태에 저장. 이후 차트 그리기 등에서 사용.
-        setMqttData(parsedData.data);
+        setPlcData(PLCData.plcdata);
+        setIotData(IoTData.iotdata);
+        // console.log(topic);
       } catch (error) {
         console.error("Error parsing data:", error);
       }
@@ -40,5 +48,5 @@ export function useMqttClient(brokerUrl: string, topic: string) {
     };
   }, [brokerUrl, topic]);
 
-  return mqttData;
+  return { plcData, iotData };
 }

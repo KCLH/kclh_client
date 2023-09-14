@@ -162,7 +162,7 @@ export default function Header() {
                   "aria-labelledby": page.name,
                 }}
               >
-                {page.children.map((cPage, cIdx) => (
+                {/* {page.children.map((cPage, cIdx) => (
                   <MenuItem
                     onClick={() => {
                       handleClose();
@@ -172,7 +172,33 @@ export default function Header() {
                   >
                     {cPage.name}
                   </MenuItem>
-                ))}
+                ))} */}
+                {page.children
+                  .filter((cPage) => {
+                    if (userData?.factory === "전체") return true;
+                    if (
+                      userData?.factory === "양주 1공장" &&
+                      cPage.name.includes("양주 1공장")
+                    )
+                      return true;
+                    if (
+                      userData?.factory === "파주 2공장" &&
+                      cPage.name.includes("파주 2공장")
+                    )
+                      return true;
+                    return false;
+                  })
+                  .map((cPage, cIdx) => (
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        router.push(cPage.url);
+                      }}
+                      key={`menu-item-${idx}-${cIdx}`}
+                    >
+                      {cPage.name}
+                    </MenuItem>
+                  ))}
               </Menu>
             </div>
           </div>
