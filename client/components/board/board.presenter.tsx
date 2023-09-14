@@ -1,26 +1,27 @@
 "use client";
 
-// import LineChart from "@/components/chart/LineChart";
-// import BarChart from "@/components/chart/BarChart";
-// import PieChart from "@/components/chart/PieChart";
-// import DoughnutChart from "@/components/chart/DoughnutChart";
+import Cookies from "universal-cookie";
 import { useMqttClient } from "@/components/hooks/useMqttClient";
 import * as s from "@/components/board/board.styles";
 import Dashboard from "../chart/Dashboard";
+import { useState } from "react";
 
 export default function BoardUI(props: any) {
-  // console.log(props);
+  const cookies = new Cookies();
+
   const brokerUrl = "mqtt://192.168.0.106:8884";
-  const topic = "edukit1";
+  const topic1 = "edukit1";
+  const topic2 = "iot1/info";
 
-  const MqttData = useMqttClient(brokerUrl, topic);
-
-  // console.log(typeof MqttData[0].tagId); // 아놔 스트링이었네 넘번 줄 어쩐지 안되더라
+  const MqttData1 = useMqttClient(brokerUrl, topic1);
+  const MqttData2 = useMqttClient(brokerUrl, topic2);
 
   let year, month, day, hours, minutes;
 
   // tagId가 '0'인 항목 찾기
-  const dateTimeItem = MqttData.find((item) => item.tagId === "0");
+  const dateTimeItem = MqttData1.find((item) => item.tagId === "0");
+  // console.log("MqttData1", MqttData1);
+  // console.log("MqttData2", MqttData2);
 
   if (dateTimeItem) {
     // value 값을 Date 객체로 변환
@@ -43,27 +44,6 @@ export default function BoardUI(props: any) {
     minutes = nowDateObj.getMinutes();
   }
 
-  // if (dateTimeItem) {
-  //   // value 값을 Date 객체로 변환
-  //   const dateObj = new Date(dateTimeItem.value);
-
-  //   // 년, 월, 일, 시간 구분
-  //   // const year = dateObj.getUTCFullYear();
-  //   const year = dateObj.getFullYear();
-  //   // const month = dateObj.getUTCMonth() + 1; // 월은 0부터 시작하므로 +1 필요
-  //   const month = dateObj.getMonth() + 1;
-  //   // const day = dateObj.getUTCDate();
-  //   const day = dateObj.getDate();
-  //   // const hours = dateObj.getUTCHours();
-  //   const hours = dateObj.getHours();
-  //   // const minutes = dateObj.getUTCMinutes();
-  //   const minutes = dateObj.getMinutes();
-
-  //   console.log(
-  //     `${dateTimeItem.name} ${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`
-  //   );
-  // }
-
   return (
     <s.Wrapper>
       {/* <>{props.idFromPath}</> */}
@@ -75,31 +55,7 @@ export default function BoardUI(props: any) {
           } ${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`}
         </div>
       </s.BoardTop>
-      {/* <div className="mt-5">
-        <Bar
-          data={{
-            labels: tableData.map((item) => item.name),
-            datasets: [
-              {
-                label: "Value",
-                data: tableData.map((item) => item.value),
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
-              },
-            ],
-          }}
-          options={{
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-          }}
-        />
-      </div> */}
-      {/* <LineChart />
-      <BarChart />
-      <PieChart />
-      <DoughnutChart /> */}
+
       <Dashboard />
     </s.Wrapper>
   );
