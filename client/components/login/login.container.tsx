@@ -60,8 +60,7 @@ export default function LoginContainer() {
 
           console.log("response: ", response);
           mutate();
-          // router.push("/factory/1");
-          router.push("/board/1");
+          router.push("/factory/1");
         } else {
           // 에러 메시지 출력
           console.error(error);
@@ -70,8 +69,8 @@ export default function LoginContainer() {
         if (error instanceof Error) {
           console.error(error);
 
-          setErrorMessage(error.message); // Set error message to state.
-          setOpenErrorSnackbar(true); // Open the snackbar.
+          setErrorMessage(error.message);
+          setOpenErrorSnackbar(true);
         }
       }
     },
