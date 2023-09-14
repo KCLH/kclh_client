@@ -85,7 +85,7 @@ import { useMqttClient } from "@/components/hooks/useMqttClient";
 import { MyChartData } from "@/components/utils/MyChartData";
 import useChart from "@/components/hooks/useChart";
 import { FC, useState, useEffect } from "react";
-import { TableDataItem } from "@/components/chart/Chart.type";
+import { TableDataItem } from "@/components/chart/MqttChart.type";
 import { ChartData } from "chart.js";
 
 const MyComponent: FC = () => {
@@ -98,8 +98,7 @@ const MyComponent: FC = () => {
   };
 
   // tagId를 기준으로 필터링하는 함수
-  const filterFunc = (item: TableDataItem) =>
-    item.tagId === Number("desiredTagId");
+  const filterFunc = (item: TableDataItem) => item.tagId === "desiredTagId";
 
   // 차트 데이터의 초기 상태와 형태를 설정
   const [barChartData, setBarChartData] = useState<ChartData>({

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import * as mqtt from "mqtt";
-import { TableDataItem } from "@/components/chart/Chart.type";
+import { TableDataItem } from "@/components/chart/MqttChart.type";
 
 // MQTT 서버로부터 데이터를 받아와서 상태로 저장하는 함수.
 export function useMqttClient(brokerUrl: string, topic: string) {
@@ -25,7 +25,11 @@ export function useMqttClient(brokerUrl: string, topic: string) {
         const parsedData: { Wrapper: TableDataItem[] } = JSON.parse(
           message.toString()
         );
-        console.log("parsedData:", parsedData);
+        // console.log("useMqttClentts/parsedData.Wrapper:", parsedData.Wrapper);
+        // console.log(
+        //   "🚀 ~ file: useMqttClient.ts:29 ~ client.on ~ parsedData.Wrapper:",
+        //   parsedData.Wrapper
+        // );
         // 변환된 데이터를 상태에 저장. 이후 차트 그리기 등에서 사용.
         setTableData(parsedData.Wrapper);
       } catch (error) {

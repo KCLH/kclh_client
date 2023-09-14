@@ -4,7 +4,7 @@ import "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { useMqttClient } from "@/components/hooks/useMqttClient"; //MQTT 클라이언트 관련 로직을 처리하는 커스텀 훅
 import { MyChartData } from "@/components/utils/MyChartData"; // 차트 데이터 생성 함수
-import { TableDataItem } from "../chart/Chart.type";
+import { TableDataItem } from "../chart/MqttChart.type";
 
 function LineChart() {
   const brokerUrl = "mqtt://192.168.0.106:8884"; // MQTT 브로커 주소

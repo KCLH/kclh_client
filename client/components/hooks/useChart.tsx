@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { Chart, ChartConfiguration } from "chart.js";
-import { UseChartProps } from "../chart/Chart.type";
+import { UseChartProps } from "../chart/MqttChart.type";
 
 // 차트를 그리는데 필요한 설정을 하는 커스텀 훅.
 const useChart = ({ type, data, options }: UseChartProps) => {
