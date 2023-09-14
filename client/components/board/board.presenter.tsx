@@ -13,15 +13,19 @@ export default function BoardUI(props: any) {
   const topic1 = "edukit1";
   const topic2 = "iot1/info";
 
-  const MqttData1 = useMqttClient(brokerUrl, topic1);
-  const MqttData2 = useMqttClient(brokerUrl, topic2);
+  // const MqttData1 = useMqttClient(brokerUrl, topic1);
+  // const MqttData2 = useMqttClient(brokerUrl, topic2);
+  // const { plcData: MqttData1 } = useMqttClient(brokerUrl, topic1);
+  // const { iotData: MqttData2 } = useMqttClient(brokerUrl, topic2);
+  const { plcData } = useMqttClient(brokerUrl, topic1);
+  const { iotData } = useMqttClient(brokerUrl, topic2);
 
   let year, month, day, hours, minutes;
 
   // tagId가 '0'인 항목 찾기
-  const dateTimeItem = MqttData1.find((item) => item.tagId === "0");
-  // console.log("MqttData1", MqttData1);
-  // console.log("MqttData2", MqttData2);
+  const dateTimeItem = plcData.find((item) => item.tagId === "0");
+  // console.log("plcData", plcData);
+  // console.log("iotData", iotData);
 
   if (dateTimeItem) {
     // value 값을 Date 객체로 변환

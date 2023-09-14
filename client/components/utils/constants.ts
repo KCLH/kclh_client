@@ -21,15 +21,15 @@ export const PAGES = [
   {
     name: "공장 현황",
     children: [
-      { name: "양주 1 공장", url: "/factory/1" },
-      { name: "파주 2 공장", url: "/factory/2" },
+      { name: "양주 1공장", url: "/factory/1" },
+      { name: "파주 2공장", url: "/factory/2" },
     ],
   },
   {
     name: "대시보드",
     children: [
-      { name: "양주 1 공장", url: "/board/1" },
-      { name: "파주 2 공장", url: "/board/2" },
+      { name: "양주 1공장", url: "/board/1" },
+      { name: "파주 2공장", url: "/board/2" },
     ],
   },
 ];
