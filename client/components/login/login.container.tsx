@@ -7,10 +7,14 @@ import Cookies from "universal-cookie";
 import LoginUI from "@/components/login/login.presenter";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormValue, schema } from "@/components/utils/Login";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useCurrentUser from "@/components/hooks/useCurrentUser";
+import { Alert, Snackbar } from "@mui/material";
 
 export default function LoginContainer() {
+  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const cookies = new Cookies();
   const loginEndpoint = `${process.env.NEXT_PUBLIC_SERVER}/employee/login`;
   const router = useRouter();
@@ -42,7 +46,8 @@ export default function LoginContainer() {
           });
           cookies.set("name", response.data.name, { expires });
           cookies.set("factory", response.data.factory, { expires });
-          cookies.set("role", response.data.admin_ok, { expires });
+          cookies.set("role", response.data.role, { expires });
+          // cookies.set("role", response.data.admin_ok, { expires });
           // cookies.set("name", response.data.name?.employee_name, { expires });
           // cookies.set("factory", response.data.name?.factory, { expires });
           // cookies.set("role", response.data.name?.admin_ok, { expires });
@@ -64,7 +69,9 @@ export default function LoginContainer() {
       } catch (error) {
         if (error instanceof Error) {
           console.error(error);
-          // or show error message to user
+
+          setErrorMessage(error.message); // Set error message to state.
+          setOpenErrorSnackbar(true); // Open the snackbar.
         }
       }
     },
@@ -77,11 +84,22 @@ export default function LoginContainer() {
   }, []);
 
   return (
-    <LoginUI
-      register={register}
-      handleSubmit={handleSubmit}
-      errors={errors}
-      onClickLogin={onClickLogin}
-    />
+    <>
+      <LoginUI
+        register={register}
+        handleSubmit={handleSubmit}
+        errors={errors}
+        onClickLogin={onClickLogin}
+      />
+      <Snackbar
+        open={openErrorSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenErrorSnackbar(false)}
+      >
+        <Alert onClose={() => setOpenErrorSnackbar(false)} severity="error">
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
