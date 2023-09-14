@@ -16,6 +16,7 @@ import { M3_Ybar } from "@/components/factory/M3/Ybar";
 import { M3_Gripper } from "@/components/factory/M3/Gripper";
 
 export default function FactoryUI(props: any) {
+  // dk
   return (
     <>
       <div style={{ backgroundColor: "#fff", width: "100%", height: "80vh" }}>
