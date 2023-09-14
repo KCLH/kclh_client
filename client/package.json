@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^3.3.1",
     "@mui/icons-material": "^5.14.7",
     "@mui/material": "^5.14.7",
+    "@react-three/drei": "^9.83.9",
     "@react-three/fiber": "^8.14.1",
     "@types/node": "20.5.7",
     "@types/react": "18.2.21",

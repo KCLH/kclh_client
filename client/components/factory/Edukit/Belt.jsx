@@ -16,13 +16,6 @@ export const Belt = () => {
 
   actions[0].play();
 
-  scene.traverse((ob) => {
-    ob.scale.set(0.35, 0.4, 0.46);
-    ob.rotation.set(-0.005, 0.005, -0.21);
-  });
-
   //작업 후 return하는 코드
-  return (
-    <primitive object={scene} position={[99.49, -0.225, -0.15]}></primitive>
-  );
+  return <primitive object={scene} position={[0, 1.35, -1.505]}></primitive>;
 };
