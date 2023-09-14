@@ -48,6 +48,7 @@ export default function Header() {
   const { userData, mutate } = useCurrentUser();
 
   const [userRole, setUserRole] = useState("");
+  const [facNum, setFacNum] = useState("");
   // const [userRole, setUserRole] = useState("admin");
   // const [userRole, setUserRole] = useState("user");
 
@@ -81,7 +82,11 @@ export default function Header() {
       axios.defaults.headers.common["secure"] = true; // secure=true 추가
 
       setUserRole(cookies.get("role")); // 쿠키에서 role 값 가져와서 userRole 상태 업데이트
-      console.log(userRole);
+      setFacNum(cookies.get("factory"));
+
+      // console.log("userRole: ", userRole);
+      // console.log("facNum: ", facNum);
+      // console.log("userData: ", userData);
       return;
     }
   }, [userData]);

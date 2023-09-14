@@ -5,7 +5,7 @@ import { TableDataItem } from "@/components/chart/MqttChart.type";
 // MQTT 서버로부터 데이터를 받아와서 상태로 저장하는 함수.
 export function useMqttClient(brokerUrl: string, topic: string) {
   // 데이터를 저장할 상태를 생성.
-  const [tableData, setTableData] = useState<TableDataItem[]>([]);
+  const [mqttData, setMqttData] = useState<TableDataItem[]>([]);
 
   useEffect(() => {
     // MQTT 클라이언트를 생성하고 서버에 연결.
@@ -22,16 +22,12 @@ export function useMqttClient(brokerUrl: string, topic: string) {
       // 메시지 수신 시 실행되는 콜백 함수
       try {
         // 메시지는 문자열 형태이므로 JSON 형태로 변환.
-        const parsedData: { Wrapper: TableDataItem[] } = JSON.parse(
+
+        const parsedData: { data: TableDataItem[] } = JSON.parse(
           message.toString()
         );
-        // console.log("useMqttClentts/parsedData.Wrapper:", parsedData.Wrapper);
-        // console.log(
-        //   "🚀 ~ file: useMqttClient.ts:29 ~ client.on ~ parsedData.Wrapper:",
-        //   parsedData.Wrapper
-        // );
         // 변환된 데이터를 상태에 저장. 이후 차트 그리기 등에서 사용.
-        setTableData(parsedData.Wrapper);
+        setMqttData(parsedData.data);
       } catch (error) {
         console.error("Error parsing data:", error);
       }
@@ -44,5 +40,5 @@ export function useMqttClient(brokerUrl: string, topic: string) {
     };
   }, [brokerUrl, topic]);
 
-  return tableData;
+  return mqttData;
 }
