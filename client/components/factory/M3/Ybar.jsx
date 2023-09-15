@@ -7,5 +7,5 @@ export const M3_Ybar = () => {
   const { scene } = useLoader(GLTFLoader, "/M3_Ybar.glb");
 
   //작업 후 return하는 코드
-  return <primitive object={scene} position={[0, 1.35, -1.5]}></primitive>;
+  return <primitive object={scene} />;
 };
