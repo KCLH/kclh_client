@@ -1,6 +1,5 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 import { useMqttClient } from "@/components/hooks/useMqttClient";
 
 import { Body } from "@/components/factory/Edukit/Body";
@@ -98,7 +97,6 @@ export default function FactoryUI(props: any) {
       <div style={{ backgroundColor: "#fff", width: "100%", height: "80vh" }}>
         <Canvas camera={{ position: [0, 2, -2] }}>
           <directionalLight position={[1, 1, -1]} intensity={5} />
-          <OrbitControls target={[0, 0, 0]} />
           <Body />
           <Belt />
           <Chip
