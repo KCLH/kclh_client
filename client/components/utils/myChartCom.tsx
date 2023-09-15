@@ -11,7 +11,7 @@
 //   const myOptions ={...}; // 여기에 차트의 옵션을 설정.
 
 //   // 필터 함수를 정의합니다. 여기서는 모든 데이터가 true를 반환.
-//   const filterFunc = (item: TableDataItem) => true;
+//   const filterFunc = (item: MqttDataItem) => true;
 
 //   // 가져온 데이터(tableData)를 필터링하고, 차트 데이터로 변환.
 //   const barChartData = MyChartData(tableData, filterFunc);
@@ -43,14 +43,14 @@
 // import { MyChartData } from './MyChartData';
 // import useChart from '@/components/hooks/useChart';
 // import { FC, useState, useEffect } from 'react';
-// import { TableDataItem } from '@/components/chart/Chart.type';
+// import { MqttDataItem } from '@/components/chart/Chart.type';
 
 // const MyComponent: FC = () => {
 //   const tableData = useMqttClient('mqtt://brokerUrl', 'myTopic');
 //   const myOptions ={...}; // Set your chart options
 
 //   // Filter function based on tagId
-//   const filterFunc = (item: TableDataItem) => item.tagId === 'desiredTagId';
+//   const filterFunc = (item: MqttDataItem) => item.tagId === 'desiredTagId';
 
 //   // State for chart data
 //   const [barChartData, setBarChartData] = useState({});
@@ -85,7 +85,7 @@ import { useMqttClient } from "@/components/hooks/useMqttClient";
 import { MyChartData } from "@/components/utils/MyChartData";
 import useChart from "@/components/hooks/useChart";
 import { FC, useState, useEffect } from "react";
-import { TableDataItem } from "@/components/chart/MqttChart.type";
+import { MqttDataItem } from "@/components/chart/MqttChart.type";
 import { ChartData } from "chart.js";
 
 const MyComponent: FC = () => {
@@ -98,7 +98,7 @@ const MyComponent: FC = () => {
   };
 
   // tagId를 기준으로 필터링하는 함수
-  const filterFunc = (item: TableDataItem) => item.tagId === "desiredTagId";
+  const filterFunc = (item: MqttDataItem) => item.tagId === "desiredTagId";
 
   // 차트 데이터의 초기 상태와 형태를 설정
   const [barChartData, setBarChartData] = useState<ChartData>({

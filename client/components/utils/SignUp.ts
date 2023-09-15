@@ -29,5 +29,6 @@ export interface SignUpUIProps {
   handleSubmit: UseFormHandleSubmit<FormValue>;
   errors: FieldErrors<FormValue>;
   control: Control<FormValue>;
-  onClickSignUp: (data: FormValue) => Promise<void>; // onClickSignUp의 타입은 실제 함수에 따라서 변경.
+  // onClickSignUp: (data: FormValue) => Promise<void>; // onClickSignUp의 타입은 실제 함수에 따라서 변경.
+  onClickSignUp: (data: FormValue) => void; // onClickSignUp의 타입은 실제 함수에 따라서 변경.
 }

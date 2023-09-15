@@ -5,7 +5,7 @@ import { useMqttClient } from "@/components/hooks/useMqttClient"; //MQTT 클라�
 // import { MyChartData } from "@/components/utils/MyChartData"; // 차트 데이터 생성 함수
 import LineChart from "@/components/chartSample/LineChart";
 // import PieChart from "@/components/chartSample/PieChart2";
-// import { TableDataItem } from "./Chart.type";
+// import { MqttDataItem } from "./Chart.type";
 
 export default function Dashboard() {
   // const brokerUrl = "mqtt://192.168.0.106:8884";
@@ -21,7 +21,7 @@ export default function Dashboard() {
 
   // const MqttData = useMqttClient(brokerUrl, topic);
 
-  // const filterFunc = (item: TableDataItem) => item.value > 50; // value가 50보다 큰 데이터만 선택
+  // const filterFunc = (item: MqttDataItem) => item.value > 50; // value가 50보다 큰 데이터만 선택
   // const data = MyChartData(tableData, filterFunc);
 
   // const data = MyChartData(tableData);

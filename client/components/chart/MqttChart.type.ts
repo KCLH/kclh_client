@@ -1,6 +1,6 @@
 import { ChartType } from "chart.js";
 
-export interface TableDataItem {
+export interface MqttDataItem {
   tagId: string;
   name: string;
   value: number;

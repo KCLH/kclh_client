@@ -89,34 +89,19 @@ export default function UsersInfoUI(props: any) {
                       <StyledTableCell align="center">
                         <input
                           value={props.tempData?.department}
-                          onChange={(e) =>
-                            props.setTempData({
-                              ...props.tempData,
-                              department: e.target.value,
-                            })
-                          }
+                          onChange={props.handleInputChange("department")}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
                           value={props.tempData?.rank}
-                          onChange={(e) =>
-                            props.setTempData({
-                              ...props.tempData,
-                              rank: e.target.value,
-                            })
-                          }
+                          onChange={props.handleInputChange("rank")}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
                           value={props.tempData?.factory}
-                          onChange={(e) =>
-                            props.setTempData({
-                              ...props.tempData,
-                              factory: e.target.value,
-                            })
-                          }
+                          onChange={props.handleInputChange("factory")}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
@@ -130,12 +115,7 @@ export default function UsersInfoUI(props: any) {
                           value={
                             props.tempData?.admin_ok === "Y" ? "관리자" : "사원"
                           }
-                          onChange={(e) =>
-                            props.setTempData({
-                              ...props.tempData,
-                              admin_ok: e.target.value,
-                            })
-                          }
+                          onChange={props.handleInputChange("admin_ok")}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">

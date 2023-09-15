@@ -1,4 +1,4 @@
-// export function ChartData(tableData: TableDataItem[]) {
+// export function ChartData(tableData: MqttDataItem[]) {
 //   const data = {
 //     labels: tableData.map((item) => item.name),
 //     datasets: [
@@ -13,12 +13,12 @@
 //   };
 //   return data;
 // }
-import { TableDataItem } from "@/components/chart/MqttChart.type";
+import { MqttDataItem } from "@/components/chart/MqttChart.type";
 
 // 테이블 데이터를 필터링하여 차트 데이터로 변환하는 함수.
 export function MyChartData(
-  tableData: TableDataItem[],
-  filterFunc: (item: TableDataItem) => boolean
+  tableData: MqttDataItem[],
+  filterFunc: (item: MqttDataItem) => boolean
 ) {
   // filterFunc에 따라 필요한 데이터만 선택하여 새 배열을 만듦.
   const filteredData = tableData.filter(filterFunc);

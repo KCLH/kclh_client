@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import * as mqtt from "mqtt";
-import { TableDataItem } from "@/components/chart/MqttChart.type";
+import { MqttDataItem } from "@/components/chart/MqttChart.type";
 
 // MQTT 서버로부터 데이터를 받아와서 상태로 저장하는 함수.
 export function useMqttClient(brokerUrl: string, topic: string) {
   // 데이터를 저장할 상태를 생성.
-  const [plcData, setPlcData] = useState<TableDataItem[]>([]);
-  const [iotData, setIotData] = useState<TableDataItem[]>([]);
+  const [plcData, setPlcData] = useState<MqttDataItem[]>([]);
+  const [iotData, setIotData] = useState<MqttDataItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
     // MQTT 클라이언트를 생성하고 서버에 연결.
@@ -24,17 +25,18 @@ export function useMqttClient(brokerUrl: string, topic: string) {
       try {
         // 메시지는 문자열 형태이므로 JSON 형태로 변환.
 
-        const PLCData: { plcdata: TableDataItem[] } = JSON.parse(
+        const PLCData: { plcdata: MqttDataItem[] } = JSON.parse(
           message.toString()
         );
 
-        const IoTData: { iotdata: TableDataItem[] } = JSON.parse(
+        const IoTData: { iotdata: MqttDataItem[] } = JSON.parse(
           message.toString()
         );
         // console.log("parsedData: ", parsedData);
         // 변환된 데이터를 상태에 저장. 이후 차트 그리기 등에서 사용.
         setPlcData(PLCData.plcdata);
         setIotData(IoTData.iotdata);
+        setIsLoading(false); // 메시지 수신 후 로딩 종료
         // console.log(topic);
       } catch (error) {
         console.error("Error parsing data:", error);
@@ -48,5 +50,5 @@ export function useMqttClient(brokerUrl: string, topic: string) {
     };
   }, [brokerUrl, topic]);
 
-  return { plcData, iotData };
+  return { plcData, iotData, isLoading }; // isLoading 반환
 }
