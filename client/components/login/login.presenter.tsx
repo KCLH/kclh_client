@@ -1,6 +1,6 @@
 "use client";
 import { Box, Button, TextField } from "@mui/material";
-import MyCarousel from "@/components/layout/carousel";
+import MyCarousel from "@/components/layout/Carousel";
 import * as s from "@/components/login/login.styles";
 import { CAROUSEL_IMG } from "@/components/utils/constants";
 

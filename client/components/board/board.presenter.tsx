@@ -1,13 +1,14 @@
 "use client";
 
-import Cookies from "universal-cookie";
+// import Cookies from "universal-cookie";
 import { useMqttClient } from "@/components/hooks/useMqttClient";
 import * as s from "@/components/board/board.styles";
 import Dashboard from "../chart/Dashboard";
-import { useState } from "react";
+import LoadingComponent from "@/components/layout/Loading";
+// import { useState } from "react";
 
 export default function BoardUI(props: any) {
-  const cookies = new Cookies();
+  // const cookies = new Cookies();
 
   const brokerUrl = "mqtt://192.168.0.106:8884";
   const topic1 = "edukit1";
@@ -17,8 +18,8 @@ export default function BoardUI(props: any) {
   // const MqttData2 = useMqttClient(brokerUrl, topic2);
   // const { plcData: MqttData1 } = useMqttClient(brokerUrl, topic1);
   // const { iotData: MqttData2 } = useMqttClient(brokerUrl, topic2);
-  const { plcData } = useMqttClient(brokerUrl, topic1);
-  const { iotData } = useMqttClient(brokerUrl, topic2);
+  const { plcData, isLoading: isLoading1 } = useMqttClient(brokerUrl, topic1);
+  const { iotData, isLoading: isLoading2 } = useMqttClient(brokerUrl, topic2);
 
   let year, month, day, hours, minutes;
 
@@ -32,11 +33,11 @@ export default function BoardUI(props: any) {
     const dateObj = new Date(dateTimeItem.value);
 
     // 년, 월, 일, 시간 구분
-    year = dateObj.getFullYear();
-    month = dateObj.getMonth() + 1;
-    day = dateObj.getDate();
-    hours = dateObj.getHours();
-    minutes = dateObj.getMinutes();
+    year = dateObj.getUTCFullYear();
+    month = dateObj.getUTCMonth() + 1; // 월은 0부터 시작하므로 +1 필요
+    day = dateObj.getUTCDate();
+    hours = dateObj.getUTCHours();
+    minutes = dateObj.getUTCMinutes();
   } else {
     // dateTimeItem이 없는 경우 현재 시간 사용
     const nowDateObj = new Date();
@@ -46,6 +47,10 @@ export default function BoardUI(props: any) {
     day = nowDateObj.getDate();
     hours = nowDateObj.getHours();
     minutes = nowDateObj.getMinutes();
+  }
+
+  if (isLoading1 || isLoading2) {
+    return <LoadingComponent />;
   }
 
   return (
@@ -59,7 +64,6 @@ export default function BoardUI(props: any) {
           } ${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`}
         </div>
       </s.BoardTop>
-
       <Dashboard />
     </s.Wrapper>
   );

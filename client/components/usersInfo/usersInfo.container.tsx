@@ -3,10 +3,12 @@
 import UsersInfoUI from "@/components/usersInfo/usersInfo.presenter";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getUsers } from "@/components/utils/userAPI";
+// import { getUsers } from "@/components/utils/userAPI";
+import { API_URL } from "@/components/utils/Token";
+import useAxios from "@/components/hooks/useAxios";
+import LoadingComponent from "@/components/layout/Loading";
 
 export default function UsersInfoContainer() {
-  const [usersData, setUsersData] = useState(null);
   const router = useRouter();
 
   const [editing, setEditing] = useState(null);
@@ -21,17 +23,38 @@ export default function UsersInfoContainer() {
     admin_ok: "",
   });
 
+  // useAxios 훅을 사용하여 API 요청을 보내고 결과를 받아옴.
+  const [{ data, loading, error }, fetchUsers] = useAxios(
+    `${API_URL}/employee/employeeAll`
+  );
+
   useEffect(() => {
-    async function fetchUsersData() {
-      const data = await getUsers();
-      setUsersData(data);
-    }
-    fetchUsersData();
+    fetchUsers();
   }, []);
+
+  // const [usersData, setUsersData] = useState([]);
+
+  // useEffect(() => {
+  //   async function fetchUsersData() {
+  //     const data = await getUsers();
+  //     setUsersData(data);
+  //   }
+  //   fetchUsersData();
+  // }, []);
+
+  // 서버로부터 받아온 데이터를 usersData 상태에 저장.
+  const usersData = data;
 
   const handleEdit = (user: any) => {
     setEditing(user.employee_num);
     setTempData(user);
+  };
+
+  const handleInputChange = (field: any) => (e: any) => {
+    setTempData((prevTempData) => ({
+      ...prevTempData,
+      [field]: e.target.value,
+    }));
   };
 
   const handleCancel = () => {
@@ -40,7 +63,11 @@ export default function UsersInfoContainer() {
 
   const handleSave = () => {
     // tempData를 서버로 보내거나 Redux store에 저장
-    // ...
+    // const updatedUser = props.tempData; // 예시
+
+    // API 요청을 보내서 사용자 정보 업데이트
+    // await updateUser(updatedUser); // 예시
+
     setEditing(null);
   };
 
@@ -56,6 +83,9 @@ export default function UsersInfoContainer() {
     }
   };
 
+  if (loading) return <LoadingComponent />;
+
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <>
       <UsersInfoUI
@@ -68,6 +98,7 @@ export default function UsersInfoContainer() {
         handleCancel={handleCancel}
         handleSave={handleSave}
         handleDelete={handleDelete}
+        handleInputChange={handleInputChange}
       />
     </>
   );
