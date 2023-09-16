@@ -71,16 +71,16 @@ export default function FactoryUI(props: any) {
   }
   //3호기 1축
   let M3_1Position;
-  if (M3_1MqttData && M3_1MqttData?.value >= 0) {
-    M3_1Position = (M3_1MqttData?.value / 1303155) * 0.155 + 1.35;
+  if (M3_1MqttData && Number(M3_1MqttData?.value) >= 0) {
+    M3_1Position = (Number(M3_1MqttData?.value) / 1303155) * 0.155 + 1.35;
     M3_1Position.toFixed(3);
   } else {
     M3_1Position = 1.35;
   }
   //3호기 2축
   let M3_2Position;
-  if (M3_2MqttData && M3_2MqttData?.value >= 0) {
-    M3_2Position = M3_2MqttData?.value / 21002500;
+  if (M3_2MqttData && Number(M3_2MqttData?.value) >= 0) {
+    M3_2Position = Number(M3_2MqttData?.value) / 21002500;
     M3_2Position.toFixed(3);
   } else {
     M3_2Position = 0;
@@ -123,9 +123,9 @@ export default function FactoryUI(props: any) {
   return (
     <>
       <div style={{ backgroundColor: "#fff", width: "100%", height: "80vh" }}>
+        <Controller />
         <Canvas camera={{ position: [0, 2, -2] }}>
           <directionalLight position={[1, 1, -1]} intensity={5} />
-          <Controller />
           <Body />
           <Belt />
           <Chip
