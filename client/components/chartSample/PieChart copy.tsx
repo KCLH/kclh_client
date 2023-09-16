@@ -1,6 +1,3 @@
-// pages/PieChart.tsx
-"use client";
-
 import "chart.js/auto";
 import { Pie } from "react-chartjs-2";
 

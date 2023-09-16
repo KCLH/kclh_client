@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
 import "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { useMqttClient } from "@/components/hooks/useMqttClient";
 import "chartjs-adapter-moment";
 import Moment from "moment";
 import "moment/locale/ko";
+import { useEffect, useRef, useState } from "react";
 
 // 한국어로 날짜 및 시간 형식을 설정합니다.
 Moment.locale("ko");
@@ -12,18 +12,11 @@ Moment.locale("ko");
 // 날짜 형식을 정의합니다. 예: "9월 15일"
 const DATE_FORMAT = "MMM DD";
 
-// 주어진 날짜 객체를 형식화하는 유틸리티 함수
-// export function extractDateTime(dateObj: any) {
-//   const dateMoment = Moment(dateObj);
-//   const formattedDate = dateMoment.format(DATE_FORMAT);
-//   return formattedDate;
-// }
-
 // MQTT 브로커 및 토픽 정보
 const brokerUrl = "mqtt://192.168.0.106:8884";
 const topic = "edukit1";
 
-function LineChart() {
+function SteppedLineChart() {
   const chartRef = useRef(null);
 
   // MQTT 클라이언트를 사용하여 데이터를 가져오는 커스텀 훅을 사용합니다.
@@ -36,11 +29,12 @@ function LineChart() {
     fill: true, // 영역을 채움
     backgroundColor: "", // 배경 색상 없음
     borderColor: "", // 선 색상 없음
+    stepped: "before", // Stepped Line을 만들기 위한 옵션
   };
 
   const initialData = {
     labels: [], // x 축 레이블
-    datasets: [chartDataTemplate, chartDataTemplate], // 두 개의 데이터셋(선)을 가짐
+    datasets: [chartDataTemplate],
   };
 
   const [chartData, setChartData] = useState(initialData);
@@ -70,23 +64,15 @@ function LineChart() {
   };
 
   // 데이터를 업데이트하는 함수
-  const updateChartData = (newLabelItem, speed1, speed2) => {
-    if (newLabelItem && speed1 && speed2) {
+  const updateChartData = (newLabelItem, dice) => {
+    if (newLabelItem && dice) {
       const newLabels = [...chartData.labels, newLabelItem.value];
-      const speedData1 = [
-        ...chartData.datasets[0].data,
-        parseFloat(speed1.value),
-      ];
-      const speedData2 = [
-        ...chartData.datasets[1].data,
-        parseFloat(speed2.value),
-      ];
+      const diceData = [...chartData.datasets[0].data, parseFloat(dice.value)];
 
       // 레이블 및 데이터가 일정 개수를 초과하면 오래된 데이터를 삭제합니다.
       if (newLabels.length > 20) {
         newLabels.shift();
-        speedData1.shift();
-        speedData2.shift();
+        diceData.shift();
       }
 
       // 차트 데이터를 업데이트합니다.
@@ -94,18 +80,11 @@ function LineChart() {
         labels: newLabels,
         datasets: [
           {
-            label: speed1.name,
-            data: speedData1,
+            label: dice.name,
+            data: diceData,
             fill: false,
-            backgroundColor: "",
-            borderColor: "",
-          },
-          {
-            label: speed2.name,
-            data: speedData2,
-            fill: false,
-            backgroundColor: "",
-            borderColor: "",
+            borderColor: "blue",
+            backgroundColor: "transparent",
           },
         ],
       });
@@ -117,16 +96,18 @@ function LineChart() {
     if (!isLoading) {
       // 필요한 데이터 항목을 가져옵니다.
       const newLabelItem = plcData.find((item) => item.tagId === "0");
-      const speed1 = plcData.find((item) => item.tagId === "43");
-      const speed2 = plcData.find((item) => item.tagId === "44");
+      const dice = plcData.find((item) => item.tagId === "37");
 
       // 차트 데이터를 업데이트합니다.
-      updateChartData(newLabelItem, speed1, speed2);
+      updateChartData(newLabelItem, dice);
     }
   }, [plcData, isLoading]);
 
-  // React Chart.js 라이브러리를 사용하여 선 그래프를 렌더링합니다.
-  return <Line ref={chartRef} data={chartData} options={options} />;
+  return (
+    <div>
+      <Line ref={chartRef} data={chartData} options={options} />
+    </div>
+  );
 }
 
-export default LineChart;
+export default SteppedLineChart;
