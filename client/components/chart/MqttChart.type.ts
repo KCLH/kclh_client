@@ -3,7 +3,7 @@ import { ChartType } from "chart.js";
 export interface MqttDataItem {
   tagId: string;
   name: string;
-  value: number;
+  value: boolean | string;
 }
 
 export interface UseChartProps {
