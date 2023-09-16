@@ -25,12 +25,14 @@
     "chartjs-adapter-moment": "^1.0.1",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "mqtt": "^5.0.5",
     "next": "13.4.19",
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
+    "react-gauge-chart": "^0.4.1",
     "react-hook-form": "^7.45.4",
     "react-material-ui-carousel": "^3.4.2",
     "swr": "^2.2.2",
@@ -40,5 +42,7 @@
     "web-vitals": "^3.4.0",
     "yup": "^1.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/react-gauge-chart": "^0.4.0"
+  }
 }
