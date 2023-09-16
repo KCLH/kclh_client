@@ -3,8 +3,9 @@
 // import { useEffect } from "react";
 // import { useMqttClient } from "@/components/hooks/useMqttClient"; //MQTT 클라이언트 관련 로직을 처리하는 커스텀 훅
 // import { MyChartData } from "@/components/utils/MyChartData"; // 차트 데이터 생성 함수
-import LineChart from "@/components/chartSample/LineChart";
-// import PieChart from "@/components/chartSample/PieChart2";
+import LineChart from "@/components/chart/LineChart";
+import PieChart from "@/components/chart/PieChart";
+import SteppedLineChart from "@/components/chart/StepLineChart";
 // import { MqttDataItem } from "./Chart.type";
 
 export default function Dashboard() {
@@ -51,7 +52,12 @@ export default function Dashboard() {
         <div style={{ backgroundColor: "beige" }}>
           <LineChart />
         </div>
-        <div style={{ backgroundColor: "coral" }}>{/* <PieChart /> */}</div>
+        <div style={{ backgroundColor: "coral" }}>
+          <PieChart />
+        </div>
+        <div style={{ backgroundColor: "aqua" }}>
+          <SteppedLineChart />
+        </div>
       </div>
     </div>
   );
