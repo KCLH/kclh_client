@@ -2,6 +2,7 @@
 import { Canvas } from "@react-three/fiber";
 import { useMqttClient } from "@/components/hooks/useMqttClient";
 
+import { Controller } from "@/components/factory/factory.controller";
 import { Body } from "@/components/factory/Edukit/Body";
 import { Belt } from "@/components/factory/Edukit/Belt";
 import { Chip } from "@/components/factory/Edukit/Chip";
@@ -20,6 +21,12 @@ export default function FactoryUI(props: any) {
   const topic = "edukit1";
   const { plcData } = useMqttClient(brokerUrl, topic);
 
+  const M1OnoffData = plcData.find((item) => item.tagId === "9");
+  const M2OnoffData = plcData.find((item) => item.tagId === "10");
+  const M3OnoffData = plcData.find((item) => item.tagId === "11");
+  const M1Output = plcData.find((item) => item.tagId === "15");
+  const M2Output = plcData.find((item) => item.tagId === "16");
+  const M3Output = plcData.find((item) => item.tagId === "17");
   const LightGMqttData = plcData.find((item) => item.tagId === "18");
   const LightYMqttData = plcData.find((item) => item.tagId === "19");
   const LightRMqttData = plcData.find((item) => item.tagId === "20");
@@ -41,12 +48,26 @@ export default function FactoryUI(props: any) {
   } else {
     M1Position = -1.5;
   }
+  //1호기 onOff
+  let M1Onoff;
+  if (M1OnoffData?.value) {
+    M1Onoff = 0.25;
+  } else {
+    M1Onoff = 0.75;
+  }
   //2호기
   let M2Position;
   if (M2MqttData && M2MqttData?.value) {
     M2Position = -1.55;
   } else {
     M2Position = -1.5;
+  }
+  //2호기 onOff
+  let M2Onoff;
+  if (M2OnoffData?.value) {
+    M2Onoff = 0.25;
+  } else {
+    M2Onoff = 0.75;
   }
   //3호기 1축
   let M3_1Position;
@@ -63,6 +84,13 @@ export default function FactoryUI(props: any) {
     M3_2Position.toFixed(3);
   } else {
     M3_2Position = 0;
+  }
+  //3호기 onOff
+  let M3Onoff;
+  if (M3OnoffData?.value) {
+    M3Onoff = 0.25;
+  } else {
+    M3Onoff = 0.75;
   }
   //칩
   let ChipPositionX, ChipPositionY, ChipPositionZ;
@@ -97,6 +125,7 @@ export default function FactoryUI(props: any) {
       <div style={{ backgroundColor: "#fff", width: "100%", height: "80vh" }}>
         <Canvas camera={{ position: [0, 2, -2] }}>
           <directionalLight position={[1, 1, -1]} intensity={5} />
+          <Controller />
           <Body />
           <Belt />
           <Chip
@@ -109,9 +138,22 @@ export default function FactoryUI(props: any) {
           <TrafficLight_Red OnOff={LightRMqttData?.value} />
           {ColorGMqttData?.value && <ColorSensor_G />}
           {ColorRMqttData?.value && <ColorSensor_R />}
-          <M1_Pusher positionZ={M1Position} />
-          <M2_Pusher positionZ={M2Position} />
-          <M3 positionY={M3_1Position} rotationY={M3_2Position} />
+          <M1_Pusher
+            positionZ={M1Position}
+            output={M1Output?.value}
+            onOff={M1Onoff}
+          />
+          <M2_Pusher
+            positionZ={M2Position}
+            output={M2Output?.value}
+            onOff={M2Onoff}
+          />
+          <M3
+            positionY={M3_1Position}
+            rotationY={M3_2Position}
+            output={M3Output?.value}
+            onOff={M3Onoff}
+          />
         </Canvas>
       </div>
     </>
