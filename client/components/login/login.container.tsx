@@ -15,6 +15,7 @@ import { Alert, Snackbar } from "@mui/material";
 export default function LoginContainer() {
   const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [routeToPush, setRouteToPush] = useState("/factory/1");
 
   const cookies = new Cookies();
   const loginEndpoint = `${process.env.NEXT_PUBLIC_SERVER}/employee/login`;
@@ -30,10 +31,19 @@ export default function LoginContainer() {
     "post"
   );
 
+  // console.log("Loading:", loading);
+  // console.log("Response:", response);
+  // console.log("Error:", axiosError);
+
   useEffect(() => {
+    console.log("타입", typeof response);
+
     if (!loading) {
-      if (response && response.status === 200) {
-        const Token = response.data.token;
+      // if (response && response.status === 200) {
+      if (response) {
+        console.log("Response exists:", response); // 응답 전체 출력
+        const Token = response.token;
+        console.log("Token:", Token); // Token 값 출력
 
         const expires = new Date();
         expires.setDate(expires.getDate() + 1);
@@ -41,28 +51,40 @@ export default function LoginContainer() {
 
         // formData.current가 null이 아니라면 employee_num 값을 쿠키에 저장
         if (formData.current !== null) {
+          console.log(
+            "employee_num:",
+            formData.current.employee_num.toString()
+          ); // employee_num 값 출력
           cookies.set(
             "employee_num",
             formData.current.employee_num.toString(),
             { expires }
           );
         }
+        // console.log("name:", response.name); // name 값 출력
+        // console.log("factory:", response.factory); // factory 값 출력
+        // console.log("role:", response.role); // role 값 출력
 
-        cookies.set("name", response.data.name, { expires });
-        cookies.set("factory", response.data.factory, { expires });
-        cookies.set("role", response.data.role, { expires });
+        cookies.set("name", response.name, { expires });
+        cookies.set("factory", response.factory, { expires });
+        cookies.set("role", response.role, { expires });
         axios.defaults.headers.common["token"] = Token;
         axios.defaults.withCredentials = true;
 
-        console.log("response.data: ", response.data);
+        // console.log("response.data: ", response.data);
 
-        const factoryVal = response.data.factory;
+        const factoryVal = response.factory;
         let routeToPush = "/factory/1";
+        console.log("factoryVal", factoryVal);
+        console.log("routeToPush", routeToPush);
         if (factoryVal === "파주 2공장") {
-          routeToPush = "/factory/2";
+          setRouteToPush("/factory/2");
+        } else {
+          setRouteToPush("/factory/1");
         }
 
         mutate();
+        // console.log("Attempting to navigate to:", routeToPush); // 이 부분 추가
         router.push(routeToPush);
       }
 
@@ -90,8 +112,11 @@ export default function LoginContainer() {
 
         setOpenErrorSnackbar(true);
       }
+    } else {
+      console.log("Response does not exist");
     }
-  }, [loading, response, axiosError]);
+  }, [response, axiosError]); // 의존성 배열에서 loading 제거
+
   const {
     register,
     handleSubmit,
@@ -109,14 +134,18 @@ export default function LoginContainer() {
   const onClickLogin = useCallback((data: FormValue) => {
     formData.current = data; // form data 저장
     doLogin(data);
+    // console.log(
+    //   "🚀 ~ file: login.container.tsx:122 ~ onClickLogin ~ doLogin:",
+    //   doLogin
+    // );
   }, []);
 
   // userData나 error 값의 변화에 따라 반응하도록 수정
   useEffect(() => {
     if (!error && userData) {
-      return router.push("/");
+      return router.push(routeToPush);
     }
-  }, [error, userData]);
+  }, [error, userData, routeToPush]);
 
   return (
     <>
