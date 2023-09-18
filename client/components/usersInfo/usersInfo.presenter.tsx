@@ -134,9 +134,9 @@ export default function UsersInfoUI(props: any) {
                         <input
                           id="admin_ok"
                           type="text"
-                          // defaultValue={
-                          //   props.tempData?.admin_ok === "Y" ? "관리자" : "사원"
-                          // }
+                          defaultValue={
+                            props.tempData?.admin_ok === "Y" ? "관리자" : "사원"
+                          }
                           placeholder={
                             props.tempData?.admin_ok === "Y" ? "관리자" : "사원"
                           }

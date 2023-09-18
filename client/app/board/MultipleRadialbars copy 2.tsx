@@ -14,11 +14,11 @@ const RadialBarChart = () => {
   );
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && plcData.length > 0) {
       // 필요한 데이터 항목을 가져와서 seriesData를 업데이트합니다.
       const newData = plcData
         .filter((item) => ["15", "16", "17"].includes(item.tagId))
-        .map((item) => item.value * 12.5);
+        .map((item) => item.value);
 
       setSeriesData(newData);
     }
@@ -42,11 +42,8 @@ const RadialBarChart = () => {
             show: true,
             label: "총 생산량",
             formatter: function (w) {
-              // totalValue는 각 값의 합입니다.
               const totalValue = seriesData.reduce((a, b) => a + b, 0);
-              // const totalValue = seriesData;
-
-              return plcData.find((item) => item.tagId === "17")?.value;
+              return totalValue + " 개";
             },
           },
         },
