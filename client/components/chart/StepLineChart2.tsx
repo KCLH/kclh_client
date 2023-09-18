@@ -1,10 +1,9 @@
+import React, { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import "chart.js/auto";
-import { Line } from "react-chartjs-2";
-import { useMqttClient } from "@/components/hooks/useMqttClient";
 import "chartjs-adapter-moment";
 import Moment from "moment";
 import "moment/locale/ko";
-import { useEffect, useRef, useState } from "react";
 
 // 한국어로 날짜 및 시간 형식을 설정합니다.
 Moment.locale("ko");
@@ -16,6 +15,11 @@ const DATE_FORMAT = "MMM DD";
 const brokerUrl = "mqtt://192.168.0.106:8884";
 const topic = "edukit1";
 
+// ApexCharts 라이브러리 동적 로드
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
+
 function SteppedLineChart() {
   const chartRef = useRef(null);
 
@@ -24,42 +28,32 @@ function SteppedLineChart() {
 
   // 차트 데이터의 템플릿 및 초기 데이터 설정
   const chartDataTemplate = {
-    label: "", // 데이터셋의 레이블
+    name: "", // 데이터셋의 이름
     data: [], // 데이터 포인트 배열
-    fill: true, // 영역을 채움
-    backgroundColor: "", // 배경 색상 없음
-    borderColor: "", // 선 색상 없음
-    stepped: "before", // Stepped Line을 만들기 위한 옵션
   };
 
   const initialData = {
     labels: [], // x 축 레이블
-    datasets: [chartDataTemplate],
+    series: [chartDataTemplate],
   };
 
   const [chartData, setChartData] = useState(initialData);
 
   const options = {
-    scales: {
-      y: {
-        beginAtZero: true, // y 축은 0부터 시작
-      },
-      x: {
-        type: "time", // x 축은 시간 형식
-        time: {
-          unit: "day", // 날짜 단위로 표시
-          displayFormats: {
-            day: DATE_FORMAT, // 날짜 형식 지정
-          },
-        },
-        ticks: {
-          autoSkip: true, // 자동으로 레이블 스킵
-          maxTicksLimit: 20, // 최대 레이블 수
-        },
-        gridLines: {
-          display: false, // 그리드 라인 표시 안 함
+    chart: {
+      type: "line",
+      height: 350,
+    },
+    xaxis: {
+      type: "datetime", // x 축은 날짜/시간 형식
+      labels: {
+        formatter: function (value) {
+          return Moment(value).format(DATE_FORMAT);
         },
       },
+    },
+    yaxis: {
+      min: 0, // y 축은 0부터 시작
     },
   };
 
@@ -67,7 +61,7 @@ function SteppedLineChart() {
   const updateChartData = (newLabelItem, dice) => {
     if (newLabelItem && dice) {
       const newLabels = [...chartData.labels, newLabelItem.value];
-      const diceData = [...chartData.datasets[0].data, parseFloat(dice.value)];
+      const diceData = [...chartData.series[0].data, parseFloat(dice.value)];
 
       // 레이블 및 데이터가 일정 개수를 초과하면 오래된 데이터를 삭제합니다.
       if (newLabels.length > 20) {
@@ -78,13 +72,10 @@ function SteppedLineChart() {
       // 차트 데이터를 업데이트합니다.
       setChartData({
         labels: newLabels,
-        datasets: [
+        series: [
           {
-            label: dice.name,
+            name: dice.name,
             data: diceData,
-            fill: false,
-            borderColor: "blue",
-            backgroundColor: "transparent",
           },
         ],
       });
@@ -103,9 +94,15 @@ function SteppedLineChart() {
     }
   }, [plcData, isLoading]);
 
+  // ApexCharts를 사용하여 Stepline 형태의 라인 차트를 렌더링합니다.
   return (
     <div>
-      <Line ref={chartRef} data={chartData} options={options} />
+      <ReactApexChart
+        options={options}
+        series={chartData.series}
+        type="line"
+        height={350}
+      />
     </div>
   );
 }
