@@ -21,14 +21,16 @@ import { styled } from "@mui/system";
 import useCurrentUser from "@/components/hooks/useCurrentUser";
 
 const Wrapper = styled("div")({
-  padding: "30px 30px",
+  height: "50px",
+  padding: "10px 20px",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   position: "sticky",
   top: 0,
   zIndex: 999,
-  backgroundColor: "#f2f2f2",
+  // backgroundColor: "#f2f2f2",
+  backgroundColor: "rgba(242, 242, 242, 0.8)",
 });
 const Logo = styled("div")({
   display: "flex",
@@ -36,6 +38,7 @@ const Logo = styled("div")({
   justifyContent: "center",
   alignItems: "center",
 });
+
 const Nav = styled("div")({
   display: "flex",
   flexDirection: "row",
@@ -75,7 +78,8 @@ export default function Header() {
 
   useEffect(() => {
     if (userData) {
-      console.log("Current user data:", userData);
+      console.log("🚀 ~ file: Header.tsx:81 ~ useEffect ~ userData:", userData);
+      // console.log("Current user data:", userData);
       axios.defaults.withCredentials = true; // credential:true 추가
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"; // access-control-allow-origin 추가
       axios.defaults.headers.common["SameSite"] = "none"; // samesite=none 추가
@@ -110,8 +114,8 @@ export default function Header() {
             <Image
               src="/redDice1Remove.png"
               alt="레드 다이스"
-              width="40"
-              height="40"
+              width="30"
+              height="30"
             />
           </Link>
           <Typography

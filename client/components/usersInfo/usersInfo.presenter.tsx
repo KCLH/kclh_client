@@ -23,25 +23,27 @@ const Wrapper = styled("div")({
   padding: "20px",
 });
 
-export default function UsersInfoUI(props: any) {
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
+export default function UsersInfoUI(props: any) {
+  console.log("UsersInfoUI rendering");
 
   console.log(props.usersData);
 
@@ -88,20 +90,29 @@ export default function UsersInfoUI(props: any) {
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
-                          value={props.tempData?.department}
-                          onChange={props.handleInputChange("department")}
+                          id="department"
+                          type="text"
+                          defaultValue={props.tempData?.department}
+                          placeholder={props.tempData?.department}
+                          onChange={props.onChangeInputs}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
-                          value={props.tempData?.rank}
-                          onChange={props.handleInputChange("rank")}
+                          id="rank"
+                          type="text"
+                          defaultValue={props.tempData?.rank}
+                          placeholder={props.tempData?.rank}
+                          onChange={props.onChangeInputs}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <input
-                          value={props.tempData?.factory}
-                          onChange={props.handleInputChange("factory")}
+                          id="factory"
+                          type="text"
+                          defaultValue={props.tempData?.factory}
+                          placeholder={props.tempData?.factory}
+                          onChange={props.onChangeInputs}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
@@ -111,11 +122,31 @@ export default function UsersInfoUI(props: any) {
                         {user.email}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        <input
-                          value={
+                        {/* <input
+                          id="admin_ok"
+                          type="text"
+                          defaultValue={props.tempData?.admin_ok}
+                          placeholder={
                             props.tempData?.admin_ok === "Y" ? "관리자" : "사원"
                           }
-                          onChange={props.handleInputChange("admin_ok")}
+                          onChange={props.onChangeInputs}
+                        /> */}
+                        <input
+                          id="admin_ok"
+                          type="text"
+                          // defaultValue={
+                          //   props.tempData?.admin_ok === "Y" ? "관리자" : "사원"
+                          // }
+                          placeholder={
+                            props.tempData?.admin_ok === "Y" ? "관리자" : "사원"
+                          }
+                          onChange={(e) => {
+                            const value =
+                              e.target.value === "관리자" ? "Y" : "N";
+                            props.onChangeInputs({
+                              target: { id: "admin_ok", value },
+                            });
+                          }}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="center">
@@ -130,7 +161,7 @@ export default function UsersInfoUI(props: any) {
                           <Button
                             variant="contained"
                             color="success"
-                            onClick={() => props.handleEdit(user)}
+                            onClick={props.onClickUpdate}
                           >
                             저장
                           </Button>
