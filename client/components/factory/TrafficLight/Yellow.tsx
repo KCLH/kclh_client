@@ -1,13 +1,13 @@
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 
 //신호등 노랑
-export const TrafficLight_Yellow = ({ OnOff }) => {
-  //모델의 화면과 애니메이션을 읽어오는 코드
-  const { scene } = useLoader(GLTFLoader, "/TrafficLight_Yellow.glb");
+export const TrafficLight_Yellow = ({ OnOff }: any) => {
+  // 모델의 화면과 애니메이션을 읽어오는 코드
+  const { scene } = useLoader(GLTFLoader as any, "/TrafficLight_Yellow.glb");
 
-  scene.traverse((o) => {
+  scene.traverse((o: any) => {
     if (o.type === "Mesh") {
       if (o.material.name === "color_b0f7ffff.004") {
         if (OnOff) {

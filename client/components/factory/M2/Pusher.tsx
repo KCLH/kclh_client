@@ -1,16 +1,16 @@
 "use client";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { useLoader } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import GaugeChart from "react-gauge-chart";
 
-//3호기 Y바
-export const M3_Ybar = ({ output, onOff }) => {
-  //모델의 화면과 애니메이션을 읽어오는 코드
-  const { scene } = useLoader(GLTFLoader, "/M3_Ybar.glb");
+//2호기 부품
+export const M2_Pusher = ({ positionZ, output, onOff }: any) => {
+  // 모델의 화면과 애니메이션을 읽어오는 코드
+  const { scene } = useLoader(GLTFLoader as any, "/M2_Pusher.glb");
 
   //미니 대시보드
   const router = useRouter();
@@ -23,7 +23,7 @@ export const M3_Ybar = ({ output, onOff }) => {
   //대시보드 내용
   miniD.push(
     <Html
-      key={"M3"}
+      key={"M2"}
       position={[0.8, 0.53, 0]}
       style={{
         backgroundColor: "#f2f2f2",
@@ -35,7 +35,7 @@ export const M3_Ybar = ({ output, onOff }) => {
       <div className="miniD" onClick={() => router.push("/")}>
         {
           <div>
-            M3
+            M2
             <br />
             <GaugeChart
               id="M2OnOff"
@@ -56,7 +56,11 @@ export const M3_Ybar = ({ output, onOff }) => {
 
   //작업 후 return하는 코드
   return (
-    <primitive object={scene} onClick={handleMiniD}>
+    <primitive
+      object={scene}
+      position={[0, 1.35, positionZ]}
+      onClick={handleMiniD}
+    >
       {miniD}
     </primitive>
   );

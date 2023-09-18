@@ -1,6 +1,6 @@
 "use client";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { useLoader } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import { useRouter } from "next/navigation";
@@ -8,9 +8,9 @@ import React, { useState } from "react";
 import GaugeChart from "react-gauge-chart";
 
 //1호기 부품
-export const M1_Pusher = ({ positionZ, output, onOff }) => {
-  //모델의 화면과 애니메이션을 읽어오는 코드
-  const { scene } = useLoader(GLTFLoader, "/M1_Pusher.glb");
+export const M1_Pusher = ({ positionZ, output, onOff }: any) => {
+  // 모델의 화면과 애니메이션을 읽어오는 코드
+  const { scene } = useLoader(GLTFLoader as any, "/M1_Pusher.glb");
 
   //미니 대시보드
   const router = useRouter();
