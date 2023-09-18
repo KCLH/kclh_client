@@ -3,6 +3,7 @@ import { ChartType } from "chart.js";
 export interface MqttDataItem {
   tagId: string;
   name: string;
+  type: string;
   value: boolean | string;
 }
 

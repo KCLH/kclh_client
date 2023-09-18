@@ -9,7 +9,7 @@ import useAxios from "@/components/hooks/useAxios";
 import LoadingComponent from "@/components/layout/Loading";
 
 import axios from "axios";
-import { Alert } from "@mui/material";
+import { Alert, Snackbar } from "@mui/material";
 import { IUpdateAdminInput } from "./userInfo.types";
 
 const initialInputs = {
@@ -41,6 +41,8 @@ export default function UsersInfoContainer() {
   const [isActive, setIsActive] = useState(false);
   const [inputs, setInputs] = useState(initialInputs);
   const [inputsError, setInputsError] = useState(initialInputs);
+
+  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
 
   const onChangeInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const _inputs = {
@@ -87,12 +89,13 @@ export default function UsersInfoContainer() {
 
   const onClickUpdate = async () => {
     if (
+      !inputs.admin_ok &&
       !inputs.department &&
-      !inputs.rank &&
+      !inputs.employee_num &&
       !inputs.factory &&
-      !inputs.admin_ok
+      !inputs.rank
     ) {
-      <Alert severity="error">수정한 내용이 없습니다.</Alert>;
+      setOpenErrorSnackbar(true);
     }
 
     const updateAdminInput: IUpdateAdminInput = {};
@@ -234,6 +237,13 @@ export default function UsersInfoContainer() {
         onChangeInputs={onChangeInputs}
         onClickUpdate={onClickUpdate}
       />
+      <Snackbar
+        open={openErrorSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenErrorSnackbar(false)}
+      >
+        <Alert severity="error">수정사항이 없습니다</Alert>
+      </Snackbar>
     </>
   );
 }

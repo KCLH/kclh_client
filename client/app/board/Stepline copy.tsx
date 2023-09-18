@@ -19,16 +19,14 @@ const Stepline = () => {
     if (!isLoading) {
       // 필요한 데이터 항목을 가져옵니다.
       const newLabelItem = plcData.find((item) => item.tagId === "0");
-      const diceValue = plcData.find((item) => item.tagId === "37");
-      const diceComparisonValue = plcData.find((item) => item.tagId === "38"); // 새로운 데이터
+      const dice = plcData.find((item) => item.tagId === "37");
 
       // MQTT 데이터를 업데이트합니다.
       setMqttData((prevData) => [
         ...prevData,
         {
           label: newLabelItem.value,
-          value: parseFloat(diceValue.value),
-          additionalValue: parseFloat(diceComparisonValue.value), // 새로운 데이터 추가
+          value: parseFloat(dice.value),
         },
       ]);
     }
@@ -36,12 +34,7 @@ const Stepline = () => {
 
   const seriesData = [
     {
-      name: "주사위 값",
       data: mqttData.map((item) => item.value),
-    },
-    {
-      name: "주사위 비교 숫자",
-      data: mqttData.map((item) => item.additionalValue), // 새로운 데이터를 추가합니다.
     },
   ];
 
