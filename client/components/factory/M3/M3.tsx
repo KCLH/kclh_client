@@ -2,7 +2,7 @@ import { M3_Ybar } from "@/components/factory/M3/Ybar";
 import { M3_Gripper } from "@/components/factory/M3/Gripper";
 import { M3_Yaxis } from "@/components/factory/M3/Yaxis";
 
-export const M3 = ({ positionY, rotationY, output, onOff }) => {
+export const M3 = ({ positionY, rotationY, output, onOff }: any) => {
   return (
     <mesh position={[0, positionY, -1.5]}>
       <M3_Yaxis />
