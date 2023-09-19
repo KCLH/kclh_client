@@ -122,15 +122,6 @@ export default function UsersInfoUI(props: any) {
                         {user.email}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {/* <input
-                          id="admin_ok"
-                          type="text"
-                          defaultValue={props.tempData?.admin_ok}
-                          placeholder={
-                            props.tempData?.admin_ok === "Y" ? "관리자" : "사원"
-                          }
-                          onChange={props.onChangeInputs}
-                        /> */}
                         <input
                           id="admin_ok"
                           type="text"
