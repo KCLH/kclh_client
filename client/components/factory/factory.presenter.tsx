@@ -122,7 +122,14 @@ export default function FactoryUI(props: any) {
 
   return (
     <>
-      <div style={{ backgroundColor: "#fff", width: "100%", height: "80vh" }}>
+      <div
+        style={{
+          backgroundColor: "#fff",
+          width: "100%",
+          height: "80vh",
+          display: "flex",
+        }}
+      >
         <Controller />
         <Canvas camera={{ position: [0, 2, -2] }}>
           <directionalLight position={[1, 1, -1]} intensity={5} />
