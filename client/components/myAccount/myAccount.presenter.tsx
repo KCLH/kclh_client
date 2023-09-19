@@ -6,7 +6,6 @@ import { useState } from "react";
 
 export default function MyAccountUI(props: any) {
   const [phoneValue, setPhoneValue] = useState("");
-  console.log("1");
   return (
     <>
       <s.사원증>

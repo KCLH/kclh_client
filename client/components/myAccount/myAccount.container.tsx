@@ -28,19 +28,18 @@ function MyAccountContainer() {
   // 백에서 userInfo 가져오기
   const { userData } = useCurrentUser();
   const id = userData?.employeeNum;
-  const [{ data, loading, error }, getDate] = useAxios(
+  const [{ data, loading, error }, getData] = useAxios(
     `${API_URL}/employee/myData${id}`
   );
   // 렌더링 될 때 마다 실행
   useEffect(() => {
     if (id) {
-      getDate();
+      getData();
     }
-  }, [id]);
+  }, [id, getData]);
   // 서버로부터 받아온 데이터를 userInfo에 저장.
   const userInfo = data;
   // 관련 처리
-  if (loading) return <LoadingComponent />;
   if (error)
     return (
       <Snackbar
@@ -106,6 +105,7 @@ function MyAccountContainer() {
 
   return (
     <>
+      {loading ? <LoadingComponent /> : <></>}
       <MyAccountUI
         register={register}
         handleSubmit={handleSubmit}
