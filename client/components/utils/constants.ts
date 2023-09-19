@@ -9,7 +9,7 @@ export const USERS_TABLE = [
   "권한",
 ];
 
-export const DEPARTMENTS = ["구매", "제조", "생산기술", "생산관리", "품질관리"];
+export const DEPARTMENTS = ["판매", "제조", "생산기술", "생산관리", "품질관리"];
 
 export const RANKS = ["사원", "주임", "대리", "과장", "차장", "부장"];
 
