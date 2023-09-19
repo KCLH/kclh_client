@@ -32,8 +32,5 @@ export const 소속 = styled.div`
   width: 150px;
   height: 50px;
 `;
-export const PW = styled.input``;
-export const 변경인적사항 = styled.input``;
-export const 변경사항 = styled.form``;
-export const 변경버튼 = styled.button``;
-export const 저장버튼 = styled.button``;
+
+export const 변경사항 = styled.div``;

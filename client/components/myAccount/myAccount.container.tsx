@@ -4,118 +4,149 @@
 import MyAccountUI from "@/components/myAccount/myAccount.presenter";
 
 import axios from "axios";
+import useAxios from "@/components/hooks/useAxios";
 import { API_URL } from "@/components/utils/Token";
 import useCurrentUser from "../hooks/useCurrentUser";
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Alert, Snackbar } from "@mui/material";
+import LoadingComponent from "../layout/Loading";
+import { schema, typeInputData } from "../utils/myAccount";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 function MyAccountContainer() {
-  const [modalContent, setModalContent] = useState(null); // 모달 내용
-  const [touchPW, setTouchPW] = useState(false); // 모달 내용 결정 요소
-  const [inputInfo, setInputInfo] = useState({
-    user_pwd: "",
-    phone: "",
-  }); // 변경 내용
-  const [userInfo, setUserInfo] = useState({
-    employee_name: "이름",
-    employee_num: "00",
-    department: "부서명",
-    rank: "직급명",
-    phone: "연락처",
-    email: "이메일",
-    factory: "담당지",
-  }); // 내 계정 정보
+  const [openErrorPutSnackbar, setOpenErrorPutSnackbar] = useState(false);
+  const [openErrorGetSnackbar, setOpenErrorGetSnackbar] = useState(false);
+  const [openErrorCheckSnackbar, setOpenErrorCheckSnackbar] = useState(false);
+  const [openNoneSnackbar, setOpenNoneSnackbar] = useState(false);
+  const [openChangeAllSnackbar, setOpenChangeAllSnackbar] = useState(false);
+
+  const [touchPW, setTouchPW] = useState(false); // 저장 버튼 조건
+
+  const [checkSame, setCheckSame] = useState(""); // 중복 확인
 
   // 백에서 userInfo 가져오기
   const { userData } = useCurrentUser();
-  const getData = async () => {
-    try {
-      // GET 요청을 보낼 URL과 데이터를 설정합니다.
-      const id = userData?.employeeNum;
-      const url = `${API_URL}/employee/myData${id}`;
-      const response = await axios.get(url);
-      console.log("여기야", response.data);
-      if (response.status === 200) {
-        console.log("userInfo1:", userInfo);
-        setUserInfo(response.data);
-        console.log("userInfo2:", userInfo);
-      } else {
-        console.error("Update failed:", response);
-      }
-    } catch (error) {
-      console.error("An error occurred while updating:", error);
-    }
-  };
-
-  // input값 가져오기
-  const handleChange = (e: any) => {
-    if (e && e.target) {
-      setInputInfo((prevInputInfo) => ({
-        ...prevInputInfo,
-        [e.target.id]: e.target.value,
-      }));
-    }
-  };
-
-  // // 연락처 중복체크
-  // const checkPhone = async () => {
-  //   try {
-  //     const inputPhone = inputInfo.phone;
-  //     const url = `${API_URL}/employee/phoneCheck`;
-  //     const response = await axios.get(url);
-  //     if (response.status === 200) {
-  //       setUserInfo(response.data);
-  //     } else {
-  //       console.error("Update failed:", response);
-  //     }
-  //   } catch (error) {
-  //     console.error("An error occurred while updating:", error);
-  //   }
-  // };
-
-  // // 백에 수정사항 보내기
-  // const putData = async () => {
-  //   try {
-  //     const user_pwd = inputInfo.user_pwd;
-  //     const phone = inputInfo.phone;
-  //     const response = await axios.put(
-  //       `/employee/update/${userData?.employeeNum}`,
-  //       {
-  //         phone,
-  //         user_pwd,
-  //       }
-  //     );
-  //     if (touchPW === true) {
-  //       setModalContent(null);
-  //     } else {
-  //       setModalContent(null);
-  //     }
-  //   } catch (error) {
-  //     if (touchPW === true) {
-  //       setModalContent(null);
-  //     } else {
-  //       setModalContent(null);
-  //     }
-  //   }
-  // };
-
-  // // 모달 닫기
-  // const closeModal = () => {
-  //   setModalContent(null);
-  // };
-
+  const id = userData?.employeeNum;
+  const [{ data, loading, error }, getDate] = useAxios(
+    `${API_URL}/employee/myData${id}`
+  );
   // 렌더링 될 때 마다 실행
   useEffect(() => {
-    getData();
-  }, []);
+    if (id) {
+      getDate();
+    }
+  }, [id]);
+  // 서버로부터 받아온 데이터를 userInfo에 저장.
+  const userInfo = data;
+  // 관련 처리
+  if (loading) return <LoadingComponent />;
+  if (error)
+    return (
+      <Snackbar
+        open={openErrorGetSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenErrorGetSnackbar(false)}
+      >
+        <Alert severity="error">정보를 가져오는 것에 실패했습니다</Alert>
+      </Snackbar>
+    );
+
+  // 연락처 중복체크
+  const checkPhone = async (phoneValue: string) => {
+    try {
+      const inputPhone = { phone: phoneValue };
+      const url = `${API_URL}/employee/phoneCheck`;
+      const response = await axios.post(url, inputPhone);
+      console.log("중복체크:", response);
+    } catch (error) {
+      setOpenErrorCheckSnackbar(true);
+    }
+  };
+
+  // Input data를 저장할 ref 생성
+  const inputInfo = useRef<typeInputData | null>(null);
+  // input값 가져오기
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<typeInputData>({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+  });
+
+  // 백에 수정사항 보내기
+  const putData = async (data: typeInputData) => {
+    inputInfo.current = data;
+    console.log("인풋값:", inputInfo.current);
+
+    const updateUserInput: typeInputData = {};
+    updateUserInput.employee_num = id;
+    updateUserInput.phone = inputInfo.phone || userInfo.phone;
+    updateUserInput.user_pwd = inputInfo.user_pwd;
+
+    if (!inputInfo.phone && !inputInfo.user_pwd && !inputInfo.employee_num) {
+      setOpenNoneSnackbar(true);
+    }
+
+    try {
+      const url = `${API_URL}/employee/update${id}`;
+      const updatedData = {
+        ...updateUserInput,
+      };
+      const response = await axios.put(url, updatedData);
+      if (response.statusText === "OK") {
+        setOpenChangeAllSnackbar(true);
+      }
+    } catch (err) {
+      setOpenErrorPutSnackbar(true);
+    }
+  };
 
   return (
-    <MyAccountUI
-      userInfo={userInfo}
-      // handleChange={handleChange}
-      // setTouchPW={setTouchPW}
-      // checkPhone={checkPhone}
-      // putData={putData}
-    />
+    <>
+      <MyAccountUI
+        register={register}
+        handleSubmit={handleSubmit}
+        errors={errors}
+        userInfo={userInfo}
+        checkPhone={checkPhone}
+        putData={putData}
+      />
+      <Snackbar
+        open={openNoneSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenNoneSnackbar(false)}
+      >
+        <Alert severity="error">수정사항이 없습니다</Alert>
+      </Snackbar>
+      <Snackbar
+        open={openErrorPutSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenErrorPutSnackbar(false)}
+      >
+        <Alert severity="error">변경에 실패했습니다</Alert>
+      </Snackbar>
+      <Snackbar
+        open={openChangeAllSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenChangeAllSnackbar(false)}
+      >
+        <Alert severity="error">
+          변경이 완료되었습니다
+          <br />
+          다시 로그인해주세요
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openErrorCheckSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenErrorCheckSnackbar(false)}
+      >
+        <Alert severity="error">중복 확인에 실패했습니다</Alert>
+      </Snackbar>
+    </>
   );
 }
 
