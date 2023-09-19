@@ -14,5 +14,5 @@ export const BoardTop = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 10px 30px;
-  border-bottom: 1px solid #262626;
+  border-bottom: 2px solid rgba(38, 38, 38, 0.3);
 `;

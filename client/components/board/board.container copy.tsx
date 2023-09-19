@@ -1,29 +1,23 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
 import { useMqttClient } from "@/components/hooks/useMqttClient";
 import BoardUI from "@/components/board/board.presenter";
 import { extractDateTime } from "@/components/utils/dateUtils";
+import { useEffect, useState } from "react";
 
 export default function BoardContainer(props: any) {
+  console.log(props.idFromPath);
   const brokerUrl = "mqtt://192.168.0.106:8884";
-  const [eduKitTopic, setEduKitTopic] = useState(""); // 초기 빈 문자열로 설정
-  const [iotTopic, setIotTopic] = useState(""); // 초기 빈 문자열로 설정
+  // const eduKitTopic = `edukit${props.idFromPath}`;
+  const eduKitTopic = "edukit1";
+  // const iotTopic = `iot${props.idFromPath}/info`;
+  const iotTopic = "iot1/info";
 
-  useEffect(() => {
-    // idFromPath를 기반으로 토픽들을 동적으로 생성
-    const dynamicEduKitTopic = `edukit${props.idFromPath}`;
-    const dynamicIotTopic = `iot${props.idFromPath}/info`;
-
-    // 토픽들을 설정한 후에 MQTT 연결을 수행
-    setEduKitTopic(dynamicEduKitTopic);
-    setIotTopic(dynamicIotTopic);
-  }, [props.idFromPath]); // props.idFromPath가 변경될 때만 실행
-
-  // MQTT 연결 및 데이터 가져오기
-  const { isLoading: eduKitIsLoading, plcData } = useMqttClient(
+  const { plcData, isLoading: eduKitIsLoading } = useMqttClient(
     brokerUrl,
     eduKitTopic
   );
-  const { isLoading: iotIsLoading, iotData } = useMqttClient(
+  const { iotData, isLoading: iotIsLoading } = useMqttClient(
     brokerUrl,
     iotTopic
   );
