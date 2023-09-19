@@ -1,15 +1,29 @@
 import { useMqttClient } from "@/components/hooks/useMqttClient";
 import HourglassTopRoundedIcon from "@mui/icons-material/HourglassTopRounded";
-import { Center } from "@react-three/drei";
 import { useState, useEffect } from "react";
 
-const brokerUrl = "mqtt://192.168.0.106:8884";
-const topic = "edukit1";
+export default function PlcDelay({ brokerUrl, eduKitTopic }) {
+  // const brokerUrl = "mqtt://192.168.0.106:8884";
+  // const topic = "edukit1";
 
-export default function PlcDelay() {
-  const { plcData, isLoading } = useMqttClient(brokerUrl, topic);
+  const [plcData, setPlcData] = useState(null); // 초기값을 null로 설정
+  const [rotationAngle, setRotationAngle] = useState(0);
 
-  const No1Delay = plcData.find((item) => item.tagId === "14");
+  // const { plcData } = useMqttClient(brokerUrl, eduKitTopic);
+
+  const { plcData: mqttPlcData, isLoading } = useMqttClient(
+    brokerUrl,
+    eduKitTopic
+  );
+
+  useEffect(() => {
+    // MQTT 데이터를 받아와서 state 업데이트
+    if (!isLoading && mqttPlcData) {
+      setPlcData(mqttPlcData);
+    }
+  }, [mqttPlcData, isLoading]);
+
+  const No1Delay = plcData ? plcData.find((item) => item.tagId === "14") : null;
 
   let DelayName;
   let DelayValue;
@@ -17,8 +31,6 @@ export default function PlcDelay() {
     DelayName = No1Delay.name;
     DelayValue = No1Delay.value;
   }
-
-  const [rotationAngle, setRotationAngle] = useState(0);
 
   useEffect(() => {
     const rotationInterval = setInterval(() => {
@@ -45,7 +57,7 @@ export default function PlcDelay() {
           transformOrigin: "center",
           transform: `rotate(${rotationAngle}deg)`,
           transition: "transform 0.1s linear",
-          color: "teal",
+          color: "#1B998B",
         }}
       />
       <div
@@ -56,9 +68,15 @@ export default function PlcDelay() {
           alignItems: "center",
         }}
       >
-        <h1>{DelayValue}</h1>
-        <div>공정반복</div>
-        <div>{DelayName}</div>
+        <div style={{ fontWeight: "700" }}>공정반복</div>
+        {plcData !== null ? (
+          <>
+            <h1>{DelayValue}</h1>
+            <div>{DelayName}</div>
+          </>
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
     </div>
   );

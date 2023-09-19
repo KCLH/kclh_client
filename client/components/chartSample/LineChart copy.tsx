@@ -1,116 +1,103 @@
-import { useEffect, useRef, useState } from "react";
-import "chart.js/auto";
-import { Line } from "react-chartjs-2";
-import { useMqttClient } from "@/components/hooks/useMqttClient";
-import "chartjs-adapter-moment";
-import Moment from "moment";
-import "moment/locale/ko";
+"use client";
 
-Moment.locale("ko");
+import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 
-const DATE_FORMAT = "MMM DD";
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 
-export function extractDateTime(dateObj: any) {
-  const dateMoment = Moment(dateObj);
-  const formattedDate = dateMoment.format(DATE_FORMAT);
-  return formattedDate;
-}
+const LineChart = () => {
+  // 정적 데이터 생성
+  const staticData = [
+    { x: 1632657600000, y: 45 },
+    { x: 1632657610000, y: 52 },
+    { x: 1632657620000, y: 60 },
+    // 추가 정적 데이터
+  ];
 
-const brokerUrl = "mqtt://192.168.0.106:8884";
-const topic = "edukit1";
-
-function LineChart() {
-  const chartRef = useRef(null);
-
-  const { plcData, isLoading } = useMqttClient(brokerUrl, topic);
-
-  const chartDataTemplate = {
-    label: "",
-    data: [],
-    fill: false,
-    backgroundColor: "",
-    borderColor: "",
-  };
-
-  const initialData = {
-    labels: [],
-    datasets: [chartDataTemplate, chartDataTemplate],
-  };
-
-  const [chartData, setChartData] = useState(initialData);
-
-  const options = {
-    scales: {
-      y: {
-        beginAtZero: true,
+  const [chartData, setChartData] = useState({
+    series: [
+      {
+        data: staticData,
       },
-      x: {
-        type: "time",
-        time: {
-          unit: "day",
-          displayFormats: {
-            day: DATE_FORMAT,
+    ],
+    options: {
+      chart: {
+        id: "realtime",
+        height: 350,
+        type: "line",
+        animations: {
+          enabled: true,
+          easing: "linear",
+          dynamicAnimation: {
+            speed: 1000,
           },
         },
-        ticks: {
-          autoSkip: true,
-          maxTicksLimit: 20,
+        toolbar: {
+          show: false,
         },
-        gridLines: {
-          display: false,
+        zoom: {
+          enabled: false,
         },
       },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+      },
+      title: {
+        text: "3호기 축 속도",
+        align: "left",
+      },
+      markers: {
+        size: 0,
+      },
+      xaxis: {
+        type: "datetime",
+      },
+      yaxis: {
+        max: 100,
+      },
+      legend: {
+        show: false,
+      },
     },
-  };
+  });
 
   useEffect(() => {
-    if (!isLoading) {
-      const newLabelItem = plcData.find((item) => item.tagId === "0");
-      const _3호기1축속도 = plcData.find((item) => item.tagId === "43");
-      const _3호기2축속도 = plcData.find((item) => item.tagId === "44");
+    const updateChartData = () => {
+      // 정적 데이터를 사용
+      const newSeriesData = staticData;
 
-      if (newLabelItem && _3호기1축속도 && _3호기2축속도) {
-        const newLabels = [...chartData.labels, newLabelItem.value];
-        const _3호기1축 = [
-          ...chartData.datasets[0].data,
-          parseFloat(_3호기1축속도.value),
-        ];
-        const _3호기2축 = [
-          ...chartData.datasets[1].data,
-          parseFloat(_3호기2축속도.value),
-        ];
+      setChartData((prevChartData) => ({
+        series: [
+          {
+            data: [...prevChartData.series[0].data, ...newSeriesData],
+          },
+        ],
+        options: prevChartData.options,
+      }));
+    };
 
-        // 데이터 개수가 20개를 초과하는 경우 맨 앞의 데이터를 제거
-        if (newLabels.length > 20) {
-          newLabels.shift();
-          _3호기1축.shift();
-          _3호기2축.shift();
-        }
+    const dataUpdateInterval = setInterval(updateChartData, 1000);
 
-        setChartData({
-          labels: newLabels,
-          datasets: [
-            {
-              label: _3호기1축속도.name,
-              data: _3호기1축,
-              fill: false,
-              backgroundColor: "",
-              borderColor: "",
-            },
-            {
-              label: _3호기2축속도.name,
-              data: _3호기2축,
-              fill: false,
-              backgroundColor: "",
-              borderColor: "",
-            },
-          ],
-        });
-      }
-    }
-  }, [plcData, isLoading]);
+    return () => {
+      clearInterval(dataUpdateInterval);
+    };
+  }, []);
 
-  return <Line ref={chartRef} data={chartData} options={options} />;
-}
+  return (
+    <div id="chart">
+      <ReactApexChart
+        options={chartData.options}
+        series={chartData.series}
+        type="line"
+        height={350}
+      />
+    </div>
+  );
+};
 
 export default LineChart;

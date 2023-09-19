@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const Wrapper = styled.div`
+export const ChartWrapper = styled.div`
   width: 96%;
   /* height: 89vh; */
   display: flex;

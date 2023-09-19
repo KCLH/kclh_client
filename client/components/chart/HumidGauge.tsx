@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useMqttClient } from "@/components/hooks/useMqttClient";
 
@@ -7,23 +7,38 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 // MQTT 브로커 및 토픽 정보
-const brokerUrl = "mqtt://192.168.0.106:8884";
-const topic = "iot1/info";
+// const brokerUrl = "mqtt://192.168.0.106:8884";
+// const topic = "iot1/info";
 
-const TempGauge = () => {
-  const [mqttData, setMqttData] = useState([]); // MQTT 데이터 저장
-  const { iotData, isLoading } = useMqttClient(brokerUrl, topic); // MQTT 데이터 가져오기
+const HumidGauge = ({ brokerUrl, iotTopic }) => {
+  const { iotData, isLoading } = useMqttClient(brokerUrl, iotTopic); // MQTT 데이터 가져오기
+  const [mqttData, setMqttData] = useState(null); // MQTT 데이터 저장
 
   useEffect(() => {
-    // 데이터가 로드되면 실행되는 효과를 정의합니다.
-    if (!isLoading) {
-      // 필요한 데이터 항목을 가져옵니다.
+    if (!isLoading && iotData) {
+      // 데이터가 로드되고 유효한 경우에만 실행
       const humid = iotData.find((item) => item.type === "humid");
 
-      // MQTT 데이터를 업데이트합니다.
-      setMqttData([parseFloat(humid?.value)]);
+      if (humid) {
+        // 유효한 온도 데이터가 있을 때만 설정
+        setMqttData([parseFloat(humid.value)]);
+      }
     }
   }, [iotData, isLoading]);
+
+  const getColorForValue = (value) => {
+    if (value >= 0 && value <= 20) {
+      return "#69D2E7";
+    } else if (value >= 21 && value <= 40) {
+      return "#00B1F2";
+    } else if (value >= 41 && value <= 60) {
+      return "#03A9F4";
+    } else if (value >= 61 && value <= 80) {
+      return "#008FFB";
+    } else {
+      return "#2983FF";
+    }
+  };
 
   const options = {
     chart: {
@@ -67,7 +82,9 @@ const TempGauge = () => {
       },
     },
     fill: {
-      type: "gradient",
+      // type: "gradient",
+      type: "linear",
+      colors: [getColorForValue(mqttData)],
       gradient: {
         shade: "light",
         shadeIntensity: 0.4,
@@ -83,9 +100,13 @@ const TempGauge = () => {
   return (
     <div id="chart">
       <h3 style={{ marginLeft: "20px" }}>습도</h3>
-      <ReactApexChart options={options} series={mqttData} type="radialBar" />
+      {mqttData !== null && mqttData.length > 0 ? (
+        <ReactApexChart options={options} series={mqttData} type="radialBar" />
+      ) : (
+        <div>Loading...</div>
+      )}
     </div>
   );
 };
 
-export default TempGauge;
+export default HumidGauge;

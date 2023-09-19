@@ -1,23 +1,46 @@
-import "chart.js/auto";
-import { Pie } from "react-chartjs-2";
+"use client";
 
-const data = {
-  labels: ["Red", "Blue", "Yellow"],
-  datasets: [
-    {
-      label: "# of Votes",
-      data: [12, 19, 3],
-      backgroundColor: [
-        "rgb(255 ,99 ,132)",
-        "rgb(54 ,162 ,235)",
-        "rgb(255 ,205 ,86)",
-      ],
+import React from "react";
+import dynamic from "next/dynamic";
+
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
+
+const PieChart = () => {
+  const seriesData = [44, 55, 13, 43, 22];
+
+  const options = {
+    chart: {
+      width: 380,
+      type: "pie",
     },
-  ],
-};
+    labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+  };
 
-function PieChart() {
-  return <Pie data={data} />;
-}
+  return (
+    <div id="chart">
+      <ReactApexChart
+        options={options}
+        series={seriesData}
+        type="pie"
+        width={380}
+      />
+    </div>
+  );
+};
 
 export default PieChart;

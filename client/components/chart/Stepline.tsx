@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useMqttClient } from "@/components/hooks/useMqttClient";
 
@@ -7,12 +7,12 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 // MQTT 브로커 및 토픽 정보
-const brokerUrl = "mqtt://192.168.0.106:8884";
-const topic = "edukit1";
+// const brokerUrl = "mqtt://192.168.0.106:8884";
+// const topic = "edukit1";
 
-const Stepline = () => {
+const Stepline = ({ brokerUrl, eduKitTopic }) => {
   const [mqttData, setMqttData] = useState([]); // MQTT 데이터 저장
-  const { plcData, isLoading } = useMqttClient(brokerUrl, topic); // MQTT 데이터 가져오기
+  const { plcData, isLoading } = useMqttClient(brokerUrl, eduKitTopic); // MQTT 데이터 가져오기
 
   useEffect(() => {
     // 데이터가 로드되면 실행되는 효과를 정의합니다.
@@ -38,10 +38,12 @@ const Stepline = () => {
     {
       name: "주사위 값",
       data: mqttData.map((item) => item.value),
+      color: "#FA4443",
     },
     {
       name: "주사위 비교 숫자",
-      data: mqttData.map((item) => item.additionalValue), // 새로운 데이터를 추가합니다.
+      data: mqttData.map((item) => item.additionalValue),
+      color: "#2983FF",
     },
   ];
 
@@ -61,6 +63,7 @@ const Stepline = () => {
     stroke: {
       curve: "stepline",
     },
+    colors: ["tomato", "royalblue"],
     dataLabels: {
       enabled: false,
     },
