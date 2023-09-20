@@ -2,7 +2,7 @@
 import { Canvas } from "@react-three/fiber";
 import { useMqttClient } from "@/components/hooks/useMqttClient";
 
-import { Controller } from "@/components/factory/factory.controller";
+import { Controller2 } from "@/components/factory/factory2.controller";
 import { Body } from "@/components/factory/Edukit/Body";
 import { Belt } from "@/components/factory/Edukit/Belt";
 import { Chip } from "@/components/factory/Edukit/Chip";
@@ -15,7 +15,7 @@ import { M1_Pusher } from "@/components/factory/M1/Pusher";
 import { M2_Pusher } from "@/components/factory/M2/Pusher";
 import { M3 } from "@/components/factory/M3/M3";
 
-export default function FactoryUI(props: any) {
+export default function Factory2UI(props: any) {
   //MQTT에서 필요한 데이터 추출하기
   const brokerUrl = "mqtt://192.168.0.106:8884";
   const topic = "edukit1";
@@ -131,8 +131,7 @@ export default function FactoryUI(props: any) {
         }}
       >
         <h1>{props.idFromPath}</h1>
-        <Controller />
-
+        <Controller2 />
         <Canvas camera={{ position: [0, 2, -2] }}>
           <directionalLight position={[1, 1, -1]} intensity={5} />
           <Body />

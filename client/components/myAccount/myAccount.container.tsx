@@ -6,27 +6,31 @@ import MyAccountUI from "@/components/myAccount/myAccount.presenter";
 import axios from "axios";
 import useAxios from "@/components/hooks/useAxios";
 import { API_URL } from "@/components/utils/Token";
-import useCurrentUser from "../hooks/useCurrentUser";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Alert, Snackbar } from "@mui/material";
 import LoadingComponent from "../layout/Loading";
 import { schema, typeInputData } from "../utils/myAccount";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
+import Cookies from "universal-cookie";
+import useCurrentUser from "@/components/hooks/useCurrentUser";
 
 function MyAccountContainer() {
-  const [openErrorPutSnackbar, setOpenErrorPutSnackbar] = useState(false);
-  const [openErrorGetSnackbar, setOpenErrorGetSnackbar] = useState(false);
-  const [openErrorCheckSnackbar, setOpenErrorCheckSnackbar] = useState(false);
-  const [openNoneSnackbar, setOpenNoneSnackbar] = useState(false);
-  const [openChangeAllSnackbar, setOpenChangeAllSnackbar] = useState(false);
+  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+  const [openWarningSnackbar, setOpenWarningSnackbar] = useState(false);
+  const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errorCode, setErrorCode] = useState(Number);
 
-  const [touchPW, setTouchPW] = useState(false); // 저장 버튼 조건
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [checkSame, setCheckSame] = useState(true); // 중복 확인
+  const cookies = new Cookies();
 
-  const [checkSame, setCheckSame] = useState(""); // 중복 확인
+  const router = useRouter();
 
   // 백에서 userInfo 가져오기
-  const { userData } = useCurrentUser();
+  const { userData, mutate } = useCurrentUser();
   const id = userData?.employeeNum;
   const [{ data, loading, error }, getData] = useAxios(
     `${API_URL}/employee/myData${id}`
@@ -40,16 +44,10 @@ function MyAccountContainer() {
   // 서버로부터 받아온 데이터를 userInfo에 저장.
   const userInfo = data;
   // 관련 처리
-  if (error)
-    return (
-      <Snackbar
-        open={openErrorGetSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setOpenErrorGetSnackbar(false)}
-      >
-        <Alert severity="error">정보를 가져오는 것에 실패했습니다</Alert>
-      </Snackbar>
-    );
+  if (error) {
+    setOpenErrorSnackbar(true);
+    setErrorCode(3);
+  }
 
   // 연락처 중복체크
   const checkPhone = async (phoneValue: string) => {
@@ -57,9 +55,14 @@ function MyAccountContainer() {
       const inputPhone = { phone: phoneValue };
       const url = `${API_URL}/employee/phoneCheck`;
       const response = await axios.post(url, inputPhone);
-      console.log("중복체크:", response);
+      if (response.data === "Y") {
+        setCheckSame(true);
+      } else {
+        setCheckSame(false);
+      }
     } catch (error) {
-      setOpenErrorCheckSnackbar(true);
+      setOpenErrorSnackbar(true);
+      setErrorCode(2);
     }
   };
 
@@ -75,18 +78,68 @@ function MyAccountContainer() {
     mode: "onChange",
   });
 
-  // 백에 수정사항 보내기
+  // Error 메세지 출력
+  let alertMessage: string;
+  switch (errorCode) {
+    case 1:
+      alertMessage = "변경에 실패했습니다";
+      break;
+    case 2:
+      alertMessage = "중복 확인에 실패했습니다";
+      break;
+    case 3:
+      alertMessage = "정보를 가져오는 것에 실패했습니다";
+      break;
+    default:
+      alertMessage = "알 수 없는 오류가 발생했습니다";
+  }
+
+  // 백에 수정사항 연락처만 보내기
+  const putPhoneData = async (data: typeInputData) => {
+    inputInfo.current = data;
+    console.log("인풋값:", inputInfo.current);
+
+    const updateUserInput: typeInputData = {};
+    updateUserInput.employee_num = id;
+    updateUserInput.phone = inputInfo.current.phone;
+
+    if (!inputInfo.current.phone && !inputInfo.current.employee_num) {
+      setOpenWarningSnackbar(true);
+    }
+
+    try {
+      const url = `${API_URL}/employee/updatePhone${id}`;
+      const updatedData = {
+        ...updateUserInput,
+      };
+      const response = await axios.put(url, updatedData);
+      if (response.statusText === "OK") {
+        setOpenSuccessSnackbar(true);
+        setSuccess(false);
+      }
+    } catch (err) {
+      setOpenErrorSnackbar(true);
+      setErrorCode(1);
+    }
+  };
+
+  // 백에 수정사항 전부 보내기
   const putData = async (data: typeInputData) => {
     inputInfo.current = data;
     console.log("인풋값:", inputInfo.current);
 
     const updateUserInput: typeInputData = {};
     updateUserInput.employee_num = id;
-    updateUserInput.phone = inputInfo.phone || userInfo.phone;
-    updateUserInput.user_pwd = inputInfo.user_pwd;
+    updateUserInput.phone = inputInfo.current.phone || userInfo.phone;
+    updateUserInput.user_pwd = inputInfo.current.user_pwd;
+    console.log(updateUserInput);
 
-    if (!inputInfo.phone && !inputInfo.user_pwd && !inputInfo.employee_num) {
-      setOpenNoneSnackbar(true);
+    if (
+      !inputInfo.current.phone &&
+      !inputInfo.current.user_pwd &&
+      !inputInfo.current.employee_num
+    ) {
+      setOpenWarningSnackbar(true);
     }
 
     try {
@@ -94,12 +147,26 @@ function MyAccountContainer() {
       const updatedData = {
         ...updateUserInput,
       };
-      const response = await axios.put(url, updatedData);
-      if (response.statusText === "OK") {
-        setOpenChangeAllSnackbar(true);
+      if (checkSame) {
+        const response = await axios.put(url, updatedData);
+        if (response.statusText === "OK") {
+          setOpenSuccessSnackbar(true);
+          setSuccess(true);
+          // router.push("/login");
+          cookies.remove("name");
+          cookies.remove("token");
+          cookies.remove("role");
+          cookies.remove("factory");
+          cookies.remove("employee_num");
+          setAnchorEl(null);
+          mutate(null, false); // 다음 서버 요청 발생 전까지 기존 값 유지 되기 때문에 null로 처리
+          await router.push("/login");
+          // window.location.href = "/login";
+        }
       }
     } catch (err) {
-      setOpenErrorPutSnackbar(true);
+      setOpenErrorSnackbar(true);
+      setErrorCode(1);
     }
   };
 
@@ -113,38 +180,37 @@ function MyAccountContainer() {
         userInfo={userInfo}
         checkPhone={checkPhone}
         putData={putData}
+        putPhoneData={putPhoneData}
+        checkSame={checkSame}
       />
       <Snackbar
-        open={openNoneSnackbar}
+        open={openWarningSnackbar}
         autoHideDuration={6000}
-        onClose={() => setOpenNoneSnackbar(false)}
+        onClose={() => setOpenWarningSnackbar(false)}
       >
-        <Alert severity="error">수정사항이 없습니다</Alert>
+        <Alert severity="warning">수정사항이 없습니다</Alert>
       </Snackbar>
       <Snackbar
-        open={openErrorPutSnackbar}
+        open={openErrorSnackbar}
         autoHideDuration={6000}
-        onClose={() => setOpenErrorPutSnackbar(false)}
+        onClose={() => setOpenErrorSnackbar(false)}
       >
-        <Alert severity="error">변경에 실패했습니다</Alert>
+        <Alert severity="error">{alertMessage}</Alert>
       </Snackbar>
       <Snackbar
-        open={openChangeAllSnackbar}
+        open={openSuccessSnackbar}
         autoHideDuration={6000}
-        onClose={() => setOpenChangeAllSnackbar(false)}
+        onClose={() => setOpenSuccessSnackbar(false)}
       >
-        <Alert severity="error">
-          변경이 완료되었습니다
-          <br />
-          다시 로그인해주세요
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={openErrorCheckSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setOpenErrorCheckSnackbar(false)}
-      >
-        <Alert severity="error">중복 확인에 실패했습니다</Alert>
+        {success ? (
+          <Alert severity="success">
+            변경이 완료되었습니다
+            <br />
+            다시 로그인해주세요
+          </Alert>
+        ) : (
+          <Alert severity="success">변경이 완료되었습니다</Alert>
+        )}
       </Snackbar>
     </>
   );

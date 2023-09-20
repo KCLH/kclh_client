@@ -9,14 +9,14 @@ const BtnWrapper = styled("div")`
   padding: 5px;
 `;
 
-export const Controller = () => {
+export const Controller2 = () => {
   const [inputValue, setInputValue] = useState([]);
 
   const brokerUrl = "mqtt://192.168.0.106:8884";
   const client = mqtt.connect(brokerUrl);
 
   const sendMessage = (id: string, value: string) => {
-    const topic = "edukit1/control";
+    const topic = "edukit2/control";
     const messageToSend = { tagId: id, value };
     client.publish(topic, JSON.stringify(messageToSend));
     console.log("message sent", JSON.stringify(messageToSend));
