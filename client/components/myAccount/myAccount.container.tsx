@@ -6,7 +6,6 @@ import MyAccountUI from "@/components/myAccount/myAccount.presenter";
 import axios from "axios";
 import useAxios from "@/components/hooks/useAxios";
 import { API_URL } from "@/components/utils/Token";
-import useCurrentUser from "../hooks/useCurrentUser";
 import { useEffect, useRef, useState } from "react";
 import { Alert, Snackbar } from "@mui/material";
 import LoadingComponent from "../layout/Loading";
@@ -14,6 +13,8 @@ import { schema, typeInputData } from "../utils/myAccount";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
+import Cookies from "universal-cookie";
+import useCurrentUser from "@/components/hooks/useCurrentUser";
 
 function MyAccountContainer() {
   const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
@@ -22,12 +23,14 @@ function MyAccountContainer() {
   const [success, setSuccess] = useState(false);
   const [errorCode, setErrorCode] = useState(Number);
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [checkSame, setCheckSame] = useState(true); // 중복 확인
+  const cookies = new Cookies();
 
   const router = useRouter();
 
   // 백에서 userInfo 가져오기
-  const { userData } = useCurrentUser();
+  const { userData, mutate } = useCurrentUser();
   const id = userData?.employeeNum;
   const [{ data, loading, error }, getData] = useAxios(
     `${API_URL}/employee/myData${id}`
@@ -149,7 +152,16 @@ function MyAccountContainer() {
         if (response.statusText === "OK") {
           setOpenSuccessSnackbar(true);
           setSuccess(true);
-          router.push("/login");
+          // router.push("/login");
+          cookies.remove("name");
+          cookies.remove("token");
+          cookies.remove("role");
+          cookies.remove("factory");
+          cookies.remove("employee_num");
+          setAnchorEl(null);
+          mutate(null, false); // 다음 서버 요청 발생 전까지 기존 값 유지 되기 때문에 null로 처리
+          await router.push("/login");
+          // window.location.href = "/login";
         }
       }
     } catch (err) {
